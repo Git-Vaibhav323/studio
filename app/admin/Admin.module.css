@@ -1,0 +1,57 @@
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--cream-light);
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 280px;
+  transition: margin-left 0.3s ease;
+}
+
+.mainContent.sidebarClosed {
+  margin-left: 80px;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--cream-light);
+}
+
+.loader {
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.loginLayout {
+  min-height: 100vh;
+  background: var(--cream-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+  }
+  
+  .mainContent.sidebarClosed {
+    margin-left: 0;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+}

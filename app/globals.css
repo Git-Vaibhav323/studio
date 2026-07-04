@@ -1,0 +1,193 @@
+/* ===================================================
+   THE SPATIAL EDIT — Global Styles & Design Tokens
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Inter:wght@200;300;400;500;600&display=swap');
+
+/* ---- RESET ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- TOKENS ---- */
+:root {
+  --cream:        #f4ede0;
+  --cream2:       #ece4d2;
+  --cream-light:  #f8f4ed;
+  --cream-warm:   #ede8dc;
+  --cream-rgb:    244, 237, 224;
+
+  --dark:         #1c1710;
+  --dark-brown:   #2a2418;
+  --mid:          #4a4030;
+  --ltxt:         #7a7060;
+  --muted:        #6b5e4f;
+  --muted-light:  #8a7d6e;
+
+  --gold:         #b4904f;
+  --gold2:        #c9a96e;
+  --gold-soft:    #c9a84e;
+  --gold-dark:    #8b7340;
+  --gold-faint:   rgba(180, 144, 79, 0.12);
+  --gold-border:  rgba(180, 144, 79, 0.45);
+
+  --border:       rgba(180, 144, 79, 0.22);
+  --shadow-s:     0 2px 12px rgba(28, 23, 16, 0.05);
+  --shadow-m:     0 6px 28px rgba(28, 23, 16, 0.08);
+  --shadow-l:     0 12px 48px rgba(28, 23, 16, 0.10);
+
+  --serif:        'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --sans:         'Inter', 'Segoe UI', sans-serif;
+
+  --nav-h:        72px;
+
+  /* Animation Variables — standardized across the site */
+  --ease-smooth:  cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --dur-fast:     250ms;
+  --dur-base:     400ms;
+  --dur-slow:     600ms;
+  --dur-slower:   850ms;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; border: none; background: none; }
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ---- ANIMATIONS ---- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.4); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity var(--dur-slower) var(--ease-smooth),
+              transform var(--dur-slower) var(--ease-smooth);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity var(--dur-slower) var(--ease-smooth),
+              transform var(--dur-slower) var(--ease-smooth);
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ---- SECTION DIVIDER ---- */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(180,144,79,0.3);
+  border: none;
+  margin: 0;
+}
+
+/* ---- SHINY GOLD BORDER utility ---- */
+.shiny-border {
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--cream), var(--cream)) padding-box,
+    linear-gradient(135deg, rgba(201,169,110,0.9) 0%, rgba(255,255,255,0.6) 30%, rgba(180,144,79,0.9) 60%, rgba(255,255,255,0.5) 80%, rgba(201,169,110,0.9) 100%) border-box;
+}
+
+/* ---- SECTION ARCH FOOTER ---- */
+.arch-footer {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
+}
+.arch-footer svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+.arch-footer-content {
+  position: absolute;
+  bottom: 18px;
+  left: 0; right: 0;
+  text-align: center;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.arch-footer-text {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.arch-star svg {
+  width: 28px; height: 28px;
+  fill: var(--gold);
+}
+
+/* Desktop: hide left side strips / section numbers globally */
+@media (min-width: 1025px) {
+  .vline,
+  .sideLabel,
+  .sideNum,
+  .sideText1,
+  .sideText2,
+  .verticalText,
+  .sideDia,
+  .sidebarLeft {
+    display: none !important;
+  }
+  /* remove extra left padding content may have reserved for side strip */
+  .content { padding-left: 0 !important; }
+}
+
+/* Mobile: ensure section backgrounds keep bottom visible and avoid over-zoom */
+@media (max-width: 768px) {
+  .section {
+    background-position: center bottom !important;
+    background-size: 110% auto !important;
+    background-repeat: no-repeat !important;
+  }
+}

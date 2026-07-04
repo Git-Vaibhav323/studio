@@ -1,0 +1,252 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 700vh;
+  background: #15130f;
+  will-change: scroll-position;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #15130f;
+  isolation: isolate;
+  contain: layout style paint;
+}
+
+.sequence {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU acceleration */
+  backface-visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.loadingState {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #15130f;
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: min(320px, 80vw);
+}
+
+.loadingBar {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(248, 244, 237, 0.18);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loadingProgress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #d0ad69;
+  transition: width 0.2s ease-out;
+  transform-origin: left center;
+}
+
+.loadingText {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(248, 244, 237, 0.64);
+  text-transform: uppercase;
+}
+
+.titleStage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  padding: calc(var(--nav-h) + 36px) 32px 48px;
+  pointer-events: none;
+}
+
+.titleCard {
+  grid-area: 1 / 1;
+  align-self: center;
+  width: min(640px, calc(100vw - 64px));
+  color: #f8f4ed;
+  text-shadow: 0 8px 34px rgba(0, 0, 0, 0.58);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 22px, 0);
+  will-change: opacity, transform;
+}
+
+.titleLeft {
+  justify-self: start;
+  margin-left: clamp(18px, 8vw, 112px);
+  text-align: left;
+}
+
+.titleRight {
+  justify-self: end;
+  margin-right: clamp(18px, 8vw, 112px);
+  text-align: right;
+}
+
+.titleCenter {
+  justify-self: center;
+  text-align: center;
+}
+
+.titleVisible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+}
+
+.kicker {
+  margin-bottom: 18px;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #d0ad69;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.52);
+}
+
+.titleCard h1,
+.titleCard h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(48px, 7.2vw, 104px);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 0;
+  color: #f8f4ed;
+}
+
+.accent {
+  margin-top: 20px;
+  font-family: var(--serif);
+  font-size: clamp(28px, 3.5vw, 52px);
+  font-style: italic;
+  line-height: 1;
+  color: #d0ad69;
+  font-weight: 400;
+}
+
+.scrollCue {
+  position: absolute;
+  z-index: 3;
+  right: 30px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #f8f4ed;
+  will-change: opacity;
+}
+
+.scrollCue span {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.scrollCue i {
+  display: block;
+  width: 38px;
+  height: 1px;
+  background: #d0ad69;
+}
+
+.progressTrack {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(248, 244, 237, 0.24);
+  overflow: hidden;
+}
+
+.progressTrack span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #d0ad69;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 100vh;
+  }
+
+  .titleStage {
+    padding: calc(var(--nav-h) + 22px) 18px 76px;
+  }
+
+  .titleCard {
+    width: 100%;
+  }
+
+  .titleLeft,
+  .titleRight,
+  .titleCenter {
+    justify-self: center;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .titleLeft { align-self: start; }
+  .titleRight { align-self: center; }
+  .titleCenter { align-self: end; }
+
+  .titleCard h1,
+  .titleCard h2 {
+    font-size: clamp(42px, 12vw, 62px);
+    line-height: 0.92;
+  }
+
+  .scrollCue {
+    right: 18px;
+    bottom: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .titleCard:not(:first-child),
+  .scrollCue,
+  .progressTrack {
+    display: none;
+  }
+}

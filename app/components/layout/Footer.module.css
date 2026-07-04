@@ -1,0 +1,177 @@
+/* =============================================
+   FOOTER — Full body width (100vw)
+   ============================================= */
+
+.footer {
+  position: relative;
+  /* Full body width — edge to edge */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 6vh 5vw 4vh;
+  background: #111;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  color: var(--cream);
+  border-top: 1px solid rgba(180,144,79,0.3);
+}
+
+/* Top star */
+.topLine {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px; background: rgba(180,144,79,0.25);
+  display: flex; justify-content: center;
+}
+.topStar {
+  position: absolute; top: -12px;
+  background: #111; padding: 0 10px;
+}
+.topStar svg { width: 24px; height: 24px; }
+
+/* Inner layout */
+.inner {
+  display: flex; flex-wrap: wrap;
+  gap: 40px; margin-top: 6vh;
+  width: 100%;
+}
+
+/* Brand column */
+.brandCol { flex: 0 0 300px; display: flex; flex-direction: column; }
+.logo { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.logoName {
+  font-family: var(--serif); font-size: 22px;
+  color: var(--cream); font-weight: 500;
+  letter-spacing: 0.05em; line-height: 1.1;
+}
+.logoSub {
+  font-size: 8px; letter-spacing: 0.25em;
+  color: var(--gold); text-transform: uppercase; font-weight: 700; margin-top: 4px;
+}
+.brandDesc {
+  font-size: 11px; line-height: 1.7;
+  color: rgba(246,240,230,0.6); margin-bottom: 30px;
+}
+.ctaBtn {
+  background: transparent;
+  border: 1px solid rgba(180,144,79,0.3);
+  color: var(--gold); padding: 14px 20px;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 100; display: inline-flex;
+  align-items: center; justify-content: space-between;
+  text-decoration: none;
+  transition: all 0.3s; border-radius: 4px;
+  width: 220px; margin-bottom: 40px;
+}
+.ctaBtn:hover { background: rgba(180,144,79,0.1); border-color: var(--gold); }
+.ctaBtn svg { width: 14px; height: 14px; }
+
+.social { display: flex; flex-direction: column; gap: 12px; }
+.socialLabel {
+  font-size: 10px; letter-spacing: 0.2em;
+  color: var(--gold); text-transform: uppercase; font-weight: 100;
+}
+.socialIcons { display: flex; gap: 12px; }
+.socialIcon {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(180,144,79,0.3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; cursor: pointer; text-decoration: none;
+}
+.socialIcon:hover { border-color: var(--gold); background: rgba(180,144,79,0.1); }
+.socialIcon svg { width: 14px; height: 14px; }
+
+/* Links wrap */
+.linksWrap {
+  flex: 1; display: flex;
+  justify-content: space-around; gap: 20px; flex-wrap: wrap;
+}
+.linkCol { display: flex; flex-direction: column; gap: 16px; }
+.linkHeading {
+  font-size: 10px; letter-spacing: 0.25em;
+  color: var(--gold); text-transform: uppercase;
+  font-weight: 700; margin-bottom: 12px;
+  position: relative; padding-bottom: 8px;
+}
+.linkHeading::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0;
+  width: 20px; height: 1px; background: rgba(180,144,79,0.5);
+}
+.link {
+  font-size: 11px; color: rgba(246,240,230,0.7);
+  text-decoration: none; transition: color 0.3s;
+}
+.link:hover { color: var(--gold); }
+
+/* Newsletter column */
+.subCol { flex: 0 0 280px; display: flex; flex-direction: column; }
+.subIcon { text-align: center; margin-bottom: 12px; }
+.subIcon svg { width: 24px; height: 24px; }
+.subTitle {
+  font-size: 11px; letter-spacing: 0.2em;
+  color: var(--gold); text-transform: uppercase;
+  font-weight: 100; text-align: center; margin-bottom: 16px;
+}
+.subDesc {
+  font-size: 11px; line-height: 1.6;
+  color: rgba(246,240,230,0.6); text-align: center; margin-bottom: 24px;
+}
+.subForm { display: flex; flex-direction: column; gap: 12px; }
+.subInput {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(180,144,79,0.2);
+  border-radius: 4px; padding: 14px 16px;
+  font-family: var(--sans); font-size: 11px;
+  color: var(--cream); outline: none; transition: all 0.3s;
+}
+.subInput:focus { border-color: var(--gold); background: rgba(255,255,255,0.06); }
+.subInput::placeholder { color: rgba(246,240,230,0.4); }
+.subBtn {
+  background: var(--gold); border: none; border-radius: 4px;
+  padding: 14px; font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; font-weight: 700;
+  color: #111; display: flex;
+  align-items: center; justify-content: center;
+  gap: 10px; cursor: pointer; transition: all 0.3s;
+}
+.subBtn:hover { background: #d0aa60; }
+.subBtn svg { width: 14px; height: 14px; }
+.privacy {
+  font-size: 9px; color: rgba(246,240,230,0.4);
+  text-align: center; margin-top: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.privacy svg { width: 10px; height: 10px; }
+
+/* Bottom bar */
+.bottom {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 30px; margin-top: 60px;
+  border-top: 1px solid rgba(180,144,79,0.2);
+}
+.bottomStar {
+  position: absolute; top: -12px; left: 50%;
+  transform: translateX(-50%);
+  background: #111; padding: 0 10px;
+}
+.bottomStar svg { width: 24px; height: 24px; }
+.copy { font-size: 10px; color: rgba(246,240,230,0.5); }
+.legal { display: flex; gap: 20px; }
+.legal a {
+  font-size: 10px; color: rgba(246,240,230,0.5);
+  text-decoration: none; transition: color 0.3s;
+}
+.legal a:hover { color: var(--gold); }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .inner { flex-direction: column; }
+  .linksWrap { flex-wrap: wrap; justify-content: flex-start; gap: 40px; }
+  .subCol { margin-top: 40px; align-self: flex-start; width: 100%; max-width: 400px; }
+  .brandCol { max-width: 100%; }
+}
+@media (max-width: 100px) {
+  .footer { padding: 5vh 6vw 4vh; }
+  .bottom { flex-direction: column; gap: 20px; text-align: center; }
+  .ctaBtn { width: 100%; max-width: 280px; }
+}

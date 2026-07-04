@@ -1,0 +1,90 @@
+.section{position:relative;padding:5vh 5vw 60px;background:var(--cream) url('/images/bg/bg-sec-con.webp') center bottom/cover no-repeat;display:flex;flex-direction:column;overflow:hidden;min-height:auto;}
+
+@media (max-width: 768px) {
+  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
+}
+.topBar {display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 40px; padding: 0 5vw;}
+.topLeft { display: flex; align-items: flex-start; gap: 12px; }
+.logoTS { margin-right: 8px; }
+.logoTextWrap { display: flex; flex-direction: column; gap: 4px; }
+.logoTitle { font-family: var(--serif); font-size: 14px; font-weight: 500; color: var(--dark); letter-spacing: 0.1em; }
+.logoSub { font-size: 8px; font-weight: 100; letter-spacing: 0.25em; color: var(--gold); }
+.topRight { display: flex; align-items: center; gap: 16px; }
+.topRightText { font-size: 10px; font-weight: 100; letter-spacing: 0.15em; color: var(--dark); }
+.topRightLine { width: 1px; height: 16px; background: rgba(180,144,79,0.5); }
+.topRightNum { font-family: var(--serif); font-size: 18px; color: var(--dark); }
+.separatorShort { display: flex; align-items: center; width: 100%; max-width: 250px; margin: 24px 0; }
+.separatorCenter { display: flex; align-items: center; width: 100%; max-width: 250px; margin: 24px auto; }
+.sepLine { height: 1px; flex: 1; background: rgba(180, 144, 79, 0.4); }
+.sepDia { margin: 0 12px; display: flex; align-items: center; }
+.sepDia svg { width: 8px; height: 8px; }
+
+.vline { position: absolute; left: 46px; top: 0; bottom: 0; width: 1px; background: rgba(180,144,79,0.35); z-index: 4; pointer-events: none; }
+.sideNum { position: absolute; left: 46px; top: 120px; transform: translateX(-50%); font-family: var(--serif); font-size: 24px; color: var(--gold); background: var(--cream); padding: 10px 0; z-index: 5; }
+.sideText1 { position: absolute; left: 46px; top: 180px; transform: translateX(-50%); font-size: 8px; letter-spacing: 0.15em; color: rgba(180, 144, 79, 0.8); background: var(--cream); padding: 10px 0; z-index: 5; }
+.sideDia { position: absolute; left: 46px; top: 250px; transform: translateX(-50%); width: 12px; height: 12px; background: var(--cream); padding: 4px 0; z-index: 5; display: flex; justify-content: center; }
+.sideDia svg { width: 100%; height: 100%; }
+
+.verticalText {
+  position: absolute; left: 46px; top: 50%; transform: translateX(-50%) translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl; font-size: 9px; letter-spacing: 0.2em; color: var(--dark); font-weight: 100; white-space: nowrap;
+  background: var(--cream); padding: 20px 0; z-index: 10;
+}
+.cornerStar { position: absolute; left: 46px; bottom: 120px; transform: translateX(-50%); background: var(--cream); padding: 10px 0; z-index: 5; display: flex; justify-content: center; }
+.cornerStar svg { width: 24px; height: 24px; }
+.centerLine{position:absolute;left:50%;top:5vh;bottom:100px;width:1px;background:rgba(180,144,79,0.25);z-index:0;}
+.centerStar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--cream);padding:10px 0;z-index:1;}
+.centerStar svg{width:12px;height:12px;}
+.content{position:relative;z-index:2;width:100%;max-width:1400px;margin:0 auto;display:flex;flex-direction:column;flex:1;}
+.split{display:flex;align-items:stretch;margin-top:5vh;flex:1;margin-bottom:80px;gap:0;}
+.leftCol{flex:1;padding-right:5vw;display:flex;flex-direction:column;justify-content:center;}
+.title{font-family:var(--serif);font-size:clamp(40px,5.5vw,70px);line-height:1.1;color:var(--dark);font-weight:400;margin-bottom:24px;}
+.title span{color:var(--gold);font-style:italic;}
+.desc{font-size:15px;line-height:1.6;color:var(--mid);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid rgba(180,144,79,0.3);max-width:400px;}
+.imgWrap{width:100%;max-width:450px;border-radius:12px;overflow:hidden;margin-top:auto;height:280px;position:relative;}
+
+/* On desktop we hide the decorative image and show a gold "Contact Us" label instead */
+.imgWrap{display:block}
+.contactLabel{display:none}
+@media(min-width:901px){
+  .imgWrap{display:none}
+  .contactLabel{display:block;position:absolute;left:5vw;top:5vh;font-family:var(--serif);font-size:58px;color:var(--gold);font-weight:100;z-index:12;letter-spacing:0.06em;}
+}
+
+/* thin decorative line above vase to help composition */
+.vaseLine{width:60%;height:1px;background:rgba(180,144,79,0.35);margin:18px 0;border-radius:2px;}
+
+/* Reserve space near title so background has breathing room and title stays on one line */
+.leftCol { padding-top: 28px; min-height: 220px; }
+.title { white-space: nowrap; }
+.rightCol{flex:1;padding-left:5vw;display:flex;flex-direction:column;justify-content:center;}
+.formHeader{text-align:center;margin-bottom:0;}
+.formTitle{font-family:var(--serif);font-size:16px;letter-spacing:0.2em;color:#9b8054;text-transform:uppercase;font-weight:500;display:inline-flex;align-items:center;gap:16px;}
+.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.formGroup{position:relative;}
+.full{grid-column:1 / -1;}
+.input{width:100%;background:transparent;border:1px solid rgba(180,144,79,0.25);border-radius:6px;padding:16px 16px 16px 44px;font-family:var(--sans);font-size:13px;color:var(--dark);transition:all var(--dur-fast) var(--ease-smooth);box-sizing:border-box;outline:none;}
+.input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(180,144,79,0.05);}
+.input::placeholder{color:var(--mid);opacity:0.7;}
+.input select{appearance:none;}
+textarea.input{padding-top:16px;min-height:110px;resize:vertical;}
+select.input{appearance:none;-webkit-appearance:none;cursor:pointer;}
+.icon{position:absolute;left:15px;top:15px;width:16px;height:16px;}
+.icon svg{width:100%;height:100%;stroke:var(--mid);opacity:0.7;}
+.selectArrow{position:absolute;right:15px;top:15px;width:14px;height:14px;pointer-events:none;stroke:var(--mid);}
+.submitBtn{width:100%;background:rgba(180,144,79,0.9);color:#fff;border:none;border-radius:6px;padding:18px;font-family:var(--serif);font-size:14px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:all var(--dur-fast) var(--ease-smooth);margin-top:10px;}
+.submitBtn:hover{background:#96763f;box-shadow:0 10px 20px rgba(180,144,79,0.2);}
+.submitBtn svg{width:16px;height:16px;}
+.note{text-align:center;font-size:11px;color:var(--mid);margin-top:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.note svg{width:14px;height:14px;}
+.thankYou{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.thankYou svg{width:48px;height:48px;}
+.thankYou h3{font-family:var(--serif);font-size:28px;color:var(--dark);}
+.thankYou p{font-size:14px;color:var(--mid);}
+.archFooter{position:relative;width:100vw;left:50%;transform:translateX(-50%);height:100px;flex-shrink:0;}
+.archSvg{position:absolute;top:0;left:0;width:100%;height:100%;}
+.archDecor{position:absolute;top:18%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:20px;}
+.archStar svg{width:28px;height:28px;}
+.archArrow{width:14px;height:14px;}
+@media(max-width:900px){.split{flex-direction:column;gap:60px;}.centerLine,.centerStar{display:none;}.leftCol,.rightCol{padding:0;}.formGrid{grid-template-columns:1fr;}}
+@media(max-width:100px){.vline,.verticalText{display:none;}}
