@@ -9,6 +9,11 @@ import styles from './ServiceDetail.module.css';
 async function getService(slug) {
   const supabase = createServerSupabaseClient();
   
+  // Return null if Supabase is not configured
+  if (!supabase) {
+    return null;
+  }
+  
   const { data: service, error } = await supabase
     .from('services')
     .select('*')
