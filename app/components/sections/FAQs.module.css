@@ -29,26 +29,63 @@
 .cornerStar svg { width: 24px; height: 24px; }
 .content{position:relative;z-index:1;width:100%;max-width:800px;margin:0 auto;text-align:center;}
 .titleBlock{text-align:center;margin-bottom:8px;}
-.title{font-family:var(--serif);font-size:clamp(52px,7vw,90px);color:var(--dark);font-weight:400;line-height:1;}
-.title span{color:var(--gold);}
+.title{
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
+  font-size:clamp(52px,7vw,90px);
+  color:var(--dark);
+  font-weight:400;
+  line-height:0.98;
+  letter-spacing: -0.02em;
+}
+.title span{color:var(--gold);font-style:italic;}
 .subtitle{text-align:center;font-size:11px;letter-spacing:0.25em;color:var(--dark);text-transform:uppercase;font-weight:100;display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;margin-bottom:5vh;}
 .subtitle::before,.subtitle::after{content:'';width:20px;height:1px;background:var(--gold);}
-.faqList{max-width:800px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:16px;margin-bottom:60px;}
-.faqItem{background:rgba(246,240,230,0.5);border:1px solid rgba(180,144,79,0.25);border-radius:8px;padding:24px 32px;cursor:pointer;transition:all var(--dur-fast) var(--ease-smooth);box-shadow:0 4px 15px rgba(0,0,0,0.02);}
-.faqItem:hover{border-color:rgba(180,144,79,0.5);box-shadow:0 8px 25px rgba(0,0,0,0.05);}
-.faqOpen{border-color:rgba(180,144,79,0.6);box-shadow:0 8px 30px rgba(180,144,79,0.1);}
+.faqList{max-width:800px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:14px;margin-bottom:60px;}
+.faqItem{
+  background:rgba(246,240,230,0.55);
+  border:1px solid rgba(180,144,79,0.22);
+  border-radius:10px;
+  padding:22px 28px;
+  cursor:pointer;
+  transition:
+    border-color 0.35s var(--ease-smooth),
+    box-shadow 0.4s var(--ease-smooth),
+    background 0.35s ease,
+    transform 0.35s var(--ease-expo);
+  box-shadow:0 4px 15px rgba(0,0,0,0.02);
+  will-change: transform;
+}
+.faqItem:hover{
+  border-color:rgba(180,144,79,0.45);
+  box-shadow:0 10px 32px rgba(28,23,16,0.07);
+  transform: translateX(4px);
+}
+.faqOpen{
+  border-color:rgba(180,144,79,0.6);
+  box-shadow:0 10px 36px rgba(180,144,79,0.12);
+  background: rgba(246,240,230,0.8);
+  transform: translateX(4px);
+}
 .faqTop{display:flex;align-items:center;justify-content:space-between;}
-.faqLeft{display:flex;align-items:center;gap:24px;}
-.faqStar svg{width:20px;height:20px;flex-shrink:0;}
-.faqQ{font-family:var(--serif);font-size:22px;color:var(--dark);font-weight:500;}
+.faqLeft{display:flex;align-items:center;gap:20px;}
+.faqStar svg{width:20px;height:20px;flex-shrink:0;transition:transform 0.4s var(--ease-bounce);}
+.faqOpen .faqStar svg { transform: rotate(20deg) scale(1.1); }
+.faqQ{
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
+  font-size:22px;
+  color:var(--dark);
+  font-weight:400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
 .faqToggle{position:relative;width:24px;height:24px;flex-shrink:0;}
-.faqToggle span{position:absolute;left:50%;top:50%;display:block;width:14px;height:1.5px;background:var(--gold);transition:all var(--dur-fast) var(--ease-smooth);}
+.faqToggle span{position:absolute;left:50%;top:50%;display:block;width:14px;height:1.5px;background:var(--gold);transition:all 0.35s var(--ease-smooth);}
 .faqToggle span:first-child{transform:translate(-50%,-50%);}
 .faqToggle span:last-child{transform:translate(-50%,-50%) rotate(90deg);}
 .isOpen span:last-child{transform:translate(-50%,-50%) rotate(0);}
-.faqAnswer{max-height:0;overflow:hidden;opacity:0;transition:max-height var(--dur-base) var(--ease-smooth),opacity var(--dur-fast) var(--ease-smooth),margin var(--dur-fast) var(--ease-smooth);margin-top:0;}
+.faqAnswer{max-height:0;overflow:hidden;opacity:0;transition:max-height 0.5s var(--ease-expo),opacity 0.35s var(--ease-smooth),margin 0.35s var(--ease-smooth);margin-top:0;}
 .answerVisible{max-height:200px;opacity:1;margin-top:18px;}
-.faqAnswer p{font-size:13.5px;line-height:1.8;color:var(--mid);padding-left:44px;}
+.faqAnswer p{font-size:13.5px;line-height:1.82;color:var(--mid);padding-left:40px;font-weight:300;}
 .archFooter{position:relative;width:100vw;left:50%;transform:translateX(-50%);height:100px;flex-shrink:0;}
 .archSvg{position:absolute;top:0;left:0;width:100%;height:100%;}
 .archDecor{position:absolute;top:18%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:20px;}

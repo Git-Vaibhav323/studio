@@ -90,12 +90,13 @@
   width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg);
 }
 .title {
-  font-family: var(--serif);
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
   font-size: clamp(36px, 4vw, 52px);
   color: var(--dark);
-  line-height: 1.1; font-weight: 400;
+  line-height: 1.05; font-weight: 400;
+  letter-spacing: -0.01em;
 }
-.title span { color: var(--gold); }
+.title span { color: var(--gold); font-style: italic; }
 .headerNum {
   font-family: var(--serif);
   font-size: 18px; color: var(--dark);
@@ -121,18 +122,38 @@
 .card {
   /* Symmetric: both cards equal width */
   flex: 1;
-  background: rgba(246,240,230,0.45);
-  border: 1px solid rgba(180,144,79,0.3);
-  border-radius: 10px;
-  /* Symmetric padding */
+  background: rgba(246,240,230,0.48);
+  border: 1px solid rgba(180,144,79,0.28);
+  border-radius: 14px;
   padding: 24px 20px 20px;
   display: flex; flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.03), inset 0 0 0 1px rgba(255,255,255,0.5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: box-shadow 0.3s;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255,255,255,0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    transform 0.55s var(--ease-expo),
+    box-shadow 0.55s var(--ease-expo),
+    border-color 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
 }
-.card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.07), inset 0 0 0 1px rgba(255,255,255,0.5); }
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), rgba(201,169,110,0.6), transparent);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-smooth);
+  z-index: 2;
+}
+.card:hover {
+  box-shadow: 0 22px 56px rgba(0,0,0,0.09), inset 0 0 0 1px rgba(255,255,255,0.5);
+  border-color: rgba(180,144,79,0.5);
+  transform: translateY(-6px);
+}
+.card:hover::before { opacity: 1; }
 
 /* Card header */
 .cardHeader {

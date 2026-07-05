@@ -61,15 +61,17 @@
   margin-bottom: 10px;
 }
 .title {
-  font-family: var(--serif);
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
   font-size: clamp(38px, 5.5vw, 68px);
-  line-height: 1.1;
+  line-height: 1.05;
   color: var(--dark);
   font-weight: 400;
+  letter-spacing: -0.01em;
 }
 .title span {
   color: var(--gold);
-  font-weight: 100;
+  font-style: italic;
+  font-weight: 400;
 }
 .subtitle {
   text-align: center;
@@ -91,53 +93,77 @@
 /* ── Card — vertical stack layout ──────────── */
 .card {
   position: relative;
-  background: linear-gradient(160deg, rgba(255,255,255,0.72) 0%, var(--cream) 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(180,144,79,0.28);
-  padding: 22px 20px 24px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.78) 0%, var(--cream) 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(180,144,79,0.22);
+  padding: 24px 22px 26px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
   box-shadow:
-    -3px -3px 10px rgba(255,255,255,0.85),
-    3px 3px 14px rgba(28,23,16,0.05);
-  /* Every card on its own stacking layer */
+    -4px -4px 14px rgba(255,255,255,0.9),
+    4px 4px 18px rgba(28,23,16,0.06);
   z-index: 1;
-  /* Smooth hover */
-  transition:
-    transform 0.35s var(--ease-smooth),
-    box-shadow 0.35s var(--ease-smooth),
-    border-color 0.35s var(--ease-smooth);
-  cursor: default;
-  /* Prevent any child from ever overflowing into a neighbour */
   overflow: hidden;
+  transition:
+    transform 0.55s var(--ease-expo),
+    box-shadow 0.55s var(--ease-expo),
+    border-color 0.4s var(--ease-smooth);
+  cursor: default;
+  will-change: transform;
 }
 
-/* Hover: lift + glow, NO scale, stays inside grid cell */
+/* Shimmer sweep on hover */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255,255,255,0.22) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.card:hover::after,
+.cardHovered::after {
+  opacity: 1;
+  animation: cardShimmer 0.7s var(--ease-smooth) forwards;
+}
+
+@keyframes cardShimmer {
+  from { transform: translateX(-100%) skewX(-15deg); }
+  to   { transform: translateX(200%) skewX(-15deg); }
+}
+
+/* Hover: lift + depth shadow, stays in grid cell */
 .card:hover,
 .cardHovered {
-  transform: translateY(-6px);
-  border-color: rgba(180,144,79,0.6);
+  transform: translateY(-8px) scale(1.005);
+  border-color: rgba(180,144,79,0.52);
   box-shadow:
-    -5px -5px 18px rgba(255,255,255,0.95),
-    5px 18px 40px rgba(28,23,16,0.11),
-    0 0 0 1px rgba(180,144,79,0.15) inset;
+    -6px -6px 20px rgba(255,255,255,0.98),
+    6px 22px 50px rgba(28,23,16,0.13),
+    0 0 0 1px rgba(180,144,79,0.12) inset;
   z-index: 10;
-  overflow: hidden; /* Keep enforcing — no bleed even on hover */
 }
 
-/* Subtle gold shimmer line at top on hover */
+/* Gold shimmer line at top on hover */
 .card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(180,144,79,0.5), transparent);
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), rgba(201,169,110,0.8), transparent);
   opacity: 0;
-  transition: opacity 0.35s var(--ease-smooth);
+  transition: opacity 0.45s var(--ease-smooth);
+  z-index: 2;
 }
 .card:hover::before,
 .cardHovered::before {
@@ -184,19 +210,26 @@
   border: 1px solid rgba(180,144,79,0.15);
   flex-shrink: 0;
   margin-bottom: 18px;
+  transition: transform 0.4s var(--ease-bounce), box-shadow 0.4s var(--ease-smooth);
 }
 .cardIcon svg {
   width: 26px;
   height: 26px;
+  transition: transform 0.4s var(--ease-bounce);
 }
 
-/* Hover: icon gets a faint gold ring */
+/* Hover: icon bounces slightly */
 .card:hover .cardIcon,
 .cardHovered .cardIcon {
+  transform: scale(1.08);
   box-shadow:
     -3px -3px 10px rgba(255,255,255,0.95),
     3px 3px 10px rgba(28,23,16,0.07),
-    0 0 0 1.5px rgba(180,144,79,0.35);
+    0 0 0 2px rgba(180,144,79,0.28);
+}
+.card:hover .cardIcon svg,
+.cardHovered .cardIcon svg {
+  transform: scale(1.1);
 }
 
 /* ── Horizontal divider with diamond ───────── */
@@ -226,19 +259,25 @@
 
 /* ── Title ──────────────────────────────────── */
 .cardTitle {
-  font-family: var(--serif);
-  font-size: 19px;
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
+  font-size: 20px;
   color: var(--dark);
-  font-weight: 500;
-  line-height: 1.25;
+  font-weight: 400;
+  line-height: 1.2;
   margin-bottom: 10px;
+  letter-spacing: 0.01em;
+  transition: color 0.3s var(--ease-smooth);
+}
+.card:hover .cardTitle,
+.cardHovered .cardTitle {
+  color: var(--gold-dark);
 }
 
 /* ── Description ────────────────────────────── */
 .cardDesc {
   font-family: var(--sans);
   font-size: 11.5px;
-  line-height: 1.72;
+  line-height: 1.78;
   color: var(--mid);
   font-weight: 300;
   margin: 0;

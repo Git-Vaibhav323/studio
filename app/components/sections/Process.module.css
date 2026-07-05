@@ -44,8 +44,15 @@
 .headerLine::after { content: ''; position: absolute; right: 0; top: -2px; width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
 
 .titleWrap { text-align: center; margin-top: 1vh; margin-bottom: 12px; }
-.title { font-family: var(--serif); font-size: clamp(42px, 5.5vw, 70px); line-height: 1.1; color: var(--dark); font-weight: 400; }
-.title span { color: var(--gold); font-weight: 100; }
+.title {
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
+  font-size: clamp(42px, 5.5vw, 70px);
+  line-height: 1.05;
+  color: var(--dark);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.title span { color: var(--gold); font-style: italic; font-weight: 400; }
 
 .titleDivider { display: flex; align-items: center; justify-content: center; max-width: 200px; margin: 0 auto 12px; }
 .divLine { height: 1px; flex: 1; background: rgba(180,144,79,0.3); }
@@ -81,40 +88,45 @@
   align-items: center;
   position: relative; z-index: 1;
   cursor: default;
-  /* Transition for hover effect */
-  transition: transform var(--dur-base) var(--ease-smooth);
+  transition: transform var(--dur-slow) var(--ease-expo);
 }
 .stepOpen {
   z-index: 20;
 }
 
 .stepCircle {
-  width: 60px; height: 60px;
+  width: 62px; height: 62px;
   border-radius: 50%;
-  border: 1.5px solid rgba(180,144,79,0.5);
+  border: 1.5px solid rgba(180,144,79,0.45);
   background: var(--cream);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif);
-  font-size: 22px; color: var(--gold); font-weight: 100;
+  font-family: var(--serif-display, 'DM Serif Display', var(--serif));
+  font-size: 22px; color: var(--gold); font-weight: 400;
   margin-bottom: 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-  transition: all var(--dur-base) var(--ease-smooth);
+  transition:
+    background 0.4s var(--ease-smooth),
+    border-color 0.4s var(--ease-smooth),
+    color 0.4s var(--ease-smooth),
+    box-shadow 0.4s var(--ease-smooth),
+    transform 0.4s var(--ease-bounce);
 }
 .step:hover .stepCircle,
 .stepOpen .stepCircle {
   border-color: var(--gold);
   background: var(--gold);
   color: #fff;
-  box-shadow: 0 6px 24px rgba(180,144,79,0.3);
+  box-shadow: 0 8px 28px rgba(180,144,79,0.35);
+  transform: scale(1.1);
 }
 
 .stepLabel {
-  font-family: var(--serif);
-  font-size: 13px; letter-spacing: 0.12em;
+  font-family: var(--serif-display, 'DM Serif Display', var(--serif));
+  font-size: 12px; letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--dark);
-  font-weight: 700; margin-bottom: 14px;
+  font-weight: 400; margin-bottom: 14px;
   text-align: center;
-  transition: color var(--dur-fast) var(--ease-smooth);
+  transition: color 0.3s var(--ease-smooth);
 }
 .step:hover .stepLabel { color: var(--gold); }
 
@@ -122,17 +134,25 @@
   width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 20px;
+  transition: transform 0.5s var(--ease-bounce);
 }
 .stepIcon svg { width: 30px; height: 30px; }
+.step:hover .stepIcon { transform: scale(1.15); }
 
 .stepDesc {
-  font-size: 12px; line-height: 1.75;
+  font-size: 12px; line-height: 1.78;
   color: var(--dark); text-align: center;
   padding: 0 14px;
-  max-width: 200px; font-weight: 500;
+  max-width: 200px; font-weight: 400;
   height: 80px;
 }
-.stepDivider { width: 40px; height: 2px; background: rgba(180,144,79,0.7); margin-top: 20px; }
+.stepDivider {
+  width: 40px; height: 2px;
+  background: rgba(180,144,79,0.7);
+  margin-top: 20px;
+  transition: width 0.4s var(--ease-smooth);
+}
+.step:hover .stepDivider { width: 60px; }
 
 /* =============================================
    EXPANDED CARD — pops up on hover
@@ -141,29 +161,29 @@
 .expandedCard {
   position: absolute;
   top: 84px; left: 50%;
-  transform: translateX(-50%) scale(0.92);
+  transform: translateX(-50%) scale(0.88) translateY(-10px);
   transform-origin: top center;
   width: 460px;
   background: var(--cream);
   border: 1px solid rgba(180,144,79,0.4);
-  border-radius: 16px;
+  border-radius: 18px;
   display: flex;
   padding: 10px;
   box-shadow:
     -8px -8px 24px rgba(255,255,255,0.7),
-    8px 8px 30px rgba(0,0,0,0.08);
+    8px 8px 30px rgba(0,0,0,0.08),
+    0 20px 50px rgba(28,23,16,0.12);
   z-index: 30;
-  /* Hidden by default */
   opacity: 0;
   pointer-events: none;
   transition:
-    opacity var(--dur-base) var(--ease-smooth),
-    transform var(--dur-base) var(--ease-smooth);
+    opacity 0.45s var(--ease-expo),
+    transform 0.45s var(--ease-expo);
 }
 .expandedVisible {
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(-50%) scale(1) translateY(0);
 }
 
 .expTopDiamond {
