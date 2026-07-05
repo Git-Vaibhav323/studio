@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import ServiceForm from '../components/ServiceForm';
 
 export default function NewServicePage() {

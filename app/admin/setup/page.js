@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { Copy, CheckCircle, AlertCircle, Database, Key, Globe } from 'lucide-react';
 import styles from './Setup.module.css';

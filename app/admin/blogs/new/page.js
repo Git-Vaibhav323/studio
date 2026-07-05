@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import BlogForm from '../components/BlogForm';
 
 export default function NewBlogPage() {

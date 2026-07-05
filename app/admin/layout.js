@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase';
@@ -31,6 +33,12 @@ export default function AdminLayout({ children }) {
       return;
     }
 
+    // If Supabase is not configured, skip auth check
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -57,10 +65,11 @@ export default function AdminLayout({ children }) {
     );
 
     return () => subscription.unsubscribe();
-  }, [isLoginPage, router, supabase.auth]);
+  }, [isLoginPage, router]);
 
   const signOut = async () => {
     try {
+      if (!supabase) return;
       await supabase.auth.signOut();
       toast.success('Logged out successfully');
     } catch (error) {
