@@ -148,7 +148,7 @@ export default function AboutSpatial() {
 
           <h2 className={styles.headline}>
             Space First.<br />Style Second.<br />
-            <span className={styles.gold}>Always.</span>
+            <span className={styles.gold}>Always</span>
           </h2>
 
           <p className={styles.descLarge}>
