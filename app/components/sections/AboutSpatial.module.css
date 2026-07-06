@@ -1,16 +1,32 @@
 /* =============================================
-   ABOUT SPATIAL — reference layout
-   Row 1: [left text] [blueprint] [right cards]
-   Row 2: [asksCard spanning blueprint+right cols]
+   ABOUT SPATIAL — simplified layout
+   Row 1: [left text col] [right flat image]
+   The right-side cards, connector SVGs, asks card,
+   and blueprint wrap are all replaced by rightfinal.png.
    ============================================= */
 
 .section {
   position: relative;
   background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom / cover no-repeat;
-  /* Enough padding so taller center column never bleeds */
   padding: 80px 0 100px;
-  /* DO NOT use overflow:hidden — it clips content */
   border-top: 1px solid rgba(180,144,79,0.3);
+}
+
+/* Directional warm light overlay — top-right radial wash */
+.lightOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at 80% 10%,
+    rgba(180,144,79,0.13) 0%,
+    rgba(180,144,79,0.06) 35%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Vertical rule on left edge */
@@ -43,44 +59,24 @@
   z-index: 10;
 }
 
-/* Top-right: "THE SPATIAL EDIT  03" */
-.topRight {
-  position: absolute;
-  top: 38px;
-  right: 5vw;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-family: var(--sans);
-  font-size: 8px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--dark);
-  font-weight: 200;
-  opacity: 0.65;
-  z-index: 10;
-}
-.topRightNum {
-  color: var(--gold);
-  font-weight: 500;
-}
-
-/* ── Outer wrapper: constrains width + horizontal padding ── */
+/* ── Outer wrapper ── */
 .inner {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 80px 0 90px;
+  position: relative;
+  z-index: 2;
 }
 
-/* ── Main content row: left | center | right ── */
+/* ── Two-column grid: left text | right image ── */
 .mainRow {
   display: grid;
-  grid-template-columns: 1fr 1.05fr 0.95fr;
-  gap: 32px;
-  align-items: start;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: center;
 }
 
-/* ── Left column ── */
+/* ── Left column — unchanged ── */
 .left {
   padding-right: 16px;
   position: relative;
@@ -120,6 +116,20 @@
   z-index: 1;
 }
 .gold { color: var(--gold); font-style: italic; }
+
+/* Small gold dot after "Always" */
+.goldDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+  position: relative;
+  top: -4px;
+  box-shadow: 0 0 6px rgba(180,144,79,0.5);
+}
 
 .descLarge {
   font-size: 13px;
@@ -185,282 +195,91 @@
   z-index: 1;
 }
 
-/* ── Center column — blueprint only (no asksCard here) ── */
-.center {
-  position: relative;
-}
-
-.blueprintWrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 0.72;
-  border-radius: 24px 16px 16px 24px;
-  border: 3px solid transparent;
-  background:
-    linear-gradient(rgba(255,250,245,0.55), rgba(255,250,245,0.55)) padding-box,
-    linear-gradient(135deg, rgba(140,90,40,0.35) 0%, rgba(255,255,255,0.4) 100%) border-box;
-  box-shadow:
-    0 30px 70px -10px rgba(60,30,20,0.2),
-    0 8px 24px rgba(60,30,20,0.08);
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.12s linear;
-  overflow: hidden;
-}
-
-.blueprintImg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: inherit;
-  mix-blend-mode: multiply;
-  opacity: 0.95;
-}
-
-.connectorLines {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 3;
-  overflow: visible;
-}
-
-.blueprintDot {
-  position: absolute;
-  width: 7px; height: 7px;
-  background: var(--gold);
-  border: 1.5px solid rgba(255,255,255,0.7);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  box-shadow: 0 0 6px rgba(180,144,79,0.5);
-}
-
-/* ── Right column — three stacked cards ── */
-.right {
+.statementRow {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-top: 4px;
+  align-items: flex-start;
+  gap: 10px;
 }
 
-.bpCard {
-  position: relative;
-  background:
-    linear-gradient(rgba(253,251,246,0.94), rgba(253,251,246,0.94)) padding-box,
-    linear-gradient(135deg, rgba(214,180,120,0.45) 0%, rgba(255,255,255,0.8) 100%) border-box;
-  backdrop-filter: blur(12px);
-  border: 2px solid transparent;
-  border-radius: 12px;
-  padding: 14px 14px 14px 16px;
-  box-shadow: 4px 10px 24px rgba(70,50,20,0.1), inset 1px 1px 2px rgba(255,255,255,1);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.bpCard::after {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(212,180,120,0.18);
-  border-radius: 9px;
-  pointer-events: none;
-}
-
-.bpCardDot {
-  position: absolute;
-  left: -9px;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  width: 6px; height: 6px;
-  border: 1px solid var(--gold);
-  background: var(--cream);
-  z-index: 2;
-}
-
-.cLeft { flex: 1; min-width: 0; }
-.cRight {
-  width: 64px; height: 64px;
-  flex-shrink: 0;
-  position: relative;
-  border-radius: 6px;
-  overflow: hidden;
-}
-.cTop {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 5px;
-}
-.cNum {
-  font-family: var(--sans);
-  font-size: 11px; color: var(--gold);
-  font-weight: 300; letter-spacing: 0.08em;
-}
-.cLine {
-  flex: 1; height: 1px;
-  background: var(--gold); opacity: 0.35;
-}
-.bpCard h4 {
-  font-family: var(--sans);
-  font-size: 8px; letter-spacing: 0.18em;
-  color: var(--dark); text-transform: uppercase;
-  margin-bottom: 4px; font-weight: 600;
-}
-.bpCard p {
-  font-size: 9.5px; line-height: 1.55;
-  color: var(--mid); font-weight: 300;
-}
-
-/* ── Bottom row — asksCard spans center+right cols ── */
-.bottomRow {
-  margin-top: 20px;
-  /* Align asksCard under blueprint+cards columns: skip left col width */
-  /* Left col is 1fr, center is 1.05fr, right is 0.95fr, gap 32px */
-  /* We push it right by the left column + gap */
-  display: grid;
-  grid-template-columns: 1fr 1.05fr 0.95fr;
-  gap: 32px;
-}
-
-.asksCardWrap {
-  /* spans center and right columns */
-  grid-column: 2 / 4;
-}
-
-.asksCard {
-  position: relative;
-  background:
-    linear-gradient(rgba(253,251,246,0.94), rgba(253,251,246,0.94)) padding-box,
-    linear-gradient(135deg, rgba(214,180,120,0.45) 0%, rgba(255,255,255,0.8) 100%) border-box;
-  border: 2px solid transparent;
-  border-top: 1px solid rgba(180,144,79,0.4);
-  border-radius: 14px;
-  padding: 20px 22px;
-  box-shadow: 6px 14px 28px rgba(70,50,20,0.1), inset 1px 1px 2px rgba(255,255,255,1);
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 18px;
-  align-items: center;
-}.asksCard::after {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(212,180,120,0.18);
-  border-radius: 11px;
-  pointer-events: none;
-}
-
-.asksLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.asksKicker {
-  font-family: var(--sans);
-  font-size: 7.5px; letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--gold); font-weight: 500;
-}
-.asksHeadline {
+/* "TS" monogram */
+.tsMonogram {
   font-family: var(--serif);
-  font-size: clamp(15px, 1.5vw, 20px);
-  line-height: 1.3; color: var(--dark);
-  font-weight: 400; margin: 0;
-}
-
-.asksRight { display: flex; align-items: center; }
-.asksText {
-  font-size: 10.5px; line-height: 1.7;
-  color: var(--mid); font-weight: 300; margin: 0;
-}
-
-.asksIcon {
-  width: 50px; height: 50px;
+  font-size: 22px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold);
+  opacity: 0.55;
+  line-height: 1;
   flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0.8;
+  margin-top: 2px;
+  letter-spacing: -0.02em;
 }
-.asksIcon svg { width: 100%; height: 100%; }
+
+/* ── Right column — single flattened image ── */
+.rightImage {
+  align-self: center;
+  width: 100%;
+  margin-left: 50px; 
+}
+
+.rightFlatImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  /*
+    drop-shadow follows the artwork silhouette (not a rectangular box)
+    since the PNG is now transparent. A soft warm shadow at low opacity.
+  */
+  filter: drop-shadow(0 12px 40px rgba(60,30,20,0.18))
+          drop-shadow(0 2px 8px rgba(60,30,20,0.08));
+  /*
+    mix-blend-mode: multiply composites the artwork naturally over the cream
+    background (#f4ede0) — any remaining light fringe pixels from the
+    background removal disappear into the page instead of showing as a halo.
+  */
+  mix-blend-mode: multiply;
+  /*
+    mask-image fades the outer edges to transparent, feathering any hard
+    edge artifacts from the background removal into the page.
+    The gradient keeps the centre fully opaque and softens ~8% at each edge.
+  */
+  -webkit-mask-image:
+    linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 4%, black 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right,  transparent 0%, black 6%, black 94%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 4%, black 96%, transparent 100%);
+  mask-composite: intersect;
+}
 
 /* ── Responsive ── */
 @media (max-width: 1280px) {
   .inner { padding: 0 52px 0 80px; }
-  .mainRow { gap: 24px; }
-  .bottomRow { gap: 24px; }
+  .mainRow { gap: 36px; }
 }
 
 @media (max-width: 1024px) {
   .inner { padding: 0 40px; }
-  .mainRow {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-  }
-  /* Left col: row 1, col 1 */
-  .left { grid-column: 1; grid-row: 1; }
-  /* Center (blueprint): row 1, col 2 spanning into row 2 */
-  .center { grid-column: 2; grid-row: 1; }
-  /* Right cards: row 2, col 1 — horizontal row */
-  .right {
-    grid-column: 1;
-    grid-row: 2;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .bpCard { flex: 1 1 calc(50% - 6px); min-width: 180px; }
-  /* Bottom row: span both cols */
-  .bottomRow { grid-template-columns: 1fr 1fr; gap: 24px; }
-  .asksCardWrap { grid-column: 1 / 3; }
-
-  .vline, .sideLabel, .topRight, .decorArcs { display: none; }
-  .bpCardDot { display: none; }
-  .connectorLines, .blueprintDot { display: none; }
+  .mainRow { grid-template-columns: 1fr; gap: 40px; }
+  .left { padding-right: 0; }
+  .vline, .sideLabel, .decorArcs { display: none; }
 }
 
 @media (max-width: 768px) {
   .section { padding: 48px 0 60px; }
   .inner { padding: 0 20px; }
-  .mainRow {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  .left { grid-column: 1; grid-row: 1; padding-right: 0; }
-  .center { grid-column: 1; grid-row: 2; }
-  .right { grid-column: 1; grid-row: 3; flex-direction: column; gap: 12px; }
-  .bottomRow { grid-template-columns: 1fr; gap: 0; }
-  .asksCardWrap { grid-column: 1; margin-top: 16px; }
-
-  .blueprintWrap { aspect-ratio: 0.8; border-radius: 14px; transform: none !important; }
+  .mainRow { gap: 28px; }
   .headline { font-size: clamp(28px, 7vw, 42px); }
   .descLarge, .desc { font-size: 13px; }
   .featuresBox { grid-template-columns: repeat(2, 1fr); }
   .feature:nth-child(2) { border-right: 1px solid rgba(180,144,79,0.25); }
   .feature:nth-child(3) { border-right: none; }
-
-  .bpCard { padding: 14px; }
-  .bpCardDot { display: none; }
-  .cRight { width: 56px; height: 56px; }
-
-  .asksCard { grid-template-columns: 1fr; gap: 12px; padding: 16px 18px; }
-  .asksIcon { display: none; }
-  .asksHeadline { font-size: 16px; }
 }
 
 @media (max-width: 480px) {
   .inner { padding: 0 16px; }
   .featuresBox { grid-template-columns: repeat(2, 1fr); }
-  .asksHeadline { font-size: 15px; }
-  .bpCard h4 { font-size: 7.5px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .blueprintWrap { transform: none !important; transition: none !important; will-change: auto; }
-  .bpCard { transition: none !important; will-change: auto; }
 }
 
 @media (max-width: 768px) {
