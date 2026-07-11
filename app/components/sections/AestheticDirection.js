@@ -33,7 +33,7 @@ export default function AestheticDirection() {
         <div className={styles.titleBlock}>
           <div className={styles.titleLeft}>
             <div className={styles.titleText}>
-              <h2>Aesthetic <span>Direction</span></h2>
+              <h2>Our Aesthetic <span>Direction</span></h2>
             </div>
           </div>
           <div className={styles.titleRight}>

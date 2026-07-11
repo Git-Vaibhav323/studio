@@ -73,7 +73,7 @@ export default function OurStory() {
                 </svg>
               </div>
               <div className={styles.storyText}>
-                What followed was one of the most chaotic experiences of their lives — delays, decisions that made no sense, a process so disorganised they ended up directing it themselves; by designing their own house to doing site visits. They weren&apos;t unlucky. <span>They were experiencing their worst nightmare.</span>
+                What followed was one of the most chaotic experiences of their lives — delays, decisions that made no sense, a process so disorganised they ended up directing it themselves; by designing their own house to doing site visits. They weren&apos;t unlucky. <span>They were experiencing what almost every homeowner in India experiences.</span>
               </div>
             </div>
           </div>

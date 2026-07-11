@@ -4,10 +4,8 @@ import styles from './FAQs.module.css';
 
 const faqs = [
   { q: 'What exactly is spatial design?', a: 'Spatial design is the discipline of planning how a space functions — how you move through it, how it\'s proportioned, and how natural light behaves within it. It comes before any aesthetic decision. Good spatial design makes a home feel effortless to live in, even when you can\'t quite explain why.' },
-  { q: 'My villa is already built. Why spatial planning?', a: 'Even in a completed structure, spatial planning determines the optimal layout for your furniture, how to zone your spaces for different activities, and how to maximise both functionality and light. It prevents expensive mistakes before execution begins.' },
   { q: 'How is this different from interior decorators?', a: 'Interior decorators focus on the aesthetics — colours, furniture, accessories. We begin with the spatial plan: circulation, proportion, and light. The design follows the function. This is why our spaces feel as good as they look.' },
-  { q: 'How long does planning take?', a: 'The spatial plan typically takes 2–3 weeks, depending on the scale of your project. Full project timelines from planning to handover typically run 4–8 months for a complete home.' },
-  { q: 'Do you work across all of Hyderabad?', a: 'Yes, we work across Hyderabad — including Jubilee Hills, Banjara Hills, Gachibowli, Hitec City, and surrounding areas. For the right project, we are open to other cities as well.' },
+  { q: 'Can you work on just one room or a single area of my home?', a: "We don't offer single-room or partial projects. Every project we take on covers the full home — because spatial design only works when we can see how every room relates to every other. A living room that works in isolation but conflicts with the dining area, or a bedroom that fights the corridor — these are the problems that come from designing in pieces. We take on complete homes only, and we do them completely." },
 ];
 
 export default function FAQs() {

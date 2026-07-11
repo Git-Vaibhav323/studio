@@ -95,7 +95,7 @@ export default function Footer() {
             <line x1="4.93" y1="19.07" x2="19.07" y2="4.93"/>
           </svg>
         </div>
-        <div className={styles.copy}>&copy; 2024 The Spatial Edit. All rights reserved.</div>
+        <div className={styles.copy}>&copy; 2026 The Spatial Edit. All rights reserved.</div>
         <div className={styles.legal}>
           <a href="#">Privacy Policy</a>
           <a href="#">Terms &amp; Conditions</a>

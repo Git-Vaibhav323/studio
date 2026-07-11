@@ -7,7 +7,7 @@ const cards = [
     num: '01',
     title: 'Flow Mapping',
     desc: 'We map how you move through every room — every door, corridor, and daily routine — before a single piece of furniture is placed or a wall is touched.',
-    img: '/images/floor_plan.png',
+    img: '/images/floor_plan_rect.png',
     imgAlt: 'Architectural floor plan with flow mapping paths',
     icon: (
       <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">

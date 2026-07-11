@@ -40,7 +40,7 @@ export default function AboutPage() {
             <div className={styles.eyebrow}>About The Spatial Edit</div>
             <h1 className={styles.title}>It began in a home that <span>was not working.</span></h1>
             <p className={styles.intro}>
-              The Spatial Edit was founded by Preksha Bhargav and Krishna Bhargav, partners in life, who started this studio for a very personal reason.
+              The Spatial Edit was founded by Preksha Bhargav and Krishna Bhargav, partners in life and now in business, who started this studio for a very personal reason.
             </p>
             <div className={styles.trustBar}>
               {trust.map(([number, label]) => (
@@ -69,7 +69,7 @@ export default function AboutPage() {
                   What followed was one of the most chaotic experiences of their lives: delays, decisions that made no sense, and a process so disorganised they ended up directing it themselves, from designing their own house to doing site visits.
                 </p>
                 <p className={styles.bodyText}>
-                  They were not unlucky. They were experiencing their worst nightmare.
+                  They were not unlucky.They were experiencing what almost every homeowner in India experiences.
                 </p>
               </div>
 

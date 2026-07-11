@@ -3,7 +3,7 @@
   position: relative;
   background: var(--cream) url('/images/bg/bg-sec-2.webp') center bottom/cover no-repeat;
   padding: 86px 0 80px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -92,7 +92,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 60px;
   align-items: start;
 }
@@ -106,7 +106,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  font-size: 8.5px;
+  font-size: 12px;
   letter-spacing: 0.38em;
   color: var(--gold);
   text-transform: uppercase;
@@ -147,7 +147,7 @@
 
 .headline {
   font-family: var(--serif);
-  font-size: clamp(44px, 4.8vw, 68px);
+  font-size: clamp(28px, 3vw, 46px);
   font-weight: 400;
   line-height: 1.02;
   color: var(--dark);
@@ -191,8 +191,8 @@
 .cardsRow {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
-  padding-top: 40px;
+  align-items: stretch;
+  padding-top: 60px;
 }
 
 /* ARCH CARD — Enhanced Bright Gold gradient border, arch top */
@@ -228,10 +228,9 @@
     inset -2px -2px 6px rgba(180,144,79,0.12),
     0 0 0 1px rgba(255,255,255,0.4) inset;
   padding: 70px 28px 0;
-  min-height: 580px;
+  min-height: 620px;
   overflow: visible;
   cursor: default;
-  position: relative;
   transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
 }
 

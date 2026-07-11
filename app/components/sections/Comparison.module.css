@@ -79,7 +79,7 @@
   margin-bottom: 20px;
 }
 .headerLabel span {
-  font-size: 10px; letter-spacing: 0.25em;
+  font-size: 13px; letter-spacing: 0.25em;
   text-transform: uppercase; color: var(--dark); font-weight: 100;
 }
 .labelLine {
@@ -91,7 +91,7 @@
 }
 .title {
   font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
-  font-size: clamp(36px, 4vw, 52px);
+  font-size: clamp(28px, 3.2vw, 42px);
   color: var(--dark);
   line-height: 1.05; font-weight: 400;
   letter-spacing: -0.01em;

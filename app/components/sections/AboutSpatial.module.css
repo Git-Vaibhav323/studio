@@ -97,7 +97,7 @@
   position: relative;
   z-index: 1;
   font-family: var(--sans);
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.3em;
   color: var(--gold);
   text-transform: uppercase;
@@ -107,7 +107,7 @@
 
 .headline {
   font-family: var(--serif);
-  font-size: clamp(36px, 3.8vw, 58px);
+  font-size: clamp(28px, 3vw, 46px);
   font-weight: 400;
   line-height: 1.05;
   color: var(--dark);
@@ -125,9 +125,9 @@
   background: var(--gold);
   border-radius: 50%;
   margin-left: 6px;
-  vertical-align: middle;
+  vertical-align: baseline;
   position: relative;
-  top: -4px;
+  top: 2px;
   box-shadow: 0 0 6px rgba(180,144,79,0.5);
 }
 
