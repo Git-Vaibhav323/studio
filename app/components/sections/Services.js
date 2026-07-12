@@ -139,9 +139,20 @@ export default function Services() {
           <div className={styles.overlineInner}>OUR ONLY SERVICE</div>
         </div>
         <div className={styles.titleWrap}>
-          <h2 className={styles.title}>One Service. <span>Total Ownership.</span></h2>
+          <h2 className={styles.title}>One Service. <span>Total Ownership. </span><span>No exceptions.</span></h2>
         </div>
-        <p className={styles.subtitle}>From site assessment to final handover.</p>
+        <div className={styles.serviceIntro}>
+          <p className={styles.serviceIntroLead}>Our Only Service — Full Interior (End to End)</p>
+          <p className={styles.serviceIntroBody}>
+            We take on one type of project — complete, end-to-end. From the first inspection &amp; spatial audit to the moment you walk into your finished home. Every decision, every vendor, every stage is owned by us.
+          </p>
+          <p className={styles.serviceIntroBody}>
+            We do not offer consultation-only or design-only services. If you want someone to own the entire process and be fully accountable for the result — that is exactly what we do.
+          </p>
+          <p className={styles.serviceIntroQuote}>
+            &ldquo;We don&apos;t just design your space. We ensure it is executed exactly as designed.&rdquo;
+          </p>
+        </div>
 
         <div className={styles.grid}>
           {services.map((s) => (

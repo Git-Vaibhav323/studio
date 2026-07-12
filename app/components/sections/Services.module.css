@@ -81,6 +81,43 @@
   font-weight: 400;
 }
 
+/* ── Service intro block ────────────────────── */
+.serviceIntro {
+  max-width: 720px;
+  margin: 0 auto 5vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.serviceIntroLead {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.serviceIntroBody {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--mid);
+  font-weight: 300;
+}
+
+.serviceIntroQuote {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--dark);
+  line-height: 1.6;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(180,144,79,0.25);
+  border-bottom: 1px solid rgba(180,144,79,0.25);
+  margin-top: 4px;
+}
+
 /* ── Grid ───────────────────────────────────── */
 .grid {
   display: grid;

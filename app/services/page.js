@@ -19,10 +19,19 @@ export default function ServicesPage() {
         <section className={styles.hero}>
           <div className={styles.heroInner}>
             <div className={styles.eyebrow}>Services</div>
-            <h1 className={styles.title}>One service. <span>Total ownership.</span></h1>
-            <p className={styles.intro}>
-              From site assessment to final handover, each service layer is connected by the same spatial logic: circulation, proportion, light, function, and finish.
-            </p>
+            <h1 className={styles.title}>One service. <span>Total ownership.</span><br />No exceptions.</h1>
+            <div className={styles.serviceIntroBlock}>
+              <p className={styles.serviceIntroLead}>Our Only Service — Full Interior (End to End)</p>
+              <p className={styles.intro}>
+                We take on one type of project — complete, end-to-end. From the first inspection &amp; spatial audit to the moment you walk into your finished home. Every decision, every vendor, every stage is owned by us.
+              </p>
+              <p className={styles.intro}>
+                We do not offer consultation-only or design-only services. If you want someone to own the entire process and be fully accountable for the result — that is exactly what we do.
+              </p>
+              <p className={styles.serviceIntroQuote}>
+                &ldquo;We don&apos;t just design your space. We ensure it is executed exactly as designed.&rdquo;
+              </p>
+            </div>
           </div>
         </section>
 

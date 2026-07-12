@@ -1,406 +1,271 @@
 /* =============================================
-   PROCESS SECTION — two-column layout
-   Left: step selector + image card
-   Right: content + stage timeline
+   PROCESS SECTION — Step hover = expand card
+   Reference: Step 2 expanded card style
    ============================================= */
 
 .section {
   position: relative;
+  /* reduced bottom padding to tighten space below steps */
   padding: 5vh 5vw 80px;
   background: var(--cream) url('/images/bg/bg-sec-7.webp') center bottom/cover no-repeat;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 100vh;
+  display: flex; flex-direction: column;
+  overflow: hidden; min-height: 100vh;
 }
 
 @media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; }
+  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
+}
+.vline {
+  position: absolute; left: 46px; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(180,144,79,0.35) 0%, rgba(180,144,79,0.35) 40%, rgba(180,144,79,0) 47%, rgba(180,144,79,0) 53%, rgba(180,144,79,0.35) 60%, rgba(180,144,79,0.35) 100%);
+  z-index: 4; pointer-events: none;
 }
 
-/* ── Content wrapper ── */
+.headerRight {
+  position: absolute; right: 5vw; top: 5vh;
+  display: flex; flex-direction: column; align-items: flex-end; z-index: 10;
+}
+.hrTop { display: flex; align-items: center; gap: 20px; margin-bottom: 8px; }
+.hrLabel { font-size: 10px; letter-spacing: 0.2em; font-weight: 100; color: var(--dark); }
+.hrNum { font-family: var(--serif); font-size: 20px; color: var(--gold); }
+
 .content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 1300px;
+  position: relative; z-index: 1;
+  width: 100%; max-width: 1400px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  display: flex; flex-direction: column; flex: 1;
+  margin-bottom: 40px;
 }
 
-/* ── Header ── */
-.titleWrap { text-align: center; margin-top: 2vh; margin-bottom: 12px; }
+.sectionHeader { display: flex; align-items: center; gap: 15px; margin-top: 3vh; margin-bottom: 4px; }
+.headerLabel { font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--dark); font-weight: 100; }
+.headerLine { width: 40px; height: 1px; background: var(--gold); position: relative; }
+.headerLine::after { content: ''; position: absolute; right: 0; top: -2px; width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
+
+.titleWrap { text-align: center; margin-top: 1vh; margin-bottom: 12px; }
 .title {
   font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
-  font-size: clamp(36px, 4.5vw, 62px);
+  font-size: clamp(42px, 5.5vw, 70px);
   line-height: 1.05;
   color: var(--dark);
   font-weight: 400;
   letter-spacing: -0.01em;
 }
-.title span { color: var(--gold); font-style: italic; }
+.title span { color: var(--gold); font-style: italic; font-weight: 400; }
 
 .titleDivider { display: flex; align-items: center; justify-content: center; max-width: 200px; margin: 0 auto 12px; }
 .divLine { height: 1px; flex: 1; background: rgba(180,144,79,0.3); }
 .divDiamond { margin: 0 10px; display: flex; align-items: center; }
 .divDiamond svg { width: 10px; height: 10px; }
 
-.subtitle { text-align: center; font-size: 11px; letter-spacing: 0.25em; color: var(--mid); text-transform: uppercase; margin-bottom: 5vh; font-weight: 100; }
+.subtitle { text-align: center; font-size: 11px; letter-spacing: 0.25em; color: var(--mid); text-transform: uppercase; margin-bottom: 6vh; font-weight: 100; }
 
-/* ── Two-column body ── */
-.body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: start;
-}
-
-/* ══════════════════════════════════════
-   LEFT COLUMN
-   ══════════════════════════════════════ */
-.leftCol {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: sticky;
-  top: 100px;
-}
-
-/* Step selector rows */
-.stepRow {
+/* =============================================
+   TIMELINE — horizontal row of steps
+   ============================================= */
+.timeline {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  cursor: pointer;
-  padding: 4px 0;
+  justify-content: space-between;
+  max-width: 1300px; margin: 0 auto;
+  width: 100%; padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+.timelineLine {
+  position: absolute; top: 30px;
+  left: 5%; right: 5%;
+  height: 1px;
+  background: rgba(180,144,79,0.4);
+  z-index: 0;
 }
 
-.stepNode {
-  display: flex;
-  flex-direction: column;
+/* Individual step */
+.step {
+  flex: 1;
+  display: flex; flex-direction: column;
   align-items: center;
-  flex-shrink: 0;
+  position: relative; z-index: 1;
+  cursor: default;
+  transition: transform var(--dur-slow) var(--ease-expo);
+}
+.stepOpen {
+  z-index: 20;
 }
 
-.stepNum {
-  width: 44px;
-  height: 44px;
+.stepCircle {
+  width: 62px; height: 62px;
   border-radius: 50%;
-  border: 1.5px solid rgba(180,144,79,0.3);
+  border: 1.5px solid rgba(180,144,79,0.45);
   background: var(--cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  font-size: 15px;
-  color: rgba(180,144,79,0.5);
-  font-weight: 400;
-  transition: all 0.35s ease;
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif-display, 'DM Serif Display', var(--serif));
+  font-size: 22px; color: var(--gold); font-weight: 400;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  transition:
+    background 0.4s var(--ease-smooth),
+    border-color 0.4s var(--ease-smooth),
+    color 0.4s var(--ease-smooth),
+    box-shadow 0.4s var(--ease-smooth),
+    transform 0.4s var(--ease-bounce);
 }
-
-.stepRowActive .stepNum {
+.step:hover .stepCircle,
+.stepOpen .stepCircle {
   border-color: var(--gold);
   background: var(--gold);
   color: #fff;
-  box-shadow: 0 6px 20px rgba(180,144,79,0.3);
-}
-
-.stepConnector {
-  width: 1px;
-  height: 24px;
-  background: rgba(180,144,79,0.25);
-  margin: 4px auto;
-}
-
-.stepMeta {
-  padding-top: 10px;
+  box-shadow: 0 8px 28px rgba(180,144,79,0.35);
+  transform: scale(1.1);
 }
 
 .stepLabel {
-  font-family: var(--sans);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(180,144,79,0.45);
-  font-weight: 400;
-  transition: color 0.3s ease;
-}
-
-.stepRowActive .stepLabel {
-  color: var(--dark);
-  font-weight: 600;
-}
-
-/* Image card */
-.imageCard {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 18px;
-  overflow: hidden;
-  margin-top: 28px;
-  box-shadow:
-    -6px -6px 20px rgba(255,255,255,0.8),
-    8px 8px 30px rgba(28,23,16,0.12);
-  border: 1px solid rgba(180,144,79,0.2);
-}
-
-.imageSlide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.imageSlideActive {
-  opacity: 1;
-}
-
-.imageBadge {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--gold);
-  color: #fff;
-  font-family: var(--serif);
-  font-size: 18px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 20px rgba(180,144,79,0.4);
-  z-index: 2;
-}
-
-/* ══════════════════════════════════════
-   RIGHT COLUMN
-   ══════════════════════════════════════ */
-.rightCol {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  padding-top: 8px;
-}
-
-/* Step content blocks — only active one visible */
-.stepContent {
-  position: relative;
-  min-height: 280px;
-}
-
-.contentBlock {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-  pointer-events: none;
-}
-
-.contentBlockActive {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  position: relative;
-}
-
-.contentNum {
-  font-family: var(--serif);
-  font-size: 13px;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
-  font-weight: 300;
-}
-
-.contentTitle {
-  font-family: var(--serif);
-  font-size: clamp(22px, 2.4vw, 34px);
-  font-weight: 400;
-  color: var(--dark);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  line-height: 1.1;
-}
-
-.contentDivider {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  max-width: 200px;
-}
-
-.cdLine {
-  flex: 1;
-  height: 1px;
-  background: rgba(180,144,79,0.3);
-}
-
-.contentText {
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--dark);
-  font-weight: 400;
-  margin-bottom: 20px;
-}
-
-.contentList {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.contentList li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--mid);
-  font-weight: 300;
-}
-
-.contentNote {
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--dark);
-  font-weight: 500;
-  padding-top: 16px;
-  border-top: 1px solid rgba(180,144,79,0.2);
-}
-
-/* ══════════════════════════════════════
-   STAGE TIMELINE
-   ══════════════════════════════════════ */
-.stageTimeline {
-  border: 1px solid rgba(180,144,79,0.2);
-  border-radius: 14px;
-  padding: 24px 28px;
-  background: rgba(244,237,224,0.5);
-}
-
-.stageLabel {
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 400;
-  margin-bottom: 20px;
-}
-
-.stageTrack {
-  display: flex;
-  align-items: flex-start;
-  gap: 0;
-}
-
-.stageItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  cursor: pointer;
-  position: relative;
-}
-
-.stageDot {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(180,144,79,0.25);
-  background: var(--cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.35s ease;
-  flex-shrink: 0;
-  z-index: 1;
-}
-
-.stageActive .stageDot {
-  border-color: var(--gold);
-  background: var(--gold);
-  box-shadow: 0 0 0 4px rgba(180,144,79,0.15);
-}
-
-.stageDone .stageDot {
-  border-color: var(--gold);
-  background: var(--gold);
-}
-
-.stageLine {
-  position: absolute;
-  top: 14px;
-  left: calc(50% + 14px);
-  right: calc(-50% + 14px);
-  height: 1px;
-  background: rgba(180,144,79,0.2);
-  transition: background 0.35s ease;
-}
-
-.stageLineDone {
-  background: var(--gold);
-}
-
-.stageName {
-  margin-top: 8px;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(180,144,79,0.4);
+  font-family: var(--serif-display, 'DM Serif Display', var(--serif));
+  font-size: 12px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--dark);
+  font-weight: 400; margin-bottom: 14px;
   text-align: center;
-  font-weight: 400;
-  transition: color 0.3s ease;
-  white-space: nowrap;
+  transition: color 0.3s var(--ease-smooth);
+}
+.step:hover .stepLabel { color: var(--gold); }
+
+.stepIcon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  transition: transform 0.5s var(--ease-bounce);
+}
+.stepIcon svg { width: 30px; height: 30px; }
+.step:hover .stepIcon { transform: scale(1.15); }
+
+.stepDesc {
+  font-size: 12px; line-height: 1.78;
+  color: var(--dark); text-align: center;
+  padding: 0 14px;
+  max-width: 200px; font-weight: 400;
+  height: 80px;
+}
+.stepDivider {
+  width: 40px; height: 2px;
+  background: rgba(180,144,79,0.7);
+  margin-top: 20px;
+  transition: width 0.4s var(--ease-smooth);
+}
+.step:hover .stepDivider { width: 60px; }
+
+/* =============================================
+   EXPANDED CARD — pops up on hover
+   Matches the Step 2 reference card design
+   ============================================= */
+.expandedCard {
+  position: absolute;
+  top: 84px; left: 50%;
+  transform: translateX(-50%) scale(0.88) translateY(-10px);
+  transform-origin: top center;
+  width: 460px;
+  background: var(--cream);
+  border: 1px solid rgba(180,144,79,0.4);
+  border-radius: 18px;
+  display: flex;
+  padding: 10px;
+  box-shadow:
+    -8px -8px 24px rgba(255,255,255,0.7),
+    8px 8px 30px rgba(0,0,0,0.08),
+    0 20px 50px rgba(28,23,16,0.12);
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.45s var(--ease-expo),
+    transform 0.45s var(--ease-expo);
+}
+.expandedVisible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) scale(1) translateY(0);
 }
 
-.stageActive .stageName {
-  color: var(--dark);
-  font-weight: 600;
+.expTopDiamond {
+  position: absolute; top: -6px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--cream); padding: 0 4px;
+  display: flex; align-items: center;
+}
+.expTopDiamond svg { width: 10px; height: 10px; }
+
+.expLeft {
+  flex: 1; border-radius: 8px;
+  overflow: hidden;
+  margin-right: 16px;
+  min-height: 200px;
+  position: relative;
+}
+.expRight {
+  flex: 1.2; padding: 12px 6px 12px 0;
+  display: flex; flex-direction: column;
+  justify-content: center;
+}
+.expTitle {
+  font-family: var(--serif); font-size: 16px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); font-weight: 700; text-align: center;
+  margin-bottom: 8px;
+}
+.expDivider { display: flex; align-items: center; justify-content: center; width: 80%; margin: 0 auto 10px; }
+.expLine { flex: 1; height: 1px; background: rgba(180,144,79,0.3); }
+.expDia { margin: 0 6px; display: flex; align-items: center; }
+.expDia svg { width: 6px; height: 6px; }
+
+.expText { font-size: 12px; line-height: 1.6; color: var(--dark); font-weight: 500; margin-bottom: 10px; text-align: left; }
+
+.expList { list-style: none; padding: 0; margin: 0 0 12px; }
+.expList li {
+  font-size: 11.5px; line-height: 1.5;
+  color: var(--dark); display: flex;
+  align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.expList li svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.expNote {
+  font-size: 10.5px; line-height: 1.5;
+  color: var(--dark); opacity: 0.7;
+  border-top: 1px solid rgba(180,144,79,0.2);
+  padding-top: 10px;
 }
 
-.stageDone .stageName {
-  color: var(--gold);
+/* Arch */
+.archFooter {
+  position: absolute; bottom: 0; width: 100vw; left: 50%; transform: translateX(-50%);
+  height: 90px; z-index: 1;
+  display: flex; justify-content: center; align-items: flex-end;
 }
+.archSvg {
+  width: 100%; height: 100%;
+  display: block; position: absolute;
+  bottom: 0; left: 0; z-index: -1;
+}
+.archStar {
+  position: absolute; top: 12px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; z-index: 2;
+}
+.archStar svg { width: 28px; height: 28px; }
 
-/* ── Responsive ── */
+/* Responsive */
+@media (max-width: 1100px) {
+  .expandedCard { width: 360px; }
+}
 @media (max-width: 900px) {
-  .body {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .leftCol {
-    position: static;
-  }
-  .stepContent {
-    min-height: auto;
-  }
-  .contentBlock {
-    position: relative;
-    inset: auto;
-    opacity: 1;
-    transform: none;
-    display: none;
-  }
-  .contentBlockActive {
-    display: block;
-  }
+  .timeline { flex-direction: column; align-items: center; gap: 40px; }
+  .timelineLine { display: none; }
+  .expandedCard { position: relative; top: 0; left: 0; transform: none; width: 100%; margin-top: 16px; opacity: 1; pointer-events: auto; }
+  .step { width: 100%; max-width: 400px; }
+  .expLeft { min-height: 160px; }
 }
-
-@media (max-width: 600px) {
-  .section { padding: 4vh 20px 60px; }
-  .stageTimeline { padding: 18px 16px; }
-  .stageName { font-size: 9px; }
-  .stageDot { width: 22px; height: 22px; }
+@media (max-width: 100px) {
+  .expandedCard { flex-direction: column; }
+  .expLeft { margin-right: 0; margin-bottom: 16px; min-height: 140px; }
+  .vline { display: none; }
 }

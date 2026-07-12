@@ -181,7 +181,7 @@
 
 .hero {
   position: relative;
-  padding: calc(var(--nav-h) + 72px) 5vw 72px;
+  padding: calc(var(--nav-h) + 72px) 5vw 120px;
   background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom/cover no-repeat;
   overflow: hidden;
 }
@@ -222,6 +222,40 @@
   color: var(--mid);
   font-size: clamp(15px, 1.5vw, 18px);
   line-height: 1.8;
+}
+
+/* ── Service page intro block ── */
+.serviceIntroBlock {
+  max-width: 720px;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.serviceIntroBlock .intro {
+  margin-top: 0;
+  font-size: clamp(13px, 1.3vw, 15px);
+}
+
+.serviceIntroLead {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.serviceIntroQuote {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--dark);
+  line-height: 1.6;
+  padding: 16px 0;
+  border-top: 1px solid rgba(180,144,79,0.3);
+  border-bottom: 1px solid rgba(180,144,79,0.3);
+  margin-top: 4px;
 }
 
 .section {
