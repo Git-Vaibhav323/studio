@@ -99,6 +99,29 @@ export default function SpatialIntelligence() {
               to live in.
             </p>
 
+            {/* Stats block */}
+            <div className={styles.statsRow}>
+              {[
+                { num: '150+', label: 'Projects' },
+                { num: '12+',  label: 'Years Experience' },
+                { num: '98%',  label: 'Client Satisfaction' },
+              ].map((s) => (
+                <div className={styles.statItem} key={s.label}>
+                  <div className={styles.statNum}>{s.num}</div>
+                  <div className={styles.statDia} aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="6" height="6"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)"/></svg>
+                  </div>
+                  <div className={styles.statLabel}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Secondary CTA */}
+            <a href="/process" className={styles.ctaSecondary}>
+              See Our Process
+              <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+
           </div>
 
           <div className={styles.cardsRow}>

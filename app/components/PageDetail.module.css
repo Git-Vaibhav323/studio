@@ -547,6 +547,65 @@
   grid-column: 2;
 }
 
+/* Floating step title — appears in the empty column opposite the card */
+.ribbonStepTitle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 40px;
+}
+
+/* Left card → title floats in right column (col 2) */
+.ribbonStepTitleRight {
+  grid-column: 2;
+  grid-row: 1;
+  align-items: flex-start;
+  padding-left: 56px;
+  padding-right: 20px;
+}
+
+/* Right card → title floats in left column (col 1) */
+.ribbonStepTitleLeft {
+  grid-column: 1;
+  grid-row: 1;
+  align-items: flex-end;
+  text-align: right;
+  padding-right: 56px;
+  padding-left: 20px;
+}
+
+.ribbonStepNum {
+  font-family: var(--serif);
+  font-size: clamp(48px, 6vw, 80px);
+  color: rgba(180, 144, 79, 0.15);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.ribbonStepDivider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 16px;
+}
+
+.ribbonStepTitleLeft .ribbonStepDivider {
+  background: linear-gradient(270deg, var(--gold), transparent);
+  margin-left: auto;
+}
+
+.ribbonStepHeading {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.8vw, 36px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--dark);
+  letter-spacing: -0.01em;
+}
+
 .ribbonImage {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -557,11 +616,35 @@
   padding: 28px;
 }
 
-.ribbonBody h2 {
+/* Combined number — title line */
+.ribbonNumTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.ribbonNum {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.ribbonSep {
+  color: rgba(180,144,79,0.5);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.ribbonNumTitle h2 {
   font-family: var(--serif);
   font-size: clamp(22px, 2.2vw, 32px);
   font-weight: 400;
   line-height: 1.05;
+  margin: 0;
 }
 
 .ribbonBody > p:last-child {
@@ -599,7 +682,7 @@
 
 .number {
   display: inline-block;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   font-family: var(--serif);
   font-size: 24px;
   color: var(--gold);
@@ -742,19 +825,18 @@
   height: min(560px, 68vw);
   min-height: 360px;
   overflow: hidden;
-  border-bottom: 1px solid var(--border);
 }
 
 .founderNames {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: var(--border);
+  background: rgba(180, 144, 79, 0.15);
 }
 
 .nameBlock {
   padding: 24px 18px;
-  background: var(--cream-light);
+  background: rgba(235, 228, 215, 0.6);
   text-align: center;
 }
 
@@ -865,6 +947,21 @@
   .ribbonLeft .ribbonCard,
   .ribbonRight .ribbonCard {
     grid-column: 1;
+    grid-row: 2;
+  }
+
+  /* On mobile, title always appears above the card */
+  .ribbonStepTitle {
+    grid-column: 1 !important;
+    grid-row: 1;
+    align-items: flex-start !important;
+    text-align: left !important;
+    padding: 0 0 16px 0 !important;
+  }
+
+  .ribbonStepTitleLeft .ribbonStepDivider {
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-left: 0;
   }
 
   .ribbonNode {
@@ -909,3 +1006,7 @@
     padding: 18px;
   }
 }
+
+/* =============================================
+   END OF STYLES
+   ============================================= */

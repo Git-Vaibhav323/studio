@@ -1,0 +1,276 @@
+/* =============================================
+   About page — rich animations & transitions
+   ============================================= */
+
+/* ── Scroll-reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Founder card wrapper ── */
+.founderCardWrap {
+  width: 100%;
+}
+
+/* ── Founder card — lift + shadow on hover ── */
+.founderCard {
+  position: relative;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: default;
+}
+
+.founderCard:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:
+    0 40px 80px rgba(28, 23, 16, 0.18),
+    0 0 0 1px rgba(180,144,79,0.3);
+}
+
+/* ── Founder image zoom ── */
+.founderImg {
+  overflow: hidden;
+}
+
+.founderImg img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transform-origin: center center;
+  filter: none;
+}
+
+.founderCard:hover .founderImg img {
+  transform: scale(1.07) !important;
+}
+
+/* ── Dark gradient overlay on bottom third ── */
+.founderGlassBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* gradient: transparent at top, dark charcoal at bottom */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+  padding: 48px 24px 22px;
+  display: flex;
+  gap: 0;
+  z-index: 2;
+  /* no backdrop-filter — pure gradient */
+}
+
+.founderGlassName {
+  flex: 1;
+  text-align: center;
+}
+
+.founderGlassName:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.founderName {
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.8vw, 20px);
+  font-weight: 400;
+  color: #fff;
+  margin: 0 0 4px;
+  letter-spacing: 0.01em;
+}
+
+.founderRole {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* ── Quote panel ── */
+.quoteHover {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease;
+  cursor: default;
+}
+
+/* Sweep shimmer on hover */
+.quoteHover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 80%
+  );
+  transform: skewX(-15deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.quoteHover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(180, 144, 79, 0.15);
+  border-color: rgba(180, 144, 79, 0.55);
+}
+
+.quoteHover:hover::before {
+  animation: quoteSweep 0.6s ease forwards;
+  opacity: 1;
+}
+
+@keyframes quoteSweep {
+  from { left: -80%; }
+  to   { left: 130%; }
+}
+
+/* ── Pillar cards ── */
+.pillarCard {
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(248, 244, 237, 0.76);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+/* Gold top accent line */
+.pillarCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Inner glow */
+.pillarCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(180,144,79,0.07) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.pillarCard:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow:
+    0 28px 60px rgba(28, 23, 16, 0.13),
+    0 0 0 1px rgba(180,144,79,0.25);
+  border-color: rgba(180, 144, 79, 0.45);
+  background: rgba(248, 244, 237, 0.95);
+}
+
+.pillarCard:hover::before,
+.pillarCard:hover::after {
+  opacity: 1;
+}
+
+.pillarCard span {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-family: var(--serif);
+  font-size: 30px;
+  color: var(--gold);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pillarCard:hover span {
+  transform: scale(1.1) translateX(3px);
+}
+
+.pillarCard h2 {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.5vw, 30px);
+  font-weight: 400;
+  line-height: 1.08;
+  color: var(--dark);
+  transition: color 0.35s ease;
+}
+
+.pillarCard:hover h2 {
+  color: var(--gold);
+}
+
+.pillarCard p {
+  margin-top: 14px;
+  color: var(--mid);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* ── Section background pulse — subtle gold aura ── */
+.sectionGlow {
+  position: relative;
+}
+
+.sectionGlow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 50% at 50% 50%,
+    rgba(180,144,79,0.04) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: sectionAura 6s ease-in-out infinite alternate;
+}
+
+@keyframes sectionAura {
+  from { opacity: 0.5; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1.05); }
+}
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .founderCard,
+  .quoteHover,
+  .pillarCard {
+    transition: none;
+  }
+  .sectionGlow::before {
+    animation: none;
+  }
+}

@@ -48,28 +48,50 @@ export default function ProcessTimeline({ steps }) {
         <div className="sparkle"></div>
       </div>
 
-      {steps.map((step, index) => (
-        <article
-          className={`${styles.ribbonStep} ${index % 2 === 0 ? styles.ribbonLeft : styles.ribbonRight}`}
-          key={step.num}
-        >
-          <div className={styles.ribbonNode}>{step.num}</div>
-          <div className={styles.ribbonCard}>
-            <div className={styles.ribbonImage}>
-              <Image src={step.image} alt={step.label} fill sizes="(max-width: 900px) 100vw, 360px" style={{ objectFit: 'cover' }} />
+      {steps.map((step, index) => {
+        const isLeft = index % 2 === 0;
+        return (
+          <article
+            className={`${styles.ribbonStep} ${isLeft ? styles.ribbonLeft : styles.ribbonRight}`}
+            key={step.num}
+          >
+            {/* Number badge on the centre spine */}
+            <div className={styles.ribbonNode}>{step.num}</div>
+
+            {/*
+              For LEFT cards: card is col-1, floating title is col-2 (right empty space)
+              For RIGHT cards: card is col-2, floating title is col-1 (left empty space)
+            */}
+
+            {/* Floating step title in the opposite column */}
+            <div className={`${styles.ribbonStepTitle} ${isLeft ? styles.ribbonStepTitleRight : styles.ribbonStepTitleLeft}`}>
+              <span className={styles.ribbonStepNum}>{step.num}</span>
+              <div className={styles.ribbonStepDivider} />
+              <h3 className={styles.ribbonStepHeading}>{step.expandedTitle}</h3>
             </div>
-            <div className={styles.ribbonBody}>
-              <span className={styles.number}>{step.num}</span>
-              <h2>{step.expandedTitle}</h2>
-              <p>{step.expandedText || step.desc}</p>
-              <ul className={styles.list}>
-                {step.expandedList.map((item) => <li key={item}>{item}</li>)}
-              </ul>
-              <p><strong>{step.expandedNote}</strong></p>
+
+            {/* The card itself */}
+            <div className={styles.ribbonCard}>
+              <div className={styles.ribbonImage}>
+                <Image
+                  src={step.image}
+                  alt={step.label}
+                  fill
+                  sizes="(max-width: 900px) 100vw, 360px"
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+              <div className={styles.ribbonBody}>
+                <p>{step.expandedText || step.desc}</p>
+                <ul className={styles.list}>
+                  {step.expandedList.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+                <p><strong>{step.expandedNote}</strong></p>
+              </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   );
 }

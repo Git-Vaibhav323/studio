@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import styles from './Services.module.css';
 
 export const services = [
@@ -104,7 +105,7 @@ export const services = [
   },
   {
     num: '08', title: 'Installation & Execution',
-    preview: '/images/floor_plan_rect.png',
+    preview: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80',
     shortTitle: 'Installation\n& Execution',
     desc: 'We manage the full installation process — from coordinating contractors to quality-checking every detail before handover.',
     icon: (
@@ -162,6 +163,22 @@ export default function Services() {
               onMouseEnter={() => setHovered(s.num)}
               onMouseLeave={() => setHovered(null)}
             >
+              {/* Full image overlay — appears on hover */}
+              <div className={styles.cardImageOverlay}>
+                <Image
+                  src={s.preview}
+                  alt={s.title}
+                  fill
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+                />
+                {/* Dark gradient so title remains readable */}
+                <div className={styles.cardImageGradient} />
+                <div className={styles.cardImageLabel}>
+                  <span className={styles.cardImageNum}>{s.num}</span>
+                  <span className={styles.cardImageTitle}>{s.title}</span>
+                </div>
+              </div>
               {/* Top-left corner: number + plus mark */}
               <div className={styles.cardMeta}>
                 <span className={styles.cardNum}>{s.num}</span>

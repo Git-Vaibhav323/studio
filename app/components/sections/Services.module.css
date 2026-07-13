@@ -151,6 +151,69 @@
   will-change: transform;
 }
 
+/* ── Full image overlay on hover ──────────── */
+.cardImageOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.cardHovered .cardImageOverlay {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Dark gradient over image for readability */
+.cardImageGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.08) 0%,
+    rgba(0,0,0,0.45) 60%,
+    rgba(0,0,0,0.75) 100%
+  );
+  z-index: 1;
+}
+
+/* Number + title label at bottom of image */
+.cardImageLabel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 22px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardImageNum {
+  font-family: var(--serif);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  font-weight: 400;
+}
+
+.cardImageTitle {
+  font-family: var(--serif);
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: #fff;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
 /* Shimmer sweep on hover */
 .card::after {
   content: '';

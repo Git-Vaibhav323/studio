@@ -1,14 +1,12 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import styles from '../components/PageDetail.module.css';
-
-export const metadata = {
-  title: 'About The Spatial Edit | Spatial Design Studio Hyderabad',
-  description: 'The story of The Spatial Edit, founded by Preksha Bhargav and Krishna Bhargav to make home design more organised, functional, and beautifully executed.',
-  keywords: ['The Spatial Edit founders', 'Preksha Bhargav', 'Krishna Bhargav', 'spatial design studio Hyderabad', 'interior design studio Hyderabad', 'turnkey home interiors Hyderabad'],
-  alternates: { canonical: '/about' },
-};
+import aboutStyles from './About.module.css';
 
 const trust = [
   ['01', 'Studio point of contact'],
@@ -18,23 +16,44 @@ const trust = [
 ];
 
 const team = [
-  {
-    name: 'Preksha Bhargav',
-    role: 'Co-founder',
-    image: '/images/founders_photo.png',
-  },
-  {
-    name: 'Krishna Bhargav',
-    role: 'Co-founder',
-    image: '/images/founders_photo.png',
-  },
+  { name: 'Preksha Bhargav', role: 'Co-founder', image: '/images/founders_photo.png' },
+  { name: 'Krishna Bhargav', role: 'Co-founder', image: '/images/founders_photo.png' },
 ];
+
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add(aboutStyles.visible); observer.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
+
+function Reveal({ children, delay = 0, className = '' }) {
+  const ref = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={`${aboutStyles.reveal} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function AboutPage() {
   return (
     <div className={styles.page}>
       <Navbar />
       <main>
+        {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.heroInner}>
             <div className={styles.eyebrow}>About The Spatial Edit</div>
@@ -53,10 +72,11 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className={styles.section}>
+        {/* Story section */}
+        <section className={`${styles.section} ${aboutStyles.sectionGlow}`}>
           <div className={styles.sectionInner}>
             <div className={styles.storyFeature}>
-              <div className={styles.storyTextPanel}>
+              <Reveal className={styles.storyTextPanel}>
                 <div className={styles.eyebrow}>Our Story</div>
                 <h2 className={styles.sectionTitle}>A studio built from a lived experience.</h2>
                 <p className={styles.bodyText}>
@@ -69,65 +89,74 @@ export default function AboutPage() {
                   What followed was one of the most chaotic experiences of their lives: delays, decisions that made no sense, and a process so disorganised they ended up directing it themselves, from designing their own house to doing site visits.
                 </p>
                 <p className={styles.bodyText}>
-                  They were not unlucky.They were experiencing what almost every homeowner in India experiences.
+                  They were not unlucky. They were experiencing what almost every homeowner in India experiences.
                 </p>
-              </div>
+              </Reveal>
 
-              <div className={styles.founderStoryCard}>
-                <div className={styles.founderImage}>
-                  <Image src="/images/founders_photo.png" alt="Preksha Bhargav and Krishna Bhargav, founders of The Spatial Edit" fill sizes="(max-width: 900px) 100vw, 520px" style={{ objectFit: 'cover' }} />
-                </div>
-                <div className={styles.founderNames}>
-                  {team.map((member) => (
-                    <div className={styles.nameBlock} key={member.name}>
-                      <h3>{member.name}</h3>
-                      <p>{member.role}</p>
+              <Reveal delay={150} className={aboutStyles.founderCardWrap}>
+                <div className={`${styles.founderStoryCard} ${aboutStyles.founderCard}`}>
+                  <div className={`${styles.founderImage} ${aboutStyles.founderImg}`}>
+                    <Image
+                      src="/images/founders_photo.png"
+                      alt="Preksha Bhargav and Krishna Bhargav, founders of The Spatial Edit"
+                      fill
+                      sizes="(max-width: 900px) 100vw, 520px"
+                      style={{ objectFit: 'cover' }}
+                    />
+                    {/* Glassmorphism name overlay — sits on bottom of image */}
+                    <div className={aboutStyles.founderGlassBar}>
+                      {team.map((member) => (
+                        <div className={aboutStyles.founderGlassName} key={member.name}>
+                          <h3 className={aboutStyles.founderName}>{member.name}</h3>
+                          <p className={aboutStyles.founderRole}>{member.role}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
 
+        {/* Gap section */}
         <section className={styles.sectionAlt}>
           <div className={styles.sectionInner}>
             <div className={styles.storyResolve}>
-              <div>
+              <Reveal>
                 <div className={styles.eyebrow}>The Gap</div>
                 <h2 className={styles.sectionTitle}>That gap stayed with them.</h2>
-              </div>
-              <div>
+              </Reveal>
+              <Reveal delay={150}>
                 <p className={styles.bodyText}>
                   Two babies later and with lot of thinking, research, and groundwork behind them, they built The Spatial Edit.
                 </p>
-                <blockquote className={styles.quotePanel}>
+                <blockquote className={`${styles.quotePanel} ${aboutStyles.quoteHover}`}>
                   <span>&ldquo;</span>
                   We do not just design your space. We ensure it is executed exactly as designed.
                 </blockquote>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
 
-        <section className={styles.section}>
+        {/* Pillars */}
+        <section className={`${styles.section} ${aboutStyles.sectionGlow}`}>
           <div className={styles.sectionInner}>
             <div className={styles.storyPillars}>
-              <article>
-                <span>01</span>
-                <h2>Personal understanding</h2>
-                <p>We know how stressful an unorganised home project can feel because the studio was born from that exact experience.</p>
-              </article>
-              <article>
-                <span>02</span>
-                <h2>Spatial intelligence</h2>
-                <p>Before finishes, we study circulation, proportion, light, storage, and the way daily life actually moves through the home.</p>
-              </article>
-              <article>
-                <span>03</span>
-                <h2>Execution ownership</h2>
-                <p>Design and execution stay connected, so the space is not only imagined well, but delivered with clarity and control.</p>
-              </article>
+              {[
+                { num: '01', title: 'Personal understanding', body: 'We know how stressful an unorganised home project can feel because the studio was born from that exact experience.' },
+                { num: '02', title: 'Spatial intelligence', body: 'Before finishes, we study circulation, proportion, light, storage, and the way daily life actually moves through the home.' },
+                { num: '03', title: 'Execution ownership', body: 'Design and execution stay connected, so the space is not only imagined well, but delivered with clarity and control.' },
+              ].map((p, i) => (
+                <Reveal key={p.num} delay={i * 120}>
+                  <article className={aboutStyles.pillarCard}>
+                    <span>{p.num}</span>
+                    <h2>{p.title}</h2>
+                    <p>{p.body}</p>
+                  </article>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
