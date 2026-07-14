@@ -163,8 +163,8 @@ export default function Services() {
               onMouseEnter={() => setHovered(s.num)}
               onMouseLeave={() => setHovered(null)}
             >
-              {/* Full image overlay — appears on hover */}
-              <div className={styles.cardImageOverlay}>
+              {/* DEFAULT: image fills card + title at bottom */}
+              <div className={styles.cardFront}>
                 <Image
                   src={s.preview}
                   alt={s.title}
@@ -172,34 +172,20 @@ export default function Services() {
                   style={{ objectFit: 'cover', objectPosition: 'center' }}
                   sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
                 />
-                {/* Dark gradient so title remains readable */}
-                <div className={styles.cardImageGradient} />
-                <div className={styles.cardImageLabel}>
-                  <span className={styles.cardImageNum}>{s.num}</span>
-                  <span className={styles.cardImageTitle}>{s.title}</span>
+                <div className={styles.cardFrontGradient} />
+                <div className={styles.cardFrontLabel}>
+                  <span className={styles.cardFrontNum}>{s.num}</span>
+                  <span className={styles.cardFrontTitle}>{s.title}</span>
                 </div>
               </div>
-              {/* Top-left corner: number + plus mark */}
-              <div className={styles.cardMeta}>
-                <span className={styles.cardNum}>{s.num}</span>
-                <span className={styles.cardPlus}>+</span>
+
+              {/* HOVER: title + description, no image */}
+              <div className={styles.cardBack}>
+                <span className={styles.cardBackNum}>{s.num}</span>
+                <div className={styles.cardBackDivider} />
+                <div className={styles.cardBackTitle}>{s.title}</div>
+                <p className={styles.cardBackDesc}>{s.desc}</p>
               </div>
-
-              {/* Icon circle */}
-              <div className={styles.cardIcon}>{s.icon}</div>
-
-              {/* Divider with diamond */}
-              <div className={styles.divider}>
-                <div className={styles.divLine} />
-                <div className={styles.divDiamond}>
-                  <svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)"/></svg>
-                </div>
-                <div className={styles.divLine} />
-              </div>
-
-              {/* Title + description */}
-              <div className={styles.cardTitle}>{s.title}</div>
-              <p className={styles.cardDesc}>{s.desc}</p>
             </div>
           ))}
         </div>

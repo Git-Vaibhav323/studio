@@ -132,7 +132,6 @@ export default function AboutPage() {
                   Two babies later and with lot of thinking, research, and groundwork behind them, they built The Spatial Edit.
                 </p>
                 <blockquote className={`${styles.quotePanel} ${aboutStyles.quoteHover}`}>
-                  <span>&ldquo;</span>
                   We do not just design your space. We ensure it is executed exactly as designed.
                 </blockquote>
               </Reveal>

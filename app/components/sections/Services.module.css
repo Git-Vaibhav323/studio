@@ -127,77 +127,70 @@
   padding-bottom: 40px;
 }
 
-/* ── Card — vertical stack layout ──────────── */
+/* ── Card ──────────────────────────────────── */
 .card {
   position: relative;
-  background: linear-gradient(160deg, rgba(255,255,255,0.78) 0%, var(--cream) 100%);
   border-radius: 18px;
   border: 1px solid rgba(180,144,79,0.22);
-  padding: 24px 22px 26px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  box-shadow:
-    -4px -4px 14px rgba(255,255,255,0.9),
-    4px 4px 18px rgba(28,23,16,0.06);
-  z-index: 1;
   overflow: hidden;
-  transition:
-    transform 0.55s var(--ease-expo),
-    box-shadow 0.55s var(--ease-expo),
-    border-color 0.4s var(--ease-smooth);
   cursor: default;
+  aspect-ratio: 3 / 4;
+  box-shadow: 4px 4px 18px rgba(28,23,16,0.06);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
   will-change: transform;
 }
 
-/* ── Full image overlay on hover ──────────── */
-.cardImageOverlay {
+.card:hover,
+.cardHovered {
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(180,144,79,0.55);
+  box-shadow:
+    0 24px 56px rgba(28,23,16,0.15),
+    0 0 0 1px rgba(180,144,79,0.18);
+}
+
+/* ── FRONT: image + title (default) ── */
+.cardFront {
   position: absolute;
   inset: 0;
-  border-radius: 18px;
-  overflow: hidden;
-  opacity: 0;
-  transform: scale(1.04);
-  transition:
-    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-  z-index: 5;
-}
-
-.cardHovered .cardImageOverlay {
   opacity: 1;
-  transform: scale(1);
+  transition: opacity 0.4s ease;
 }
 
-/* Dark gradient over image for readability */
-.cardImageGradient {
+.cardHovered .cardFront {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Dark gradient over image bottom for title legibility */
+.cardFrontGradient {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.08) 0%,
-    rgba(0,0,0,0.45) 60%,
-    rgba(0,0,0,0.75) 100%
+    transparent 40%,
+    rgba(0,0,0,0.55) 75%,
+    rgba(0,0,0,0.78) 100%
   );
   z-index: 1;
 }
 
-/* Number + title label at bottom of image */
-.cardImageLabel {
+.cardFrontLabel {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 20px 22px;
+  padding: 20px 18px;
   z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.cardImageNum {
+.cardFrontNum {
   font-family: var(--serif);
   font-size: 11px;
   color: var(--gold);
@@ -205,13 +198,68 @@
   font-weight: 400;
 }
 
-.cardImageTitle {
+.cardFrontTitle {
   font-family: var(--serif);
   font-size: clamp(16px, 1.8vw, 22px);
   color: #fff;
   font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+/* ── BACK: title + description (hover) ── */
+.cardBack {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px 24px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.92) 0%, var(--cream) 100%);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.cardHovered .cardBack {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cardBackNum {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.14em;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.cardBackDivider {
+  width: 36px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-bottom: 14px;
+}
+
+.cardBackTitle {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2vw, 24px);
+  color: var(--dark);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.cardBackDesc {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--mid);
+  font-weight: 300;
+  margin: 0;
 }
 
 /* Shimmer sweep on hover */
@@ -222,12 +270,12 @@
   background: linear-gradient(
     115deg,
     transparent 30%,
-    rgba(255,255,255,0.22) 50%,
+    rgba(255,255,255,0.12) 50%,
     transparent 70%
   );
   opacity: 0;
-  transition: opacity 0.4s ease;
   pointer-events: none;
+  z-index: 10;
 }
 .card:hover::after,
 .cardHovered::after {
