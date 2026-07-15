@@ -73,9 +73,24 @@
 .archDecor{position:absolute;top:18%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:20px;}
 .archStar svg{width:28px;height:28px;}
 .archArrow{width:14px;height:14px;}
-@media(max-width:768px){.vline,.verticalText{display:none;}.titleBlock{flex-direction:column;gap:24px;}.titleRight{border-left:none;padding-left:0;border-top:1px solid rgba(180,144,79,0.3);padding-top:20px;max-width:100%;}}
+@media(max-width:768px){
+  .vline,.verticalText{display:none;}
+  .section{ padding: 4vh 16px 0; overflow-x: hidden; }
+  .content{ overflow-x: hidden; }
+  .titleBlock{ flex-direction:column; gap:20px; }
+  .titleRight{ border-left:none; padding-left:0; border-top:1px solid rgba(180,144,79,0.3); padding-top:16px; max-width:100%; }
+  /* Carousel cards: use % width so they don't overflow viewport */
+  .card{
+    min-width: calc(80vw - 32px);
+    width: calc(80vw - 32px);
+  }
+  .cardTop{ height: 200px; }
+  .cardBottom h3{ font-size: 18px; }
+  .navBtn{ width: 36px; height: 36px; }
+  /* Fix archFooter overflow */
+  .archFooter{ left:0; transform:none; width:100%; }
+}
 
-/* Keep the full decorative background visible on narrow screens. */
 @media (max-width: 768px) {
   .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
 }

@@ -205,6 +205,24 @@
     height: 100vh;
   }
 
+  /* Prevent layout shift — fix canvas to viewport */
+  .sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: auto;
+  }
+
+  .sequence {
+    /* Ensure canvas fills without overflow causing scroll jank */
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    contain: strict;
+  }
+
   .titleStage {
     padding: calc(var(--nav-h) + 22px) 18px 76px;
   }

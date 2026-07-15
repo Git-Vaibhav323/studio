@@ -267,21 +267,41 @@
 }
 
 @media (max-width: 768px) {
-  .section { padding: 48px 0 60px; }
-  .inner { padding: 0 20px; }
-  .mainRow { gap: 28px; }
-  .headline { font-size: clamp(28px, 7vw, 42px); }
-  .descLarge, .desc { font-size: 13px; }
+  .section { padding: 40px 0 50px; }
+  .inner { padding: 0 18px; }
+  .mainRow {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .left { padding-right: 0; }
+
+  /* Larger readable text on mobile */
+  .overline { font-size: 11px; margin-bottom: 14px; }
+  .headline { font-size: clamp(30px, 8vw, 44px); line-height: 1.1; }
+  .descLarge { font-size: 15px; line-height: 1.7; }
+  .desc { font-size: 14px; line-height: 1.85; }
+  .statement { font-size: 12px; line-height: 1.75; }
+
+  /* Features grid: 2 cols on mobile */
   .featuresBox { grid-template-columns: repeat(2, 1fr); }
+  .feature { padding: 10px 6px 12px; }
+  .feature h4 { font-size: 9px; }
+  .feature p { font-size: 10px; }
+  .fIcon { width: 28px; height: 28px; }
   .feature:nth-child(2) { border-right: 1px solid rgba(180,144,79,0.25); }
   .feature:nth-child(3) { border-right: none; }
+
+  /* Right image full width, no left margin */
+  .rightImage { margin-left: 0; width: 100%; }
+
+  /* Hide decorative elements that cause overflow */
+  .vline, .sideLabel, .decorArcs { display: none; }
 }
 
 @media (max-width: 480px) {
-  .inner { padding: 0 16px; }
+  .inner { padding: 0 14px; }
+  .headline { font-size: clamp(28px, 9vw, 38px); }
+  .descLarge { font-size: 14px; }
+  .desc { font-size: 13px; }
   .featuresBox { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; }
 }

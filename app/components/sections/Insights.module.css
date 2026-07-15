@@ -110,4 +110,55 @@
 .archDecor{position:absolute;top:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;}
 .archStar svg{width:28px;height:28px;}
 .archArrow{width:14px;height:14px;}
-@media(max-width:900px){.grid{grid-template-columns:1fr;}.vline,.verticalText{display:none;}}
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr;}
+  .vline,.verticalText{display:none;}
+}
+
+@media(max-width:768px){
+  .section{
+    padding: 4vh 16px 40px;
+    /* prevent horizontal overflow from card shadows */
+    overflow-x: hidden;
+  }
+  .content{
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .grid{
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom: 30px;
+    /* ensure cards never exceed viewport */
+    width: 100%;
+    max-width: 100%;
+  }
+  .card{
+    width: 100%;
+    max-width: 100%;
+    /* disable hover transform on mobile — causes overflow */
+    transform: none !important;
+  }
+  .card:hover{
+    transform: none !important;
+    box-shadow: 0 8px 24px rgba(28,23,16,0.08);
+  }
+  .imgWrap{ height: 200px; }
+  .cardContent{ padding: 20px 18px; }
+  .cardTitle{ font-size: 20px; line-height: 1.25; }
+  .cardDesc{ font-size: 13px; line-height: 1.7; }
+  .header{
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hlLabel,.hrLabel{ font-size: 11px; }
+  .title{ font-size: clamp(24px, 6vw, 36px); }
+  .subtitle{ font-size: 10px; gap: 10px; }
+  /* archFooter full-bleed can cause overflow — clip it */
+  .archFooter{
+    left: 0;
+    transform: none;
+    width: 100%;
+  }
+}

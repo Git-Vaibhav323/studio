@@ -333,8 +333,27 @@
     display: none;
   }
 }
-@media (max-width: 100px) {
+
+@media (max-width: 768px) {
+  .section {
+    padding: 4vh 16px 40px;
+    overflow-x: hidden;
+  }
+  .mainContent { overflow-x: hidden; }
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 0 20px;
+  }
+  .title {
+    font-size: clamp(28px, 7vw, 42px);
+  }
+  .cardFooter { padding: 12px 10px; }
+  .cardFooterText { font-size: 9px; letter-spacing: 0.14em; }
+  /* Fix archFooter 100vw overflow */
+  .archFooter {
+    left: 0;
+    transform: none;
+    width: 100%;
   }
 }

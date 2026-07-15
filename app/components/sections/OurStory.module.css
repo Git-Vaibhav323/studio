@@ -205,8 +205,43 @@
   .missionBox { margin-left: 0; }
 }
 @media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
-  .threeCols { flex-direction: column; }
-  .storyCol { border-right: none; border-bottom: 1px solid rgba(180,144,79,0.3); padding-right: 0; padding-bottom: 20px; }
+  .section {
+    padding: 4vh 16px 40px;
+    overflow-x: hidden;
+    background-position: center bottom;
+    background-size: 110% auto;
+    background-repeat: no-repeat;
+  }
+  .mainContent {
+    flex-direction: column;
+    gap: 24px;
+    overflow-x: hidden;
+  }
+  .leftCol { padding-left: 0; }
+  .threeCols {
+    flex-direction: column;
+    gap: 16px;
+    max-width: 100%;
+  }
+  .storyCol {
+    border-right: none;
+    border-bottom: 1px solid rgba(180,144,79,0.3);
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+  .storyCol:last-child { border-bottom: none; }
+  /* Right col — stack vertically */
+  .rightContentWrap {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .rightVerticalLine { display: none; }
+  .quoteText { font-size: 18px; }
+  .title { font-size: clamp(26px, 8vw, 40px); }
+  /* Fix namesBox overflow */
+  .namesBox { flex-wrap: wrap; gap: 12px; }
+  .imageInner { height: 260px; }
+  /* Fix archFooter overflow */
+  .archFooter { left: 0; transform: none; width: 100%; }
   .sidebarLeft { display: none; }
 }

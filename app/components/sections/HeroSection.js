@@ -221,6 +221,9 @@ export default function HeroSection() {
     let isAnimating = false;
     let scrollListenerActive = true;
 
+    // Slower lerp on mobile to reduce jerkiness from touch scroll inertia
+    const lerpFactor = isMobile ? 0.12 : 0.4;
+
     const calculateProgress = () => {
       const rect = hero.getBoundingClientRect();
       const scrollDistance = hero.offsetHeight - window.innerHeight;
@@ -232,15 +235,15 @@ export default function HeroSection() {
       
       const diff = targetProgress - currentProgress;
       
-      if (Math.abs(diff) < 0.001) {
+      if (Math.abs(diff) < 0.0005) {
         currentProgress = targetProgress;
         render(currentProgress);
         isAnimating = false;
         return;
       }
 
-      // Smooth interpolation (lerp)
-      currentProgress += diff * 0.4;
+      // Smooth interpolation (lerp) — slower on mobile
+      currentProgress += diff * lerpFactor;
       render(currentProgress);
       animationFrameRef.current = requestAnimationFrame(animate);
     };

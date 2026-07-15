@@ -283,16 +283,46 @@
   font-weight: 500;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .cardsWrap { flex-direction: column; }
   .imageBox { height: 320px; }
 }
 @media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
-  .header { flex-direction: column; gap: 16px; }
-  .cardsWrap { margin-top: 32px; }
-  .title { font-size: 32px; }
-  .imageBox { height: 220px; }
-  .rowTitle { flex: 0 0 120px; }
+  .section {
+    padding: 4vh 16px 0;
+    overflow-x: hidden;
+  }
+  .content { overflow-x: hidden; }
+  .header { flex-direction: column; gap: 12px; }
+  .cardsWrap {
+    flex-direction: column;
+    margin-top: 24px;
+    gap: 16px;
+  }
+  .card {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 16px;
+    /* disable hover transform on mobile */
+    transform: none !important;
+  }
+  .card:hover { transform: none !important; }
+  .title { font-size: clamp(22px, 6vw, 32px); }
+  .imageBox { height: 200px; }
+  /* rowTitle: stop fixed width causing overflow at 375px */
+  .rowTitle {
+    flex: 0 0 auto;
+    min-width: 0;
+    font-size: 13px;
+    white-space: normal;
+    word-break: break-word;
+  }
+  .rowDesc { font-size: 11px; }
+  /* Fix archFooter overflow */
+  .archFooter {
+    left: 0;
+    transform: none;
+    width: 100%;
+  }
+  .vline { display: none; }
 }

@@ -392,17 +392,84 @@
   }
 }
 
-@media(max-width:100px){
+@media(max-width:768px){
+  .section{
+    padding: 5vh 16px 0;
+    overflow-x: hidden;
+  }
+
+  .content{
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   .cards{
-    grid-template-columns:1fr;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-bottom: 60px;
+    width: 100%;
+    max-width: 100%;
   }
-  .title{
-    font-size:clamp(32px,6vw,48px);
+
+  .card{
+    width: 100%;
+    max-width: 100%;
+    padding: 28px 20px 24px;
+    /* disable scale transform — pushes content outside viewport */
+    transform: none !important;
   }
+
+  .card:hover{
+    transform: none !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+  }
+
+  .cardIcon{
+    width: 52px;
+    height: 52px;
+    margin-bottom: 16px;
+  }
+  .cardIcon svg{
+    width: 22px;
+    height: 22px;
+  }
+
   .cardTitle{
-    font-size:20px;
+    font-size: 20px;
+    margin-bottom: 8px;
   }
+
   .cardDesc{
-    font-size:12px;
+    font-size: 13px;
+    line-height: 1.7;
   }
+
+  .title{
+    font-size: clamp(26px, 7vw, 40px);
+  }
+
+  .subtitle{
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+
+  /* Fix archFooter overflow — the 100vw + translateX trick causes overflow on mobile */
+  .archFooter{
+    left: 0;
+    transform: none;
+    width: 100%;
+  }
+
+  .sidebarLeft,
+  .headerRight{
+    display: none;
+  }
+}
+
+@media(max-width:390px){
+  .section{ padding: 4vh 12px 0; }
+  .card{ padding: 24px 16px 20px; }
+  .cardTitle{ font-size: 18px; }
+  .cardDesc{ font-size: 12px; }
 }
