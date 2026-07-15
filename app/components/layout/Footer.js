@@ -20,7 +20,7 @@ export default function Footer() {
             </svg>
             <div>
               <div className={styles.logoName}>The Spatial Edit</div>
-              <div className={styles.logoSub}>Spatial Design Studio</div>
+              <div className={styles.logoSub}>An Interior Design Studio</div>
             </div>
           </div>
           <p className={styles.brandDesc}>

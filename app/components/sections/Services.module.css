@@ -5,7 +5,7 @@
 
 .section {
   position: relative;
-  padding: 5vh 5vw 80px;
+  padding: 5vh 5vw 140px;
   background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom / cover no-repeat;
   display: flex;
   flex-direction: column;
@@ -124,17 +124,17 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   width: 100%;
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 }
 
 /* ── Card ──────────────────────────────────── */
 .card {
   position: relative;
-  border-radius: 18px;
+  border-radius: 14px;
   border: 1px solid rgba(180,144,79,0.22);
   overflow: hidden;
   cursor: default;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   box-shadow: 4px 4px 18px rgba(28,23,16,0.06);
   transition:
     transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),

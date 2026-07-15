@@ -89,7 +89,6 @@ export default function AboutSpatial() {
 
             <div className={styles.statement}>
               <div className={styles.statementRow}>
-                <span className={styles.tsMonogram} aria-hidden="true">TS</span>
                 <p>A HOME THAT WORKS BEAUTIFULLY IS NEVER BY CHANCE.<br />IT IS DESIGNED WITH INTELLIGENCE.</p>
               </div>
             </div>

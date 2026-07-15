@@ -245,10 +245,12 @@
 }
 .row:last-child .rowTextWrap { border-bottom: none; }
 .rowTitle {
-  flex: 0 0 145px;
+  flex: 0 0 160px;
   font-family: var(--serif);
   font-size: 15px; color: var(--dark); font-weight: 100;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  word-break: break-word;
 }
 .rowDesc {
   flex: 1; font-size: 11px; line-height: 1.4;

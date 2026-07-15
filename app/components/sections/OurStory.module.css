@@ -89,8 +89,8 @@
 .storyCol:last-child { border-right: none; padding-right: 0; }
 .iconWrap { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid rgba(180,144,79,0.5); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; background: rgba(220, 205, 185, 0.3); }
 .iconWrap svg { width: 28px; height: 28px; }
-.storyText { font-size: 11px; line-height: 1.6; color: var(--dark); }
-.storyText span { font-weight: 100; color: var(--gold); }
+.storyText { font-size: 12px; line-height: 1.7; color: var(--dark); font-weight: 400; }
+.storyText span { font-weight: 600; color: var(--dark); }
 
 /* RIGHT COL - IMAGE BOX & NAMES */
 .founderCard {
@@ -115,7 +115,7 @@
 }
 .nameBlock { text-align: center; }
 .nameTitle { font-family: var(--serif); font-size: 18px; color: var(--dark); font-weight: 500; margin-bottom: 4px; }
-.nameSub { font-size: 10px; letter-spacing: 0.15em; color: var(--gold); font-weight: 100; text-transform: uppercase; }
+.nameSub { font-size: 11px; letter-spacing: 0.15em; color: var(--gold); font-weight: 600; text-transform: uppercase; }
 
 .nameSeparator { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50px; gap: 4px; padding: 0 10px; }
 .nameSepLine { width: 1px; flex: 1; background: rgba(180, 144, 79, 0.4); }
