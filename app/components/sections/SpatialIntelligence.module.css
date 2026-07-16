@@ -595,10 +595,19 @@
 @media (max-width: 768px) {
   .section {
     padding: 40px 0 50px;
+    /* clip horizontal overflow from cards */
+    overflow: hidden;
   }
 
   .inner {
     padding: 0 16px;
+    overflow: hidden;
+  }
+
+  /* Stack grid to single col */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
   .cardsRow {
@@ -606,15 +615,26 @@
     align-items: center;
     padding-top: 40px;
     gap: 40px;
+    /* prevent any card from bleeding outside */
+    overflow: hidden;
+    width: 100%;
   }
 
   .archCard,
   .featured {
-    width: 100%;
-    max-width: 320px;
+    /* fill available width minus padding */
+    width: calc(100% - 0px);
+    max-width: 100%;
     min-height: unset;
     margin-top: 0;
     padding: 52px 18px 0;
+    /* disable hover scale — causes overflow */
+    transition: none;
+  }
+
+  .archCard:hover,
+  .featured:hover {
+    transform: none;
   }
 
   /* Icon circle smaller on mobile */
@@ -630,53 +650,21 @@
     height: 20px;
   }
 
-  /* Tighter text */
-  .cardNum {
-    font-size: 11px;
-    margin-bottom: 6px;
-    margin-top: 2px;
-  }
-  .featured .cardNum {
-    font-size: 14px;
-  }
+  .cardNum { font-size: 11px; margin-bottom: 6px; margin-top: 2px; }
+  .featured .cardNum { font-size: 14px; }
+  .cardTitle { font-size: 18px; margin-bottom: 10px; }
+  .featured .cardTitle { font-size: 20px; }
+  .cardDesc { font-size: 11px; line-height: 1.7; margin-bottom: 16px; padding: 0 4px; }
 
-  .cardTitle {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  .featured .cardTitle {
-    font-size: 20px;
-  }
-
-  .cardDesc {
-    font-size: 11px;
-    line-height: 1.7;
-    margin-bottom: 16px;
-    padding: 0 4px;
-  }
-
-  /* Shorter image area */
   .cardImg {
-    min-height: 180px;
+    min-height: 160px;
     width: calc(100% + 36px);
     margin-left: -18px;
     margin-right: -18px;
   }
-  .featured .cardImg {
-    min-height: 200px;
-  }
+  .featured .cardImg { min-height: 180px; }
 
-  /* Left column stacks cleanly */
-  .left {
-    padding-right: 0;
-    padding-top: 0;
-  }
-
-  .decorArcs {
-    display: none;
-  }
-
-  .headline {
-    font-size: clamp(28px, 8vw, 40px);
-  }
+  .left { padding-right: 0; padding-top: 0; }
+  .headline { font-size: clamp(28px, 8vw, 40px); }
+  .vline, .diamond, .sideLabel { display: none; }
 }

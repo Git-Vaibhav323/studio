@@ -394,67 +394,61 @@
 
 @media(max-width:768px){
   .section{
-    padding: 5vh 16px 0;
-    overflow-x: hidden;
+    padding: 5vh 0 0;
+    overflow: hidden;
   }
 
   .content{
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    padding: 0 16px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .cards{
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 14px;
     padding-bottom: 60px;
     width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
   }
 
   .card{
     width: 100%;
     max-width: 100%;
-    padding: 28px 20px 24px;
-    /* disable scale transform — pushes content outside viewport */
+    box-sizing: border-box;
+    padding: 26px 18px 22px;
     transform: none !important;
+    will-change: auto;
   }
 
   .card:hover{
     transform: none !important;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   }
 
   .cardIcon{
-    width: 52px;
-    height: 52px;
-    margin-bottom: 16px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 14px;
   }
-  .cardIcon svg{
-    width: 22px;
-    height: 22px;
-  }
+  .cardIcon svg{ width: 22px; height: 22px; }
 
   .cardTitle{
-    font-size: 20px;
+    font-size: 19px;
     margin-bottom: 8px;
   }
 
   .cardDesc{
     font-size: 13px;
-    line-height: 1.7;
+    line-height: 1.68;
   }
 
-  .title{
-    font-size: clamp(26px, 7vw, 40px);
-  }
+  .title{ font-size: clamp(24px, 7vw, 38px); }
+  .subtitle{ font-size: 9px; letter-spacing: 0.16em; }
 
-  .subtitle{
-    font-size: 9px;
-    letter-spacing: 0.18em;
-  }
-
-  /* Fix archFooter overflow — the 100vw + translateX trick causes overflow on mobile */
   .archFooter{
     left: 0;
     transform: none;
@@ -468,8 +462,8 @@
 }
 
 @media(max-width:390px){
-  .section{ padding: 4vh 12px 0; }
-  .card{ padding: 24px 16px 20px; }
-  .cardTitle{ font-size: 18px; }
+  .content{ padding: 0 12px; }
+  .card{ padding: 22px 14px 18px; }
+  .cardTitle{ font-size: 17px; }
   .cardDesc{ font-size: 12px; }
 }

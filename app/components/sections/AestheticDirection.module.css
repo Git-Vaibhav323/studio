@@ -75,20 +75,48 @@
 .archArrow{width:14px;height:14px;}
 @media(max-width:768px){
   .vline,.verticalText{display:none;}
-  .section{ padding: 4vh 16px 0; overflow-x: hidden; }
-  .content{ overflow-x: hidden; }
+  .section{ padding: 4vh 0 0; overflow: hidden; }
+  .content{ padding: 0 16px; overflow: hidden; }
   .titleBlock{ flex-direction:column; gap:20px; }
+  .titleText h2{ font-size: clamp(28px, 8vw, 42px); }
   .titleRight{ border-left:none; padding-left:0; border-top:1px solid rgba(180,144,79,0.3); padding-top:16px; max-width:100%; }
-  /* Carousel cards: use % width so they don't overflow viewport */
+  /* Carousel wrapper must not overflow */
+  .carouselWrapper{ width: 100%; overflow: hidden; }
+  /* Nav buttons smaller, closer */
+  .navBtn{ width: 32px; height: 32px; flex-shrink: 0; }
+  .prevBtn{ margin-right: 8px; }
+  .nextBtn{ margin-left: 8px; }
+  /* Carousel itself scrollable but contained */
+  .carousel{ gap: 16px; padding: 16px 4px; }
+  /* Cards: fill most of the viewport width */
   .card{
-    min-width: calc(80vw - 32px);
-    width: calc(80vw - 32px);
+    min-width: calc(100vw - 80px);
+    width: calc(100vw - 80px);
+    max-width: calc(100vw - 80px);
+    flex-shrink: 0;
   }
-  .cardTop{ height: 200px; }
-  .cardBottom h3{ font-size: 18px; }
-  .navBtn{ width: 36px; height: 36px; }
+  .cardTop{ height: 190px; }
+  /* Ensure text never overflows card */
+  .cardBottom{
+    padding: 28px 16px 20px;
+    overflow: hidden;
+  }
+  .cardBottom h3{
+    font-size: 17px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .cardBottom p{
+    font-size: 11px;
+    line-height: 1.6;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
   /* Fix archFooter overflow */
   .archFooter{ left:0; transform:none; width:100%; }
+  .footer{ margin-bottom: 40px; }
 }
 
 @media (max-width: 768px) {
