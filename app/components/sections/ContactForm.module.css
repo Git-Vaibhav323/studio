@@ -50,6 +50,22 @@
   .imgWrap{display:none}
   .contactLabel{display:block;position:absolute;left:5vw;top:5vh;font-family:var(--serif);font-size:40px;color:var(--gold);font-weight:100;z-index:12;letter-spacing:0.06em;}
 }
+/* mobile-only "Contact Us" label inside the card, above the image */
+.contactLabelMobile{
+  display:none;
+}
+@media(max-width:768px){
+  .contactLabelMobile{
+    display:block;
+    font-family:var(--serif);
+    font-size:28px;
+    color:var(--gold);
+    font-weight:100;
+    letter-spacing:0.08em;
+    text-align:center;
+    padding:20px 0 14px;
+  }
+}
 
 /* thin decorative line above vase to help composition */
 .vaseLine{width:60%;height:1px;background:rgba(180,144,79,0.35);margin:18px 0;border-radius:2px;}
@@ -87,5 +103,62 @@ select.input{appearance:none;-webkit-appearance:none;cursor:pointer;}
 .archDecor{position:absolute;top:18%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:20px;}
 .archStar svg{width:28px;height:28px;}
 .archArrow{width:14px;height:14px;}
-@media(max-width:900px){.split{flex-direction:column;gap:60px;}.centerLine,.centerStar{display:none;}.leftCol,.rightCol{padding:0;}.formGrid{grid-template-columns:1fr;}}
-@media(max-width:100px){.vline,.verticalText{display:none;}}
+@media(max-width:900px){
+  .split{flex-direction:column;gap:0;}
+  .centerLine,.centerStar{display:none;}
+  .leftCol,.rightCol{padding:0;}
+  .formGrid{grid-template-columns:1fr;}
+}
+
+@media(max-width:768px){
+  .section{
+    padding: 5vh 16px 40px;
+    overflow-x: hidden;
+    /* kill the section-level background on mobile — we'll show image inline */
+    background-image: none;
+    background: var(--cream);
+  }
+  .content{
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .split{
+    flex-direction: column;
+    gap: 0;
+    margin-top: 3vh;
+    margin-bottom: 40px;
+    border: 1px solid rgba(180,144,79,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--cream);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+  }
+  .leftCol{
+    padding: 0;
+    min-height: unset;
+    width: 100%;
+  }
+  .imgWrap{
+    display: block;
+    height: 240px;
+    max-width: 100%;
+    border-radius: 0;   /* card clips it */
+    margin: 0;
+  }
+  .vaseLine{ display: none; }
+  /* Allow title to wrap on mobile */
+  .title{
+    white-space: normal;
+    font-size: clamp(22px, 6vw, 34px);
+    margin-bottom: 16px;
+  }
+  .rightCol{
+    padding: 20px 16px 24px;
+  }
+  .formGrid{ grid-template-columns: 1fr; gap: 12px; }
+  .input{ font-size: 14px; padding: 14px 14px 14px 40px; }
+  .submitBtn{ padding: 16px; font-size: 12px; }
+  .archFooter{ left: 0; transform: none; width: 100%; }
+  .vline,.verticalText,.contactLabel{ display: none; }
+}

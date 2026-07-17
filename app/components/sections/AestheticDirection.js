@@ -59,11 +59,6 @@ export default function AestheticDirection() {
                   <Image src={card.img} alt={card.title} fill style={{objectFit:'cover'}} />
                   <div className={styles.cardNumber}>{card.num}</div>
                 </div>
-                <div className={styles.cardBadge}>
-                  <svg viewBox="0 0 24 24" stroke="var(--gold)" fill="none" strokeWidth="1.2" strokeLinecap="round">
-                    <line x1="6" y1="12" x2="18" y2="12"/>
-                  </svg>
-                </div>
                 <div className={styles.cardBottom}>
                   <h3>{card.title}</h3>
                   <p>{card.desc}</p>

@@ -660,6 +660,12 @@
     width: calc(100% + 32px);
     margin-left: -16px;
     margin-right: -16px;
+    background: var(--cream);
+  }
+  /* Show full image — no cropping on mobile */
+  .cardImg img {
+    object-fit: contain !important;
+    object-position: center center !important;
   }
   .featured .cardImg { min-height: 180px; }
 

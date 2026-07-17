@@ -44,7 +44,6 @@ export default function Navbar() {
       </ul>
 
       <div className={styles.navRight}>
-        <Link href="/contact" className={styles.navCta}>Book a Discovery Call -&gt;</Link>
         <button
           className={styles.hamburger}
           onClick={() => setMenuOpen(!menuOpen)}

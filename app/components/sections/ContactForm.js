@@ -60,6 +60,8 @@ export default function ContactForm() {
       <div className={styles.content}>
         <div className={styles.split}>
           <div className={styles.leftCol}>
+            {/* "Contact Us" label — visible on mobile above the image */}
+            <div className={styles.contactLabelMobile}>Contact Us</div>
             {/* Decorative image — hidden on desktop per request */}
             <div className={styles.vaseLine} aria-hidden="true" />
             <div className={styles.imgWrap}>

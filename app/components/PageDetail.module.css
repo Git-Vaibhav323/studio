@@ -1042,13 +1042,12 @@
     font-size: 18px;
   }
   .ribbonNode {
-    width: 38px;
-    height: 38px;
-    font-size: 15px;
+    display: none;
   }
-  /* Ghost step number too large on small screens */
+  /* Ghost step number — make it solid gold on mobile, not faded */
   .ribbonStepNum {
     font-size: clamp(32px, 10vw, 48px);
+    color: var(--gold);
   }
   .ribbonStepHeading {
     font-size: clamp(18px, 5vw, 26px);

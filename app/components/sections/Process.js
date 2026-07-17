@@ -87,8 +87,18 @@ export const steps = [
 
 export default function Process() {
   const [hovered, setHovered] = useState(null);
+  const [tapped, setTapped] = useState(null); // mobile tap state
   const [progress, setProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     let scrollListenerActive = true;
@@ -141,13 +151,14 @@ export default function Process() {
         <div className={styles.timeline}>
           <div className={styles.timelineLine} />
           {steps.map((step) => {
-            const isOpen = hovered === step.num;
+          const isOpen = isMobile ? tapped === step.num : hovered === step.num;
             return (
               <div
                 key={step.num}
                 className={`${styles.step} ${isOpen ? styles.stepOpen : ''}`}
-                onMouseEnter={() => setHovered(step.num)}
-                onMouseLeave={() => setHovered(null)}
+                onMouseEnter={() => !isMobile && setHovered(step.num)}
+                onMouseLeave={() => !isMobile && setHovered(null)}
+                onClick={() => isMobile && setTapped(tapped === step.num ? null : step.num)}
               >
                 <div className={styles.stepCircle}>{step.num}</div>
                 <div className={styles.stepLabel}>{step.label}</div>

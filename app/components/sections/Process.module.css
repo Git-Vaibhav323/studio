@@ -260,11 +260,43 @@
 @media (max-width: 900px) {
   .timeline { flex-direction: column; align-items: center; gap: 40px; }
   .timelineLine { display: none; }
-  .expandedCard { position: relative; top: 0; left: 0; transform: none; width: 100%; margin-top: 16px; opacity: 1; pointer-events: auto; }
-  .step { width: 100%; max-width: 400px; }
-  .expLeft { min-height: 160px; }
+  .vline { display: none; }
+  /* fixed height causes overflow on mobile — let it grow naturally */
+  .stepDesc { height: auto; min-height: unset; }
+  /* each step is a block; open step sits above siblings */
+  .step { isolation: isolate; }
+  .stepOpen { z-index: 20; isolation: isolate; }
+  /* card hidden on mobile — no layout space taken, animates open on tap */
+  .expandedCard {
+    position: relative; top: 0; left: 0;
+    transform: scale(0.95) translateY(-6px);
+    width: 100%; margin-top: 0;
+    opacity: 0; pointer-events: none;
+    max-height: 0; overflow: hidden;
+    flex-direction: column; /* stack image above text */
+    transition:
+      opacity 0.35s var(--ease-expo),
+      transform 0.35s var(--ease-expo),
+      max-height 0.4s var(--ease-expo),
+      margin-top 0.35s var(--ease-expo);
+  }
+  .expandedVisible {
+    opacity: 1; pointer-events: auto;
+    transform: scale(1) translateY(0);
+    max-height: 800px;
+    margin-top: 16px;
+  }
+  .expLeft {
+    width: 100%; min-height: 180px;
+    margin-right: 0; margin-bottom: 12px;
+    border-radius: 8px 8px 0 0;
+  }
+  .expRight {
+    padding: 12px 12px 16px;
+  }
+  .step { width: 100%; max-width: 400px; cursor: pointer; }
 }
-@media (max-width: 100px) {
+@media (max-width: 600px) {
   .expandedCard { flex-direction: column; }
   .expLeft { margin-right: 0; margin-bottom: 16px; min-height: 140px; }
   .vline { display: none; }

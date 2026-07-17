@@ -81,37 +81,36 @@
   .titleText h2{ font-size: clamp(28px, 8vw, 42px); }
   .titleRight{ border-left:none; padding-left:0; border-top:1px solid rgba(180,144,79,0.3); padding-top:16px; max-width:100%; }
 
-  /* Carousel wrapper — full width, centered */
+  /* Carousel wrapper: full content width, buttons float over the card edges */
   .carouselWrapper{
     width: 100%;
+    margin-left: 0;
     padding: 0;
-    justify-content: center;
-    overflow: visible;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* Nav buttons — fixed small size */
-  .navBtn{ width: 32px; height: 32px; flex-shrink: 0; }
-  .prevBtn{ margin-right: 8px; }
-  .nextBtn{ margin-left: 8px; }
+  /* Nav buttons: absolutely positioned over card, don't push card width */
+  .navBtn{ width: 32px; height: 32px; position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; }
+  .prevBtn{ left: 6px; margin: 0; }
+  .nextBtn{ right: 6px; margin: 0; }
 
-  /* Carousel strip */
+  /* Carousel strip: full width */
   .carousel{
-    gap: 16px;
+    gap: 0;
     padding: 16px 0;
-    /* snap to center so active card is always centered */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Each card: snaps to center, fills available space between buttons */
+  /* Card: full content width */
   .card{
-    /* 32px btn × 2 + 8px margin × 2 + 16px content padding × 2 = 96px total offset */
-    min-width: calc(100vw - 96px);
-    width: calc(100vw - 96px);
-    max-width: calc(100vw - 96px);
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
     flex-shrink: 0;
     scroll-snap-align: center;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .cardTop{ height: 200px; }
@@ -130,7 +129,6 @@
     line-height: 1.6;
   }
 
-  /* Fix archFooter overflow */
   .archFooter{ left:0; transform:none; width:100%; }
   .footer{ margin-bottom: 40px; }
 }

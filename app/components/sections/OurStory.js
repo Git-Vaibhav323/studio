@@ -11,7 +11,7 @@ export default function OurStory() {
         
         {/* LEFT COLUMN */}
         <div className={styles.leftCol}>
-          <h2 className={styles.title}>Our Story.</h2>
+          <h2 className={styles.title}>Our <span className={styles.titleGold}>Story.</span></h2>
           {/* subtitle removed per request */}
           
           <div className={styles.separatorShort}>

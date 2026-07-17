@@ -73,9 +73,41 @@
 
 /* OurStory titles */
 .title { font-family: var(--serif); font-size: clamp(36px, 4.5vw, 54px); color: var(--dark); font-weight: 400; line-height: 1.1; margin-bottom: 8px; }
+
+/* "Story." in gold italic */
+.titleGold {
+  color: var(--gold);
+  font-style: italic;
+}
+
 .subtitle { font-family: var(--serif); font-size: clamp(24px, 3vw, 36px); color: var(--gold); font-weight: 400; line-height: 1.1; margin-bottom: 40px; }
 
-.founderPara { font-size: 15px; line-height: 1.6; color: var(--dark); font-weight: 500; max-width: 500px; margin-bottom: 40px; }
+.founderPara {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--dark);
+  font-weight: 400;
+  max-width: 500px;
+  margin-bottom: 40px;
+  padding: 20px 24px;
+  border-left: 2px solid rgba(180,144,79,0.5);
+  background: rgba(244,237,224,0.55);
+  border-radius: 0 8px 8px 0;
+  position: relative;
+}
+
+/* Decorative quote mark */
+.founderPara::before {
+  content: '\201C';
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  font-family: var(--serif);
+  font-size: 48px;
+  color: var(--gold);
+  opacity: 0.35;
+  line-height: 1;
+}
 
 .separatorShort { display: flex; align-items: center; width: 100%; max-width: 250px; margin-bottom: 24px; }
 .separatorLong { display: flex; align-items: center; width: 100%; margin-bottom: 40px; }
