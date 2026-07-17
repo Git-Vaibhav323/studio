@@ -289,40 +289,84 @@
 }
 @media (max-width: 768px) {
   .section {
-    padding: 4vh 16px 0;
-    overflow-x: hidden;
+    padding: 4vh 14px 0;
+    overflow: hidden;
   }
-  .content { overflow-x: hidden; }
+  .content {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
   .header { flex-direction: column; gap: 12px; }
   .cardsWrap {
     flex-direction: column;
     margin-top: 24px;
     gap: 16px;
+    width: 100%;
   }
   .card {
     width: 100%;
     max-width: 100%;
-    padding: 18px 16px;
-    /* disable hover transform on mobile */
+    box-sizing: border-box;
+    padding: 16px 14px;
     transform: none !important;
+    overflow: hidden;
   }
   .card:hover { transform: none !important; }
-  .title { font-size: clamp(22px, 6vw, 32px); }
-  .imageBox { height: 200px; }
-  /* rowTitle: stop fixed width causing overflow at 375px */
-  .rowTitle {
-    flex: 0 0 auto;
+  .title { font-size: clamp(20px, 6vw, 30px); }
+  .imageBox { height: 180px; }
+
+  /* Key fix: stack the list rows vertically on mobile */
+  .list { padding: 6px; }
+  .row { gap: 10px; }
+  .rowIcon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    margin: 8px 0 8px 4px;
+  }
+  .rowIcon svg { width: 14px; height: 14px; }
+
+  /* Stack title + desc vertically — no more side-by-side overflow */
+  .rowTextWrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 8px 10px 0;
     min-width: 0;
+    overflow: hidden;
+  }
+
+  .rowTitle {
+    flex: unset;
+    width: 100%;
     font-size: 13px;
+    font-weight: 500;
     white-space: normal;
     word-break: break-word;
+    overflow-wrap: break-word;
   }
-  .rowDesc { font-size: 11px; }
-  /* Fix archFooter overflow */
+
+  .rowDesc {
+    flex: unset;
+    width: 100%;
+    font-size: 11px;
+    line-height: 1.5;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* archFooter overflow fix */
   .archFooter {
     left: 0;
     transform: none;
     width: 100%;
   }
   .vline { display: none; }
+
+  /* Card header badge text */
+  .badgeText p { font-size: 13px; }
+  .cardHeader { min-height: unset; margin-bottom: 14px; }
+  .leftText { max-width: 100%; margin-left: 0; font-size: 12px; }
 }

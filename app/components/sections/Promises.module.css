@@ -396,6 +396,9 @@
   .section{
     padding: 5vh 0 0;
     overflow: hidden;
+    /* Switch from dark to beige on mobile */
+    background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom/110% auto no-repeat;
+    color: var(--dark);
   }
 
   .content{
@@ -405,6 +408,11 @@
     box-sizing: border-box;
     overflow: hidden;
   }
+
+  /* Title on light bg */
+  .title{ font-size: clamp(24px, 7vw, 38px); color: var(--dark); }
+  .title span{ color: var(--gold); }
+  .subtitle{ font-size: 9px; letter-spacing: 0.16em; color: var(--mid); }
 
   .cards{
     grid-template-columns: 1fr;
@@ -422,32 +430,35 @@
     padding: 26px 18px 22px;
     transform: none !important;
     will-change: auto;
+    /* Light card bg to match beige section */
+    background: rgba(244, 237, 224, 0.65);
+    border-color: rgba(180,144,79,0.3);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .card:hover{
     transform: none !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   }
 
+  /* Icon ring visible on light bg */
   .cardIcon{
     width: 50px;
     height: 50px;
     margin-bottom: 14px;
+    background: rgba(244,237,224,0.9);
+    border-color: rgba(180,144,79,0.4);
   }
-  .cardIcon svg{ width: 22px; height: 22px; }
-
-  .cardTitle{
-    font-size: 19px;
-    margin-bottom: 8px;
-  }
-
-  .cardDesc{
-    font-size: 13px;
-    line-height: 1.68;
+  .cardIcon svg{
+    width: 22px;
+    height: 22px;
+    stroke: var(--gold);
   }
 
-  .title{ font-size: clamp(24px, 7vw, 38px); }
-  .subtitle{ font-size: 9px; letter-spacing: 0.16em; }
+  /* Text colors for light background */
+  .cardTitle{ font-size: 19px; margin-bottom: 8px; color: var(--dark); }
+  .cardDesc{ font-size: 13px; line-height: 1.68; color: var(--mid); }
 
   .archFooter{
     left: 0;

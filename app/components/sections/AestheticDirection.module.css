@@ -80,40 +80,56 @@
   .titleBlock{ flex-direction:column; gap:20px; }
   .titleText h2{ font-size: clamp(28px, 8vw, 42px); }
   .titleRight{ border-left:none; padding-left:0; border-top:1px solid rgba(180,144,79,0.3); padding-top:16px; max-width:100%; }
-  /* Carousel wrapper must not overflow */
-  .carouselWrapper{ width: 100%; overflow: hidden; }
-  /* Nav buttons smaller, closer */
+
+  /* Carousel wrapper — full width, centered */
+  .carouselWrapper{
+    width: 100%;
+    padding: 0;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  /* Nav buttons — fixed small size */
   .navBtn{ width: 32px; height: 32px; flex-shrink: 0; }
   .prevBtn{ margin-right: 8px; }
   .nextBtn{ margin-left: 8px; }
-  /* Carousel itself scrollable but contained */
-  .carousel{ gap: 16px; padding: 16px 4px; }
-  /* Cards: fill most of the viewport width */
-  .card{
-    min-width: calc(100vw - 80px);
-    width: calc(100vw - 80px);
-    max-width: calc(100vw - 80px);
-    flex-shrink: 0;
+
+  /* Carousel strip */
+  .carousel{
+    gap: 16px;
+    padding: 16px 0;
+    /* snap to center so active card is always centered */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
-  .cardTop{ height: 190px; }
-  /* Ensure text never overflows card */
+
+  /* Each card: snaps to center, fills available space between buttons */
+  .card{
+    /* 32px btn × 2 + 8px margin × 2 + 16px content padding × 2 = 96px total offset */
+    min-width: calc(100vw - 96px);
+    width: calc(100vw - 96px);
+    max-width: calc(100vw - 96px);
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    margin: 0 auto;
+  }
+
+  .cardTop{ height: 200px; }
+
   .cardBottom{
     padding: 28px 16px 20px;
     overflow: hidden;
   }
   .cardBottom h3{
-    font-size: 17px;
+    font-size: 18px;
     word-break: break-word;
     overflow-wrap: break-word;
   }
   .cardBottom p{
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.6;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
   }
+
   /* Fix archFooter overflow */
   .archFooter{ left:0; transform:none; width:100%; }
   .footer{ margin-bottom: 40px; }

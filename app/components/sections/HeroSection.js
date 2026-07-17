@@ -222,7 +222,7 @@ export default function HeroSection() {
     let scrollListenerActive = true;
 
     // Slower lerp on mobile to reduce jerkiness from touch scroll inertia
-    const lerpFactor = isMobile ? 0.12 : 0.4;
+    const lerpFactor = isMobile ? 0.07 : 0.4;
 
     const calculateProgress = () => {
       const rect = hero.getBoundingClientRect();

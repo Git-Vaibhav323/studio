@@ -132,7 +132,7 @@
 }
 
 @media (max-width: 768px) {
-  .navbar { padding: 0 20px; }
+  .navbar { padding: 0 12px 0 16px; }
   .navLinks {
     display: none;
     position: absolute;
@@ -148,5 +148,17 @@
   .navLinks li { width: 100%; }
   .navLinks a { display: block; padding: 12px 24px; font-size: 10px; }
   .hamburger { display: flex; }
-  .navCta { font-size: 8px; padding: 10px 14px; }
+
+  /* Fix button text getting cut — shorter label + tighter padding */
+  .navCta {
+    font-size: 7.5px;
+    padding: 9px 10px;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Logo text — hide subtitle to save space */
+  .ltSub { display: none; }
+  .ltMain { font-size: 9px; letter-spacing: 0.16em; }
 }
