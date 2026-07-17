@@ -267,7 +267,7 @@
 }
 
 @media (max-width: 768px) {
-  .section { padding: 40px 0 50px; }
+  .section { padding: 40px 0 90px; }
   .inner { padding: 0 18px; }
   .mainRow {
     grid-template-columns: 1fr;
