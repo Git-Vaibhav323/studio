@@ -37,7 +37,7 @@ export default function Promises() {
       <div className={styles.content}>
         
         {/* Title section */}
-        <div className={`${styles.titleBlock} reveal`}>
+        <div className={styles.titleBlock}>
           <h2 className={styles.title}>
             Our <span>Promise.</span>
             <br />
@@ -64,7 +64,7 @@ export default function Promises() {
         {/* Cards Grid */}
         <div className={styles.cards}>
           {promises.map((p) => (
-            <div className={`${styles.card} reveal`} key={p.title}>
+            <div className={styles.card} key={p.title}>
               
               {/* Icon */}
               <div className={styles.cardIcon}>

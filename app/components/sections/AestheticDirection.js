@@ -31,12 +31,12 @@ export default function AestheticDirection() {
         </div>
 
         <div className={styles.titleBlock}>
-          <div className={`${styles.titleLeft} reveal-right`}>
+          <div className={styles.titleLeft}>
             <div className={styles.titleText}>
               <h2>Our Aesthetic <span>Direction</span></h2>
             </div>
           </div>
-          <div className={`${styles.titleRight} reveal`}>
+          <div className={styles.titleRight}>
             <div className={styles.titleStar}>
               <svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)"/></svg>
             </div>
@@ -47,7 +47,7 @@ export default function AestheticDirection() {
 
         <hr className={styles.divider} />
 
-        <div className={`${styles.carouselWrapper} reveal`}>
+        <div className={styles.carouselWrapper}>
           <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={() => scroll(-1)} aria-label="Previous">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5"><polyline points="15 18 9 12 15 6"/></svg>
           </button>

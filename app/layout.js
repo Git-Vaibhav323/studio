@@ -1,6 +1,5 @@
 import './globals.css';
 import LoadingScreen from './components/LoadingScreen';
-import ScrollReveal from './components/ScrollReveal';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedit.com';
 
@@ -103,7 +102,6 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <LoadingScreen />
-        <ScrollReveal />
         {children}
       </body>
     </html>

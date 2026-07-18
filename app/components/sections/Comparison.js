@@ -78,7 +78,7 @@ export default function Comparison() {
         {/* Header */}
         <div className={styles.header}>
           {/* header label/number removed per request */}
-          <h2 className={`${styles.title} reveal`}>
+          <h2 className={styles.title}>
             Why It Comes<br />
             <span>Before Aesthetics.</span>
           </h2>
@@ -87,7 +87,7 @@ export default function Comparison() {
         {/* Cards — symmetrical, pushed lower */}
         <div className={styles.cardsWrap}>
           {/* Card 1 — Without */}
-          <div className={`${styles.card} reveal`}>                 
+          <div className={styles.card}>                 
                 <div className={styles.cardHeader}>
               <div className={styles.badgeIcon}>
                  <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round">
@@ -117,7 +117,7 @@ export default function Comparison() {
           </div>
 
           {/* Card 2 — With */}
-          <div className={`${styles.card} reveal`}>
+          <div className={styles.card}>
             <div className={styles.cardHeader}>
               <div className={styles.badgeIcon}>
                 <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round">
