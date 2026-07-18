@@ -135,7 +135,7 @@ export default function Process() {
         <div className={styles.sectionHeader}>
           {/* header label removed per request */}
         </div>
-        <div className={styles.titleWrap}>
+        <div className={`${styles.titleWrap} reveal`}>
           <h2 className={styles.title}>Our <span>Process.</span></h2>
         </div>
         <div className={styles.titleDivider}>
@@ -155,7 +155,7 @@ export default function Process() {
             return (
               <div
                 key={step.num}
-                className={`${styles.step} ${isOpen ? styles.stepOpen : ''}`}
+                className={`${styles.step} ${isOpen ? styles.stepOpen : ''} reveal`}
                 onMouseEnter={() => !isMobile && setHovered(step.num)}
                 onMouseLeave={() => !isMobile && setHovered(null)}
                 onClick={() => isMobile && setTapped(tapped === step.num ? null : step.num)}

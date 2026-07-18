@@ -13,13 +13,13 @@ export default function Insights() {
       {/* side visuals removed per request */}
       <div className={styles.content}>
         {/* header labels removed per request */}
-        <div className={styles.titleBlock}>
+        <div className={`${styles.titleBlock} reveal`}>
           <h2 className={styles.title}>Ideas That <span>Shape Better Spaces.</span></h2>
         </div>
-        <p className={styles.subtitle}>PERSPECTIVES ON DESIGN, PLANNING, AND SPACES THAT WORK.</p>
+        <p className={`${styles.subtitle} reveal`}>PERSPECTIVES ON DESIGN, PLANNING, AND SPACES THAT WORK.</p>
         <div className={styles.grid}>
           {posts.map((post) => (
-            <div className={styles.card} key={post.num}>
+            <div className={`${styles.card} reveal-scale`} key={post.num}>
               <div className={styles.imgWrap}>
                 <Image src={post.img} alt={post.title} fill style={{objectFit:'cover'}} />
               </div>

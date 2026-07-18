@@ -11,7 +11,7 @@ export default function OurStory() {
         
         {/* LEFT COLUMN */}
         <div className={styles.leftCol}>
-          <h2 className={styles.title}>Our <span className={styles.titleGold}>Story.</span></h2>
+          <h2 className={`${styles.title} reveal-right`}>Our <span className={styles.titleGold}>Story.</span></h2>
           {/* subtitle removed per request */}
           
           <div className={styles.separatorShort}>
@@ -83,7 +83,7 @@ export default function OurStory() {
         <div className={styles.rightCol}>
           
           {/* Unified Founder Card */}
-          <div className={styles.founderCard}>
+          <div className={`${styles.founderCard} reveal-scale`}>
             <div className={styles.imageBox}>
               <div className={styles.imageInner}>
                 <div style={{ width: '100%', height: '100%', backgroundColor: '#dfd5c5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

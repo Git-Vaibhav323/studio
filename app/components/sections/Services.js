@@ -139,10 +139,10 @@ export default function Services() {
         <div className={styles.overline}>
           <div className={styles.overlineInner}>OUR ONLY SERVICE</div>
         </div>
-        <div className={styles.titleWrap}>
+        <div className={`${styles.titleWrap} reveal`}>
           <h2 className={styles.title}>One Service. <span>Total Ownership. </span><span>No exceptions.</span></h2>
         </div>
-        <div className={styles.serviceIntro}>
+        <div className={`${styles.serviceIntro} reveal`}>
           <p className={styles.serviceIntroLead}>Our Only Service — Full Interior (End to End)</p>
           <p className={styles.serviceIntroBody}>
             We take on one type of project — complete, end-to-end. From the first inspection &amp; spatial audit to the moment you walk into your finished home. Every decision, every vendor, every stage is owned by us.
@@ -159,7 +159,7 @@ export default function Services() {
           {services.map((s) => (
             <div
               key={s.num}
-              className={`${styles.card} ${hovered === s.num ? styles.cardHovered : ''}`}
+              className={`${styles.card} ${hovered === s.num ? styles.cardHovered : ''} reveal-scale`}
               onMouseEnter={() => setHovered(s.num)}
               onMouseLeave={() => setHovered(null)}
             >

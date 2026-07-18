@@ -77,7 +77,7 @@ export default function SpatialIntelligence() {
         <div className={styles.grid}>
 
           <div className={styles.left}>
-            <div className={styles.overline}>
+            <div className={`${styles.overline} reveal-right`}>
               <span className={styles.overlineBar} />
               Our Difference
             </div>
@@ -87,12 +87,12 @@ export default function SpatialIntelligence() {
               <div className={styles.overruleLine} />
             </div>
 
-            <h2 className={styles.headline}>
+            <h2 className={`${styles.headline} reveal-right`}>
               Built On<br />
               <span className={styles.gold}>Spatial<br />Intelligence.</span>
             </h2>
 
-            <p className={styles.desc}>
+            <p className={`${styles.desc} reveal-right`}>
               Three things we solve before design begins.
               Because the way a space works is what
               makes it beautiful, functional and effortless
@@ -106,7 +106,7 @@ export default function SpatialIntelligence() {
               <div
                 key={card.id}
                 id={card.id}
-                className={`${styles.archCard} ${card.featured ? styles.featured : ''}`}
+                className={`${styles.archCard} ${card.featured ? styles.featured : ''} reveal-scale`}
               >
                 <div className={styles.iconWrap}>
                   <div className={styles.iconInner}>

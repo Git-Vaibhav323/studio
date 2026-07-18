@@ -58,7 +58,7 @@ export default function ContactForm() {
       <div className={styles.contactLabel}>Contact Us</div>
       {/* Top Bar and sidebar removed per design request */}
       <div className={styles.content}>
-        <div className={styles.split}>
+        <div className={`${styles.split} reveal`}>
           <div className={styles.leftCol}>
             {/* "Contact Us" label — visible on mobile above the image */}
             <div className={styles.contactLabelMobile}>Contact Us</div>

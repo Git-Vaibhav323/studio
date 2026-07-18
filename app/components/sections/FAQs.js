@@ -17,7 +17,7 @@ export default function FAQs() {
       {/* Top Bar and sidebar removed per design request */}
 
       <div className={styles.content}>
-        <div className={styles.titleBlock}>
+        <div className={`${styles.titleBlock} reveal`}>
           <h2 className={styles.title}>FAQ<span style={{ fontFamily: 'var(--serif-italic)', fontWeight: '400', color: 'var(--gold)', marginLeft: '2px' }}>s</span></h2>
         </div>
         
