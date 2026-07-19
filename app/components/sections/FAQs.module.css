@@ -1,4 +1,4 @@
-.section{position:relative;padding:5vh 5vw 60px;background:var(--cream) url('/images/bg/bg-sec-6.webp') center bottom/cover no-repeat;display:flex;flex-direction:column;overflow:hidden;min-height:auto;}
+.section{position:relative;padding:30px 5vw 30px;background:var(--cream) url('/images/bg/bg-sec-6.webp') center bottom/cover no-repeat;display:flex;flex-direction:column;overflow:hidden;}
 .topBar {display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 40px; padding: 0 5vw;}
 .topLeft { display: flex; align-items: flex-start; gap: 12px; }
 .logoTS { margin-right: 8px; }

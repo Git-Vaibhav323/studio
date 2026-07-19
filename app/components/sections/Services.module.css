@@ -5,18 +5,22 @@
 
 .section {
   position: relative;
-  padding: 5vh 5vw 140px;
-  background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom / cover no-repeat;
+  padding: 40px 5vw 80px;
+  background: var(--cream) url('/images/bg/bg-sec-3.webp') center center no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
   .section {
-    background-position: center bottom;
-    background-size: 110% auto;
+    background-attachment: scroll;
+    background-size: 120% auto;
+    background-position: center center;
+    padding: 30px 18px 30px;
+    display: block;
   }
 }
 
@@ -34,8 +38,8 @@
 /* ── Section header ─────────────────────────── */
 .overline {
   text-align: center;
-  margin-top: 3vh;
-  margin-bottom: 14px;
+  margin-top: 2vh;
+  margin-bottom: 10px;
 }
 .overlineInner {
   display: inline-flex;
@@ -77,14 +81,14 @@
   text-align: center;
   font-size: 14px;
   color: var(--dark);
-  margin-bottom: 5vh;
+  margin-bottom: 3vh;
   font-weight: 400;
 }
 
 /* ── Service intro block ────────────────────── */
 .serviceIntro {
   max-width: 720px;
-  margin: 0 auto 5vh;
+  margin: 0 auto 3vh;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -451,7 +455,7 @@
 
 @media (max-width: 600px) {
   .section {
-    padding: 5vh 18px 60px;
+    padding: 40px 18px 40px;
   }
   .content {
     padding: 0;
@@ -483,7 +487,8 @@
 
 @media (max-width: 390px) {
   .section {
-    padding: 5vh 14px 50px;
+    padding: 40px 14px 40px;
+    display: block;
   }
   .cardTitle {
     font-size: 16px;

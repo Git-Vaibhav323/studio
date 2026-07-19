@@ -23,17 +23,26 @@ export default function LeadsManagement() {
   }, []);
 
   const fetchLeads = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('leads')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setLeads(data || []);
+      if (error) {
+        console.warn('Leads table not found or accessible:', error);
+        setLeads([]);
+      } else {
+        setLeads(data || []);
+      }
     } catch (error) {
-      toast.error('Error fetching leads');
-      console.error('Error:', error);
+      console.error('Error fetching leads:', error);
+      setLeads([]);
     } finally {
       setLoading(false);
     }

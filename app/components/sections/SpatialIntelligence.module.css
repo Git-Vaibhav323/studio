@@ -2,7 +2,7 @@
 .section {
   position: relative;
   background: var(--cream) url('/images/bg/bg-sec-2.webp') center bottom/cover no-repeat;
-  padding: 86px 0 80px;
+  padding: 50px 0 50px;
   overflow: visible;
 }
 

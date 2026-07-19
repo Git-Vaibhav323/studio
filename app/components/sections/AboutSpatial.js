@@ -1,9 +1,13 @@
 'use client';
 
 import Image from 'next/image';
+import { useRevealAnimation } from '@/lib/useRevealAnimation';
 import styles from './AboutSpatial.module.css';
 
 export default function AboutSpatial() {
+  const headlineRef = useRevealAnimation(100);
+  const overlineRef = useRevealAnimation(0);
+  
   return (
     <section id="about" className={styles.section}>
 
@@ -46,9 +50,9 @@ export default function AboutSpatial() {
               ))}
             </svg>
 
-            <div className={styles.overline}>ABOUT SPATIAL DESIGN</div>
+            <div className={styles.overline} ref={overlineRef}>ABOUT SPATIAL DESIGN</div>
 
-            <h2 className={styles.headline}>
+            <h2 className={styles.headline} ref={headlineRef}>
               Space First.<br />Style Second.<br />
               <span className={styles.gold}>Always</span><span className={styles.goldDot} aria-hidden="true" />
             </h2>

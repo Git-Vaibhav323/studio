@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './Services.module.css';
 
 export const services = [
@@ -132,30 +133,26 @@ export const services = [
 
 export default function Services() {
   const [hovered, setHovered] = useState(null);
+  const titleRef = useRevealAnimation(100);
+  const overlineRef = useRevealAnimation(0);
+  const gridRef = useCardAnimation('slideUp', 400);
 
   return (
     <section id="services" className={styles.section}>
       <div className={styles.content}>
         <div className={styles.overline}>
-          <div className={styles.overlineInner}>OUR ONLY SERVICE</div>
+          <div className={styles.overlineInner} ref={overlineRef}>OUR ONLY SERVICE</div>
         </div>
         <div className={styles.titleWrap}>
-          <h2 className={styles.title}>One Service. <span>Total Ownership. </span><span>No exceptions.</span></h2>
+          <h2 className={styles.title} ref={titleRef}>One Service. <span>Total Ownership. </span><span>No exceptions.</span></h2>
         </div>
         <div className={styles.serviceIntro}>
-          <p className={styles.serviceIntroLead}>Our Only Service — Full Interior (End to End)</p>
-          <p className={styles.serviceIntroBody}>
-            We take on one type of project — complete, end-to-end. From the first inspection &amp; spatial audit to the moment you walk into your finished home. Every decision, every vendor, every stage is owned by us.
-          </p>
-          <p className={styles.serviceIntroBody}>
-            We do not offer consultation-only or design-only services. If you want someone to own the entire process and be fully accountable for the result — that is exactly what we do.
-          </p>
           <p className={styles.serviceIntroQuote}>
             &ldquo;We don&apos;t just design your space. We ensure it is executed exactly as designed.&rdquo;
           </p>
         </div>
 
-        <div className={styles.grid}>
+        <div className={styles.grid} ref={gridRef}>
           {services.map((s) => (
             <div
               key={s.num}

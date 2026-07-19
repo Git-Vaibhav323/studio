@@ -22,17 +22,26 @@ export default function ProjectsManagement() {
   }, []);
 
   const fetchProjects = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('projects')
         .select('*')
         .order('sort_order', { ascending: true });
 
-      if (error) throw error;
-      setProjects(data || []);
+      if (error) {
+        console.warn('Projects table not found or accessible:', error);
+        setProjects([]);
+      } else {
+        setProjects(data || []);
+      }
     } catch (error) {
-      toast.error('Error fetching projects');
-      console.error('Error:', error);
+      console.error('Error fetching projects:', error);
+      setProjects([]);
     } finally {
       setLoading(false);
     }

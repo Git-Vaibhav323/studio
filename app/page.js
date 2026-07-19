@@ -5,7 +5,6 @@ import SpatialIntelligence from './components/sections/SpatialIntelligence';
 import AboutSpatial from './components/sections/AboutSpatial';
 import Comparison from './components/sections/Comparison';
 import AestheticDirection from './components/sections/AestheticDirection';
-import Services from './components/sections/Services';
 import Promises from './components/sections/Promises';
 import OurWork from './components/sections/OurWork';
 import Process from './components/sections/Process';
@@ -24,7 +23,6 @@ export default function Home() {
         <AboutSpatial />
         <Comparison />
         <AestheticDirection />
-        <Services />
         <Promises />
         {/* <OurWork />  */}
         <Process />

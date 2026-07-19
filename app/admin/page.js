@@ -31,62 +31,77 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchStats = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       // Fetch projects stats
-      const { data: projects } = await supabase
+      const { data: projects, error: projectsError } = await supabase
         .from('projects')
         .select('status');
+      
+      if (projectsError) {
+        console.warn('Projects table not found:', projectsError);
+      }
       
       // Fetch blogs stats
-      const { data: blogs } = await supabase
+      const { data: blogs, error: blogsError } = await supabase
         .from('blogs')
         .select('status');
-      
+        
+      if (blogsError) {
+        console.warn('Blogs table not found:', blogsError);
+      }
+
       // Fetch leads stats
-      const { data: leads } = await supabase
+      const { data: leads, error: leadsError } = await supabase
         .from('leads')
         .select('status, created_at');
+        
+      if (leadsError) {
+        console.warn('Leads table not found:', leadsError);
+      }
 
-      // Fetch recent activity
-      const { data: recentProjects } = await supabase
-        .from('projects')
-        .select('id, title, updated_at, status')
-        .order('updated_at', { ascending: false })
-        .limit(3);
-
-      const { data: recentBlogs } = await supabase
-        .from('blogs')
-        .select('id, title, updated_at, status')
-        .order('updated_at', { ascending: false })
-        .limit(3);
-
-      const { data: recentLeads } = await supabase
-        .from('leads')
-        .select('id, name, created_at, status')
-        .order('created_at', { ascending: false })
-        .limit(4);
-
+      // Update stats with error handling
       setStats({
-        projects: {
-          total: projects?.length || 0,
-          published: projects?.filter(p => p.status === 'published').length || 0
+        projects: { 
+          total: projects?.length || 0, 
+          published: projects?.filter(p => p.status === 'published')?.length || 0 
         },
-        blogs: {
-          total: blogs?.length || 0,
-          published: blogs?.filter(b => b.status === 'published').length || 0
+        blogs: { 
+          total: blogs?.length || 0, 
+          published: blogs?.filter(b => b.status === 'published')?.length || 0 
         },
-        leads: {
-          total: leads?.length || 0,
-          new: leads?.filter(l => l.status === 'new').length || 0
+        leads: { 
+          total: leads?.length || 0, 
+          new: leads?.filter(l => {
+            const created = new Date(l.created_at);
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            return created > sevenDaysAgo;
+          })?.length || 0
         },
         recentActivity: {
-          projects: recentProjects || [],
-          blogs: recentBlogs || [],
-          leads: recentLeads || []
+          projects: [],
+          blogs: [],
+          leads: []
         }
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
+      // Set default stats in case of error
+      setStats({
+        projects: { total: 0, published: 0 },
+        blogs: { total: 0, published: 0 },
+        leads: { total: 0, new: 0 },
+        recentActivity: {
+          projects: [],
+          blogs: [],
+          leads: []
+        }
+      });
     } finally {
       setLoading(false);
     }

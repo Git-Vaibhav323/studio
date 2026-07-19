@@ -1,3 +1,6 @@
+'use client';
+
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './Promises.module.css';
 
 const promises = [
@@ -24,6 +27,9 @@ const promises = [
 ];
 
 export default function Promises() {
+  const titleRef = useRevealAnimation(100);
+  const cardsRef = useCardAnimation('slideUp', 300);
+  
   return (
     <section id="promises" className={styles.section}>
       {/* Header label */}
@@ -38,7 +44,7 @@ export default function Promises() {
         
         {/* Title section */}
         <div className={styles.titleBlock}>
-          <h2 className={styles.title}>
+          <h2 className={styles.title} ref={titleRef}>
             Our <span>Promise.</span>
             <br />
             Your Peace of Mind.
@@ -62,7 +68,7 @@ export default function Promises() {
         </p>
 
         {/* Cards Grid */}
-        <div className={styles.cards}>
+        <div className={styles.cards} ref={cardsRef}>
           {promises.map((p) => (
             <div className={styles.card} key={p.title}>
               

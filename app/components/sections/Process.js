@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './Process.module.css';
 
 export const steps = [
@@ -91,6 +92,10 @@ export default function Process() {
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
+  
+  // Animation refs
+  const titleRef = useRevealAnimation(100);
+  const timelineRef = useCardAnimation('slideUp', 300);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');
@@ -136,7 +141,7 @@ export default function Process() {
           {/* header label removed per request */}
         </div>
         <div className={styles.titleWrap}>
-          <h2 className={styles.title}>Our <span>Process.</span></h2>
+          <h2 className={styles.title} ref={titleRef}>Our <span>Process.</span></h2>
         </div>
         <div className={styles.titleDivider}>
           <div className={styles.divLine} />
@@ -148,7 +153,7 @@ export default function Process() {
         <p className={styles.subtitle}>END TO END. THOUGHTFUL AT EVERY STEP.</p>
 
         {/* Timeline */}
-        <div className={styles.timeline}>
+        <div className={styles.timeline} ref={timelineRef}>
           <div className={styles.timelineLine} />
           {steps.map((step) => {
           const isOpen = isMobile ? tapped === step.num : hovered === step.num;

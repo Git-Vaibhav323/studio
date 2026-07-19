@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './SpatialIntelligence.module.css';
 
 const cards = [
@@ -63,6 +66,12 @@ const cards = [
 ];
 
 export default function SpatialIntelligence() {
+  const headlineRef = useRevealAnimation(100);
+  const overlineRef = useRevealAnimation(0);
+  const card1Ref = useCardAnimation('slideLeft', 0);
+  const card2Ref = useCardAnimation('slideUp', 150);
+  const card3Ref = useCardAnimation('slideRight', 300);
+  
   return (
     <section id="spatial" className={styles.section}>
       <div className={styles.vline} />
@@ -78,7 +87,7 @@ export default function SpatialIntelligence() {
 
           <div className={styles.left}>
             <div className={styles.overline}>
-              <span className={styles.overlineBar} />
+              <span className={styles.overlineBar} ref={overlineRef} />
               Our Difference
             </div>
             <div className={styles.overrule}>
@@ -87,7 +96,7 @@ export default function SpatialIntelligence() {
               <div className={styles.overruleLine} />
             </div>
 
-            <h2 className={styles.headline}>
+            <h2 className={styles.headline} ref={headlineRef}>
               Built On<br />
               <span className={styles.gold}>Spatial<br />Intelligence.</span>
             </h2>
@@ -102,36 +111,40 @@ export default function SpatialIntelligence() {
           </div>
 
           <div className={styles.cardsRow}>
-            {cards.map((card) => (
-              <div
-                key={card.id}
-                id={card.id}
-                className={`${styles.archCard} ${card.featured ? styles.featured : ''}`}
-              >
-                <div className={styles.iconWrap}>
-                  <div className={styles.iconInner}>
-                    {card.icon}
+            {cards.map((card, index) => {
+              const cardRef = index === 0 ? card1Ref : index === 1 ? card2Ref : card3Ref;
+              return (
+                <div
+                  key={card.id}
+                  id={card.id}
+                  ref={cardRef}
+                  className={`${styles.archCard} ${card.featured ? styles.featured : ''}`}
+                >
+                  <div className={styles.iconWrap}>
+                    <div className={styles.iconInner}>
+                      {card.icon}
+                    </div>
                   </div>
+
+                  <p className={styles.cardNum}>{card.num}</p>
+                  <div className={styles.cardRule} />
+                  <h3 className={styles.cardTitle}>{card.title}</h3>
+                  <p className={styles.cardDesc}>{card.desc}</p>
+
+                  <div className={styles.cardImg}>
+                    <div className={styles.cardImgFade} />
+                    <Image
+                      src={card.img}
+                      alt={card.imgAlt}
+                      fill
+                      style={{objectFit:'cover', objectPosition:'center top'}}
+                    />
+                  </div>
+
+                  {(card.featured || true) && <div className={styles.featDiamond} />}
                 </div>
-
-                <p className={styles.cardNum}>{card.num}</p>
-                <div className={styles.cardRule} />
-                <h3 className={styles.cardTitle}>{card.title}</h3>
-                <p className={styles.cardDesc}>{card.desc}</p>
-
-                <div className={styles.cardImg}>
-                  <div className={styles.cardImgFade} />
-                  <Image
-                    src={card.img}
-                    alt={card.imgAlt}
-                    fill
-                    style={{objectFit:'cover', objectPosition:'center top'}}
-                  />
-                </div>
-
-                {(card.featured || true) && <div className={styles.featDiamond} />}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

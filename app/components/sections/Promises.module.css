@@ -2,12 +2,11 @@
 
 .section{
   position:relative;
-  padding:5vh 5vw 0;
+  padding:40px 5vw 0;
   background:#111 url('/images/bg/bg-sec-3.webp') center bottom/cover no-repeat;
   display:flex;
   flex-direction:column;
   overflow:hidden;
-  min-height:auto;
   color:var(--cream);
 }
 

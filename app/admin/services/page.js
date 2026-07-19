@@ -21,17 +21,26 @@ export default function ServicesManagement() {
   }, []);
 
   const fetchServices = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('services')
         .select('*')
         .order('sort_order', { ascending: true });
 
-      if (error) throw error;
-      setServices(data || []);
+      if (error) {
+        console.warn('Services table not found or accessible:', error);
+        setServices([]);
+      } else {
+        setServices(data || []);
+      }
     } catch (error) {
-      toast.error('Error fetching services');
-      console.error('Error:', error);
+      console.error('Error fetching services:', error);
+      setServices([]);
     } finally {
       setLoading(false);
     }

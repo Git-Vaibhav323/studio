@@ -181,7 +181,7 @@
 
 .hero {
   position: relative;
-  padding: calc(var(--nav-h) + 72px) 5vw 120px;
+  padding: calc(var(--nav-h) + 20px) 5vw 60px;
   background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom/cover no-repeat;
   overflow: hidden;
 }
@@ -259,12 +259,12 @@
 }
 
 .section {
-  padding: 72px 5vw;
+  padding: 30px 5vw;
   background: var(--cream);
 }
 
 .sectionAlt {
-  padding: 72px 5vw;
+  padding: 30px 5vw;
   background: var(--cream-light);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -921,7 +921,7 @@
 }
 
 .reuseWrap {
-  padding-top: var(--nav-h);
+  padding-top: 0;
 }
 
 @media (max-width: 900px) {

@@ -1,12 +1,11 @@
 .section {
   position: relative;
   background: var(--cream) url('/images/bg/bg-sec-7.webp') center bottom/cover no-repeat;
-  padding: 6vh 5vw 60px;
+  padding: 30px 5vw 30px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   color: var(--dark);
-  min-height: 100vh;
 }
 
 @media (max-width: 768px) {
@@ -257,9 +256,10 @@
 .cardFooter {
   padding: 18px 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 4px;
   border-top: 1px solid rgba(180, 144, 79, 0.2);
   background: rgba(246,240,230,0.4);
   transition: background 0.3s ease;

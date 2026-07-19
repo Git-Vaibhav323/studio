@@ -1,12 +1,11 @@
 .section {
   position: relative;
   background: var(--cream) url('/images/bg/bg-sec-4.webp') center bottom/cover no-repeat;
-  padding: 6vh 5vw 60px;
+  padding: 40px 5vw 40px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   color: var(--dark);
-  min-height: 100vh;
 }
 
 /* -------------------------------------
@@ -16,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 4vh;
+  margin-bottom: 2vh;
   position: relative;
   z-index: 10;
 }

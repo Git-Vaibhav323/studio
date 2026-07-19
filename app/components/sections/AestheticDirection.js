@@ -1,6 +1,7 @@
 'use client';
 import { useRef } from 'react';
 import Image from 'next/image';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './AestheticDirection.module.css';
 
 const cards = [
@@ -8,12 +9,13 @@ const cards = [
   { num: '02', title: 'Contemporary Indian', img: '/images/card_proportion.png', desc: 'Modern living with Indian soul. Handcrafted textures, warm woods, and traditional motifs reimagined for how we live today — familiar, yet entirely current.' },
   { num: '03', title: 'Biophilic Living', img: '/images/card_circulation.png', desc: 'Designed to breathe. Natural light, greenery, and organic textures bring the calm of the outdoors in — spaces that feel alive, not just decorated.' },
   { num: '04', title: 'Eclectic Luxury', img: '/images/hero_living_room.png', desc: 'Bold, layered, and unmistakably yours. Rich textures and statement pieces come together with confidence — a home that feels curated, not matched.' },
-  { num: '05', title: 'Eclectic Luxury', img: '/images/hero_living_room.png', desc: 'Bold, layered, and unmistakably yours. Rich textures and statement pieces come together with confidence — a home that feels curated, not matched.' },
-  { num: '06', title: 'Eclectic Luxury', img: '/images/hero_living_room.png', desc: 'Bold, layered, and unmistakably yours. Rich textures and statement pieces come together with confidence — a home that feels curated, not matched.' },
 ];
 
 export default function AestheticDirection() {
   const carouselRef = useRef(null);
+  const titleRef = useRevealAnimation(200);
+  const subtitleRef = useRevealAnimation(400);
+  const carouselWrapperRef = useCardAnimation('slideUp', 600);
 
   const scroll = (dir) => {
     const el = carouselRef.current;
@@ -33,21 +35,21 @@ export default function AestheticDirection() {
         <div className={styles.titleBlock}>
           <div className={styles.titleLeft}>
             <div className={styles.titleText}>
-              <h2>Our Aesthetic <span>Direction</span></h2>
+              <h2 ref={titleRef}>Our Aesthetic <span>Direction</span></h2>
             </div>
           </div>
           <div className={styles.titleRight}>
             <div className={styles.titleStar}>
               <svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)"/></svg>
             </div>
-            <div className={styles.trSubtitle}>THE AESTHETICS WE LOVE MOST.</div>
+            <div className={styles.trSubtitle} ref={subtitleRef}>THE AESTHETICS WE LOVE MOST.</div>
             <div className={styles.trDesc}>Every style begins with how the space works, and then we curate its soul.</div>
           </div>
         </div>
 
         <hr className={styles.divider} />
 
-        <div className={styles.carouselWrapper}>
+        <div className={styles.carouselWrapper} ref={carouselWrapperRef}>
           <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={() => scroll(-1)} aria-label="Previous">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
