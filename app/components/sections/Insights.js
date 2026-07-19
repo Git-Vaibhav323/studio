@@ -116,26 +116,41 @@ export default function Insights() {
             <div style={{ 
               display: 'flex', 
               justifyContent: 'center', 
-              marginTop: '1.5rem' 
+              marginTop: '1rem' 
             }}>
-              <Link href="/insights" style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.75rem 1.5rem',
-                background: 'rgba(180, 144, 79, 0.15)',
-                color: 'var(--gold)',
-                textDecoration: 'none',
-                border: '1px solid rgba(180, 144, 79, 0.3)',
-                fontWeight: '500',
-                fontSize: '13px',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                transition: 'all 0.3s ease'
-              }}>
-                View All Insights
-              </Link>
-            </div>
+             <Link
+  href="/insights"
+  style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    padding: '0.75rem 1.5rem',
+    marginBottom: '4.7rem',
+    background: 'rgba(180, 144, 79, 0.15)',
+    color: 'var(--gold)',
+    textDecoration: 'none',
+    border: '1px solid rgba(180, 144, 79, 0.3)',
+    fontWeight: '500',
+    fontSize: '13px',
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase',
+    transition: 'all 0.3s ease'
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.background = 'rgba(180, 144, 79, 0.3)';
+    e.currentTarget.style.borderColor = 'rgba(180, 144, 79, 0.6)';
+    e.currentTarget.style.transform = 'translateY(-2px)';
+    e.currentTarget.style.boxShadow = '0 8px 20px rgba(180, 144, 79, 0.2)';
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.background = 'rgba(180, 144, 79, 0.15)';
+    e.currentTarget.style.borderColor = 'rgba(180, 144, 79, 0.3)';
+    e.currentTarget.style.transform = 'translateY(0)';
+    e.currentTarget.style.boxShadow = 'none';
+  }}
+>
+  View All Insights
+</Link></div>
           </>
         ) : (
           <div style={{ 

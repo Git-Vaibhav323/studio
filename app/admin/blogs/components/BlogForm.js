@@ -14,7 +14,24 @@ import styles from './BlogForm.module.css';
 function RichTextEditor({ value, onChange, placeholder }) {
   const handleFormat = (command, value = null) => {
     document.execCommand(command, false, value);
-    onChange(document.getElementById('editor').innerHTML);
+    const editor = document.getElementById('editor');
+    if (editor) {
+      onChange(editor.innerHTML);
+    }
+  };
+
+  const handleInput = (e) => {
+    // Ensure proper text direction and prevent backwards typing
+    const editor = e.target;
+    editor.style.direction = 'ltr';
+    editor.style.textAlign = 'left';
+    onChange(editor.innerHTML);
+  };
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
   };
 
   return (
@@ -38,8 +55,10 @@ function RichTextEditor({ value, onChange, placeholder }) {
         className={styles.editorContent}
         contentEditable
         dangerouslySetInnerHTML={{ __html: value }}
-        onInput={(e) => onChange(e.target.innerHTML)}
+        onInput={handleInput}
+        onPaste={handlePaste}
         data-placeholder={placeholder}
+        style={{ direction: 'ltr', textAlign: 'left', unicodeBidi: 'embed' }}
       />
     </div>
   );

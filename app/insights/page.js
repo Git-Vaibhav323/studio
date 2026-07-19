@@ -106,17 +106,41 @@ export default function InsightsPage() {
                       key={category}
                       onClick={() => setSelectedCategory(category)}
                       style={{
-                        padding: '0.75rem 1.5rem',
-                        background: selectedCategory === category ? 'var(--gold)' : 'rgba(248, 244, 237, 0.86)',
-                        color: selectedCategory === category ? 'white' : 'var(--mid)',
-                        border: '1px solid var(--border)',
-                        borderRadius: '30px',
+                        padding: '0.8rem 1.8rem',
+                        background: selectedCategory === category 
+                          ? 'linear-gradient(135deg, var(--gold), rgba(180, 144, 79, 0.9))'
+                          : 'rgba(248, 244, 237, 0.95)',
+                        color: selectedCategory === category ? 'white' : 'var(--dark)',
+                        border: selectedCategory === category 
+                          ? '1px solid var(--gold)'
+                          : '1px solid rgba(180, 144, 79, 0.25)',
+                        borderRadius: '2px',
                         cursor: 'pointer',
-                        fontSize: '13px',
-                        fontWeight: '500',
-                        letterSpacing: '0.1em',
+                        fontSize: '11px',
+                        fontWeight: '600',
+                        letterSpacing: '0.15em',
                         textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)',
                         transition: 'all 0.3s ease',
+                        boxShadow: selectedCategory === category 
+                          ? '0 4px 12px rgba(180, 144, 79, 0.3)'
+                          : '0 2px 8px rgba(28, 23, 16, 0.05)',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (selectedCategory !== category) {
+                          e.target.style.background = 'rgba(180, 144, 79, 0.1)';
+                          e.target.style.borderColor = 'rgba(180, 144, 79, 0.5)';
+                          e.target.style.boxShadow = '0 4px 12px rgba(28, 23, 16, 0.1)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedCategory !== category) {
+                          e.target.style.background = 'rgba(248, 244, 237, 0.95)';
+                          e.target.style.borderColor = 'rgba(180, 144, 79, 0.25)';
+                          e.target.style.boxShadow = '0 2px 8px rgba(28, 23, 16, 0.05)';
+                        }
                       }}
                     >
                       {category === 'all' ? 'All Insights' : category}

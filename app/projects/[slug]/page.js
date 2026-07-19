@@ -63,10 +63,14 @@ export default function ProjectDetailPage() {
     }
   };
 
-  // Parse gallery images
+  // Parse gallery images - handle both array and string formats
   const galleryImages = project?.gallery_images ? 
-    (Array.isArray(project.gallery_images) ? project.gallery_images : []) 
-    : [];
+    (Array.isArray(project.gallery_images) 
+      ? project.gallery_images 
+      : typeof project.gallery_images === 'string'
+        ? JSON.parse(project.gallery_images).filter(img => img && img.trim())
+        : []
+    ) : [];
 
   if (loading) {
     return (
@@ -243,25 +247,35 @@ export default function ProjectDetailPage() {
               <div>
                 {project.description && (
                   <div style={{
-                    background: 'rgba(248, 244, 237, 0.86)',
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    border: '1px solid var(--border)',
-                    marginBottom: '2rem'
+                    background: 'rgba(248, 244, 237, 0.95)',
+                    padding: '2.5rem',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(180, 144, 79, 0.2)',
+                    marginBottom: '2rem',
+                    boxShadow: '0 8px 32px rgba(28, 23, 16, 0.08)'
                   }}>
-                    <h3 className={styles.sectionTitle} style={{ 
-                      fontSize: 'clamp(20px, 2.5vw, 28px)', 
-                      marginBottom: '1rem',
-                      borderBottom: '2px solid var(--gold)',
-                      paddingBottom: '0.5rem'
+                    <h3 style={{ 
+                      fontFamily: 'var(--serif)',
+                      fontSize: 'clamp(22px, 3vw, 32px)', 
+                      fontWeight: '400',
+                      color: 'var(--dark)',
+                      marginBottom: '1.5rem',
+                      borderBottom: '3px solid var(--gold)',
+                      paddingBottom: '0.75rem',
+                      letterSpacing: '-0.02em'
                     }}>
                       Project Overview
                     </h3>
-                    <div className={styles.bodyText} style={{ fontSize: '15px', lineHeight: '1.7' }}>
+                    <div style={{ 
+                      fontSize: '16px', 
+                      lineHeight: '1.8',
+                      color: 'var(--dark)',
+                      fontFamily: 'var(--sans)'
+                    }}>
                       {project.content ? (
                         <div dangerouslySetInnerHTML={{ __html: project.content }} />
                       ) : (
-                        project.description
+                        <p style={{ margin: 0 }}>{project.description}</p>
                       )}
                     </div>
                   </div>
@@ -270,34 +284,54 @@ export default function ProjectDetailPage() {
 
               {/* Project Details */}
               <div style={{
-                background: 'rgba(248, 244, 237, 0.76)',
-                padding: '2rem',
-                borderRadius: '12px',
-                border: '1px solid var(--border)',
-                height: 'fit-content'
+                background: 'rgba(248, 244, 237, 0.95)',
+                padding: '2.5rem',
+                borderRadius: '16px',
+                border: '1px solid rgba(180, 144, 79, 0.2)',
+                height: 'fit-content',
+                boxShadow: '0 8px 32px rgba(28, 23, 16, 0.08)'
               }}>
-                <h3 className={styles.sectionTitle} style={{ 
-                  fontSize: 'clamp(20px, 2.5vw, 28px)', 
-                  marginBottom: '1.5rem',
-                  borderBottom: '2px solid var(--gold)',
-                  paddingBottom: '0.5rem'
+                <h3 style={{ 
+                  fontFamily: 'var(--serif)',
+                  fontSize: 'clamp(22px, 3vw, 32px)', 
+                  fontWeight: '400',
+                  color: 'var(--dark)',
+                  marginBottom: '2rem',
+                  borderBottom: '3px solid var(--gold)',
+                  paddingBottom: '0.75rem',
+                  letterSpacing: '-0.02em'
                 }}>
                   Project Details
                 </h3>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   {project.client && (
                     <div style={{ 
                       display: 'flex', 
                       justifyContent: 'space-between', 
                       alignItems: 'flex-start',
-                      paddingBottom: '1rem',
-                      borderBottom: '1px solid var(--border)'
+                      paddingBottom: '1.2rem',
+                      borderBottom: '1px solid rgba(180, 144, 79, 0.15)'
                     }}>
-                      <span style={{ fontWeight: '500', color: 'var(--mid)', fontSize: '13px', minWidth: '80px' }}>
+                      <span style={{ 
+                        fontWeight: '600', 
+                        color: 'var(--gold)', 
+                        fontSize: '13px', 
+                        minWidth: '90px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)'
+                      }}>
                         Client
                       </span>
-                      <span style={{ fontWeight: '500', color: 'var(--dark)', textAlign: 'right', flex: 1 }}>
+                      <span style={{ 
+                        fontWeight: '500', 
+                        color: 'var(--dark)', 
+                        textAlign: 'right', 
+                        flex: 1,
+                        fontSize: '15px',
+                        fontFamily: 'var(--serif)'
+                      }}>
                         {project.client}
                       </span>
                     </div>
@@ -307,13 +341,28 @@ export default function ProjectDetailPage() {
                       display: 'flex', 
                       justifyContent: 'space-between', 
                       alignItems: 'flex-start',
-                      paddingBottom: '1rem',
-                      borderBottom: '1px solid var(--border)'
+                      paddingBottom: '1.2rem',
+                      borderBottom: '1px solid rgba(180, 144, 79, 0.15)'
                     }}>
-                      <span style={{ fontWeight: '500', color: 'var(--mid)', fontSize: '13px', minWidth: '80px' }}>
+                      <span style={{ 
+                        fontWeight: '600', 
+                        color: 'var(--gold)', 
+                        fontSize: '13px', 
+                        minWidth: '90px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)'
+                      }}>
                         Location
                       </span>
-                      <span style={{ fontWeight: '500', color: 'var(--dark)', textAlign: 'right', flex: 1 }}>
+                      <span style={{ 
+                        fontWeight: '500', 
+                        color: 'var(--dark)', 
+                        textAlign: 'right', 
+                        flex: 1,
+                        fontSize: '15px',
+                        fontFamily: 'var(--serif)'
+                      }}>
                         {project.location}
                       </span>
                     </div>
@@ -323,13 +372,28 @@ export default function ProjectDetailPage() {
                       display: 'flex', 
                       justifyContent: 'space-between', 
                       alignItems: 'flex-start',
-                      paddingBottom: '1rem',
-                      borderBottom: '1px solid var(--border)'
+                      paddingBottom: '1.2rem',
+                      borderBottom: '1px solid rgba(180, 144, 79, 0.15)'
                     }}>
-                      <span style={{ fontWeight: '500', color: 'var(--mid)', fontSize: '13px', minWidth: '80px' }}>
+                      <span style={{ 
+                        fontWeight: '600', 
+                        color: 'var(--gold)', 
+                        fontSize: '13px', 
+                        minWidth: '90px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)'
+                      }}>
                         Area
                       </span>
-                      <span style={{ fontWeight: '500', color: 'var(--dark)', textAlign: 'right', flex: 1 }}>
+                      <span style={{ 
+                        fontWeight: '500', 
+                        color: 'var(--dark)', 
+                        textAlign: 'right', 
+                        flex: 1,
+                        fontSize: '15px',
+                        fontFamily: 'var(--serif)'
+                      }}>
                         {project.area}
                       </span>
                     </div>
@@ -339,13 +403,28 @@ export default function ProjectDetailPage() {
                       display: 'flex', 
                       justifyContent: 'space-between', 
                       alignItems: 'flex-start',
-                      paddingBottom: '1rem',
-                      borderBottom: '1px solid var(--border)'
+                      paddingBottom: '1.2rem',
+                      borderBottom: '1px solid rgba(180, 144, 79, 0.15)'
                     }}>
-                      <span style={{ fontWeight: '500', color: 'var(--mid)', fontSize: '13px', minWidth: '80px' }}>
+                      <span style={{ 
+                        fontWeight: '600', 
+                        color: 'var(--gold)', 
+                        fontSize: '13px', 
+                        minWidth: '90px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)'
+                      }}>
                         Year
                       </span>
-                      <span style={{ fontWeight: '500', color: 'var(--dark)', textAlign: 'right', flex: 1 }}>
+                      <span style={{ 
+                        fontWeight: '500', 
+                        color: 'var(--dark)', 
+                        textAlign: 'right', 
+                        flex: 1,
+                        fontSize: '15px',
+                        fontFamily: 'var(--serif)'
+                      }}>
                         {project.year}
                       </span>
                     </div>
@@ -355,13 +434,28 @@ export default function ProjectDetailPage() {
                       display: 'flex', 
                       justifyContent: 'space-between', 
                       alignItems: 'flex-start',
-                      paddingBottom: '1rem',
-                      borderBottom: '1px solid var(--border)'
+                      paddingBottom: '1.2rem',
+                      borderBottom: '1px solid rgba(180, 144, 79, 0.15)'
                     }}>
-                      <span style={{ fontWeight: '500', color: 'var(--mid)', fontSize: '13px', minWidth: '80px' }}>
+                      <span style={{ 
+                        fontWeight: '600', 
+                        color: 'var(--gold)', 
+                        fontSize: '13px', 
+                        minWidth: '90px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)'
+                      }}>
                         Duration
                       </span>
-                      <span style={{ fontWeight: '500', color: 'var(--dark)', textAlign: 'right', flex: 1 }}>
+                      <span style={{ 
+                        fontWeight: '500', 
+                        color: 'var(--dark)', 
+                        textAlign: 'right', 
+                        flex: 1,
+                        fontSize: '15px',
+                        fontFamily: 'var(--serif)'
+                      }}>
                         {project.duration}
                       </span>
                     </div>
@@ -372,10 +466,25 @@ export default function ProjectDetailPage() {
                       justifyContent: 'space-between', 
                       alignItems: 'flex-start'
                     }}>
-                      <span style={{ fontWeight: '500', color: 'var(--mid)', fontSize: '13px', minWidth: '80px' }}>
+                      <span style={{ 
+                        fontWeight: '600', 
+                        color: 'var(--gold)', 
+                        fontSize: '13px', 
+                        minWidth: '90px',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                        fontFamily: 'var(--sans)'
+                      }}>
                         Budget
                       </span>
-                      <span style={{ fontWeight: '500', color: 'var(--dark)', textAlign: 'right', flex: 1 }}>
+                      <span style={{ 
+                        fontWeight: '500', 
+                        color: 'var(--dark)', 
+                        textAlign: 'right', 
+                        flex: 1,
+                        fontSize: '15px',
+                        fontFamily: 'var(--serif)'
+                      }}>
                         {project.budget}
                       </span>
                     </div>
@@ -383,20 +492,39 @@ export default function ProjectDetailPage() {
                 </div>
 
                 {project.services && project.services.length > 0 && (
-                  <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+                  <div style={{ marginTop: '2.5rem', paddingTop: '2rem', borderTop: '1px solid rgba(180, 144, 79, 0.2)' }}>
                     <h4 style={{
                       fontFamily: 'var(--serif)',
-                      fontSize: '18px',
+                      fontSize: '20px',
+                      fontWeight: '400',
                       color: 'var(--dark)',
-                      marginBottom: '1rem',
+                      marginBottom: '1.5rem',
                       borderBottom: '2px solid var(--gold)',
-                      paddingBottom: '0.5rem'
+                      paddingBottom: '0.5rem',
+                      letterSpacing: '-0.01em'
                     }}>
                       Services Provided
                     </h4>
-                    <ul className={styles.list}>
+                    <ul style={{
+                      listStyle: 'none',
+                      padding: 0,
+                      margin: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.75rem'
+                    }}>
                       {project.services.map((service, index) => (
-                        <li key={index}>{service}</li>
+                        <li key={index} style={{
+                          fontSize: '14px',
+                          color: 'var(--dark)',
+                          fontFamily: 'var(--sans)',
+                          padding: '0.5rem 0',
+                          borderLeft: '3px solid var(--gold)',
+                          paddingLeft: '1rem',
+                          background: 'rgba(180, 144, 79, 0.05)'
+                        }}>
+                          {service}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -409,27 +537,43 @@ export default function ProjectDetailPage() {
         {galleryImages.length > 0 && (
           <section className={styles.section}>
             <div className={styles.sectionInner}>
-              <h3 className={styles.sectionTitle} style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <h3 style={{ 
+                fontFamily: 'var(--serif)',
+                fontSize: 'clamp(24px, 4vw, 36px)',
+                fontWeight: '400',
+                color: 'var(--dark)',
+                textAlign: 'center', 
+                marginBottom: '3rem',
+                letterSpacing: '-0.02em'
+              }}>
                 Project Gallery
               </h3>
               
               <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-                gap: '2rem' 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+                gap: '2.5rem' 
               }}>
                 {galleryImages.map((image, index) => (
                   <div key={index} style={{
                     position: 'relative',
                     aspectRatio: '4/3',
-                    borderRadius: '12px',
+                    borderRadius: '16px',
                     overflow: 'hidden',
                     background: 'var(--cream-light)',
                     cursor: 'pointer',
-                    transition: 'transform 0.3s ease'
+                    transition: 'transform 0.4s ease, box-shadow 0.4s ease',
+                    boxShadow: '0 8px 32px rgba(28, 23, 16, 0.08)',
+                    border: '1px solid rgba(180, 144, 79, 0.1)'
                   }}
-                  onMouseEnter={(e) => e.target.style.transform = 'translateY(-4px)'}
-                  onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(28, 23, 16, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(28, 23, 16, 0.08)';
+                  }}
                   >
                     <Image
                       src={image}

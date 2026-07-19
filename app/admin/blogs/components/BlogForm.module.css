@@ -162,9 +162,10 @@
   font-family: inherit;
   font-size: 0.9rem;
   line-height: 1.6;
-  direction: ltr;
-  text-align: left;
-  unicode-bidi: embed;
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: embed !important;
+  writing-mode: horizontal-tb !important;
 }
 
 .editorContent:empty::before {
