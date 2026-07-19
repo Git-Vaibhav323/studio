@@ -115,10 +115,10 @@ export default function AboutSpatial() {
               reverting to live cards at that breakpoint.
             */}
             <Image
-              src="/images/rightfinal.png"
+              src="/images/rightfinal2.png"
               alt="Spatial design annotation system: a floor plan with connector lines leading to three cards — 01 Circulation (how you move through every room), 02 Proportion (how scale determines how a space feels), 03 Light (how natural light moves through your home). Below the floor plan: 'Does this room work for the life being lived inside it?' — an analysis of layout, circulation, proportion, natural light, acoustics, and the relationship between rooms, all before a single finish or furniture piece is chosen."
               width={696}
-              height={772}
+              height={1000}
               priority
               className={styles.rightFlatImage}
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 696px"
