@@ -2,6 +2,10 @@
 
 A professional Next.js website with a comprehensive admin panel for The Spatial Edit, a spatial design and interior design studio in Hyderabad.
 
+## Client Project
+
+This website was developed as a client project to establish The Spatial Edit's premium digital presence and support its day-to-day content management. The visual direction, responsive experience, portfolio, service pages, lead collection, and custom admin tools were built around the studio's brand and business requirements.
+
 ## 🚀 Features Completed
 
 ### ✅ Complete Admin Panel System
