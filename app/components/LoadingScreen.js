@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './LoadingScreen.module.css';
 
-const FRAME_COUNT = 230;
-
 const siteImages = [
   '/images/hero_living_room.png',
   '/images/hero_interior.png',
@@ -32,10 +30,6 @@ const siteImages = [
   '/images/bg/bg-sec-con.webp',
 ];
 
-function framePath(index) {
-  return `/motion/ezgif-frame-${String(index + 1).padStart(3, '0')}.jpg`;
-}
-
 function preloadImage(src) {
   return new Promise((resolve) => {
     const image = new window.Image();
@@ -53,10 +47,8 @@ export default function LoadingScreen() {
   const [done, setDone] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
 
-  const assets = useMemo(() => [
-    ...Array.from({ length: FRAME_COUNT }, (_, index) => framePath(index)),
-    ...siteImages,
-  ], []);
+  // Hero frames preload inside HeroSection; keep the boot loader light.
+  const assets = useMemo(() => siteImages, []);
 
   // Animate loading dots
   useEffect(() => {
