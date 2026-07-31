@@ -26,8 +26,9 @@
   display: block;
   pointer-events: none;
   image-rendering: auto;
-  /* Fixed plane — no transforms / parallax */
-  transform: none;
+  /* GPU layer — no parallax transforms */
+  transform: translateZ(0);
+  backface-visibility: hidden;
   transition: opacity 0.35s ease;
 }
 
@@ -120,10 +121,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: rgba(21, 19, 15, 0.72);
+  background: rgba(21, 19, 15, 0.88);
   border: 1px solid rgba(208, 173, 105, 0.28);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .prepareChip:not(.prepareChipOverImage) {

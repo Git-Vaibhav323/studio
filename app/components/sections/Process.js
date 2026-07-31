@@ -106,29 +106,50 @@ export default function Process() {
   }, []);
 
   useEffect(() => {
-    let scrollListenerActive = true;
+    const section = sectionRef.current;
+    if (!section) return undefined;
 
-    const handleScroll = () => {
-      if (!scrollListenerActive || !sectionRef.current) return;
-      
+    let raf = 0;
+    let lastPct = -1;
+    let visible = true;
+
+    const update = () => {
+      raf = 0;
+      if (!visible || !sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      const sectionHeight = rect.height;
-      
-      // Calculate progress based on section visibility
-      const scrollProgress = Math.max(0, Math.min(1, 
-        (windowHeight - rect.top) / (windowHeight + sectionHeight)
-      ));
-      
-      setProgress(scrollProgress * 100);
+      const scrollProgress = Math.max(
+        0,
+        Math.min(1, (windowHeight - rect.top) / (windowHeight + rect.height)),
+      );
+      const pct = Math.round(scrollProgress * 100);
+      if (pct !== lastPct) {
+        lastPct = pct;
+        setProgress(pct);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial call
-    
+    const onScroll = () => {
+      if (raf || !visible) return;
+      raf = requestAnimationFrame(update);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        visible = entries[0]?.isIntersecting ?? false;
+        if (visible) onScroll();
+      },
+      { rootMargin: '100px 0px' },
+    );
+    io.observe(section);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    update();
+
     return () => {
-      scrollListenerActive = false;
-      window.removeEventListener('scroll', handleScroll);
+      io.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 

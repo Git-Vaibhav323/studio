@@ -1,29 +1,31 @@
 /**
- * Hero scroll-frame sequence configuration.
- * Paths match output of `npm run generate:hero-frames`.
+ * Hero scroll-frame sequence — EZGIF JPG frames in /public/hero/frames.
  */
 
 export const HERO_FRAMES_BASE = '/hero/frames';
 export const HERO_MANIFEST_URL = `${HERO_FRAMES_BASE}/manifest.json`;
 
-/** Fallback when manifest is unavailable (must match last generate run). */
 export const HERO_FRAME_COUNT_FALLBACK = 269;
-export const HERO_FRAME_WIDTH_FALLBACK = 3840;
-export const HERO_FRAME_HEIGHT_FALLBACK = 2160;
+export const HERO_FRAME_WIDTH_FALLBACK = 1600;
+export const HERO_FRAME_HEIGHT_FALLBACK = 900;
 
-export const HERO_FRAME_PAD = 4;
-export const HERO_FRAME_EXT = 'webp';
+export const HERO_FRAME_PREFIX = 'ezgif-frame-';
+export const HERO_FRAME_PAD = 3;
+export const HERO_FRAME_EXT = 'jpg';
 
-/** Title fade windows mapped to scroll progress 0–1. */
 export const TITLE_RANGES = [
   { start: 0, fadeInEnd: 0, fadeOutStart: 0.14, end: 0.23 },
   { start: 0.34, fadeInEnd: 0.4, fadeOutStart: 0.53, end: 0.6 },
   { start: 0.7, fadeInEnd: 0.77, fadeOutStart: 0.9, end: 0.97 },
 ];
 
-export function frameUrl(index, { pad = HERO_FRAME_PAD, ext = HERO_FRAME_EXT } = {}) {
+export function frameUrl(index, {
+  pad = HERO_FRAME_PAD,
+  ext = HERO_FRAME_EXT,
+  prefix = HERO_FRAME_PREFIX,
+} = {}) {
   const n = String(index + 1).padStart(pad, '0');
-  return `${HERO_FRAMES_BASE}/frame_${n}.${ext}`;
+  return `${HERO_FRAMES_BASE}/${prefix}${n}.${ext}`;
 }
 
 export function titleOpacity(progress, range) {
@@ -37,45 +39,35 @@ export function titleOpacity(progress, range) {
   return 1;
 }
 
-/**
- * How densely to index frames on weaker devices (decode step).
- * Keep step at 1 so scroll up/down advances one frame at a time.
- */
+/** Always step 1 — skipping frames looks like stutter/stops. */
 export function resolveFrameStep() {
-  if (typeof window === 'undefined') return 1;
-  if (navigator.connection?.saveData === true) return 2;
   return 1;
 }
 
 /**
- * Decode width cap. Smaller = less memory per bitmap + faster decode.
+ * Fixed decode width. Independent of viewport so we never wipe the
+ * ImageBitmap cache on resize (that was a major flicker cause).
  */
 export function resolveDecodeMaxWidth() {
-  if (typeof window === 'undefined') return 1440;
-  const mobile = window.matchMedia('(max-width: 768px)').matches;
-  if (mobile) return 1080;
-  return 1440;
-}
-
-/**
- * Max decoded ImageBitmaps retained in memory.
- * Kept intentionally small — we decode on demand around the current
- * frame instead of holding the whole sequence (that lagged the whole site).
- */
-export function resolveBitmapBudget() {
-  if (typeof window === 'undefined') return 56;
-
+  if (typeof window === 'undefined') return 1280;
   const mobile = window.matchMedia('(max-width: 768px)').matches;
   const memory = navigator.deviceMemory;
-
-  if (mobile || (memory != null && memory <= 4)) return 32;
-  if (memory != null && memory <= 8) return 52;
-  return 72;
+  if (mobile || (memory != null && memory <= 4)) return 960;
+  if (memory != null && memory <= 8) return 1120;
+  return 1280;
 }
 
-/** How many frames to decode around the current position while scrubbing. */
-export function resolvePrefetchRadius() {
-  if (typeof window === 'undefined') return 14;
+export function resolveBitmapBudget() {
+  if (typeof window === 'undefined') return 72;
   const mobile = window.matchMedia('(max-width: 768px)').matches;
-  return mobile ? 8 : 16;
+  const memory = navigator.deviceMemory;
+  if (mobile || (memory != null && memory <= 4)) return 40;
+  if (memory != null && memory <= 8) return 60;
+  return 80;
+}
+
+export function resolvePrefetchRadius() {
+  if (typeof window === 'undefined') return 20;
+  const mobile = window.matchMedia('(max-width: 768px)').matches;
+  return mobile ? 12 : 24;
 }

@@ -7,9 +7,7 @@
   justify-content: space-between;
   padding: 22px 40px 22px 44px;
   z-index: 9999;
-  background: rgba(244,237,224,0.94) url('/images/navbarbg.png') center center/cover no-repeat;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(244,237,224,0.97) url('/images/navbarbg.png') center center/cover no-repeat;
   border-bottom: 1px solid rgba(180,144,79,0.18);
   transition: box-shadow 0.35s var(--ease-smooth), border-color 0.35s ease, padding 0.35s ease;
   position: relative;
@@ -202,7 +200,6 @@
     top: 100%;
     left: 0; right: 0;
     background: rgba(244,237,224,0.98) url('/images/navbarbg.png') center center/cover no-repeat;
-    backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(180,144,79,0.2);
     padding: 6px 24px 22px;
     max-height: 0;

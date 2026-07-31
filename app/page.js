@@ -1,17 +1,38 @@
+import dynamic from 'next/dynamic';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import HeroSection from './components/sections/HeroSection';
-import SpatialIntelligence from './components/sections/SpatialIntelligence';
-import AboutSpatial from './components/sections/AboutSpatial';
-import Comparison from './components/sections/Comparison';
-import AestheticDirection from './components/sections/AestheticDirection';
-import Promises from './components/sections/Promises';
-import OurWork from './components/sections/OurWork';
-import Process from './components/sections/Process';
-import Insights from './components/sections/Insights';
-import OurStory from './components/sections/OurStory';
-import FAQs from './components/sections/FAQs';
-import ContactForm from './components/sections/ContactForm';
+
+const SpatialIntelligence = dynamic(() => import('./components/sections/SpatialIntelligence'), {
+  loading: () => null,
+});
+const AboutSpatial = dynamic(() => import('./components/sections/AboutSpatial'), {
+  loading: () => null,
+});
+const Comparison = dynamic(() => import('./components/sections/Comparison'), {
+  loading: () => null,
+});
+const AestheticDirection = dynamic(() => import('./components/sections/AestheticDirection'), {
+  loading: () => null,
+});
+const Promises = dynamic(() => import('./components/sections/Promises'), {
+  loading: () => null,
+});
+const Process = dynamic(() => import('./components/sections/Process'), {
+  loading: () => null,
+});
+const Insights = dynamic(() => import('./components/sections/Insights'), {
+  loading: () => null,
+});
+const OurStory = dynamic(() => import('./components/sections/OurStory'), {
+  loading: () => null,
+});
+const FAQs = dynamic(() => import('./components/sections/FAQs'), {
+  loading: () => null,
+});
+const ContactForm = dynamic(() => import('./components/sections/ContactForm'), {
+  loading: () => null,
+});
 
 export default function Home() {
   return (
@@ -24,7 +45,6 @@ export default function Home() {
         <Comparison />
         <AestheticDirection />
         <Promises />
-        {/* <OurWork />  */}
         <Process />
         <Insights />
         <OurStory />

@@ -4,6 +4,7 @@ import {
   HERO_FRAME_EXT,
   HERO_FRAME_HEIGHT_FALLBACK,
   HERO_FRAME_PAD,
+  HERO_FRAME_PREFIX,
   HERO_FRAME_WIDTH_FALLBACK,
   HERO_MANIFEST_URL,
   resolveBitmapBudget,
@@ -14,21 +15,16 @@ import {
 
 export function buildFrameIndexList(frameCount, step) {
   const indices = [];
-  for (let i = 0; i < frameCount; i += step) {
-    indices.push(i);
-  }
+  for (let i = 0; i < frameCount; i += step) indices.push(i);
   const last = frameCount - 1;
-  if (indices[indices.length - 1] !== last) {
-    indices.push(last);
-  }
+  if (indices[indices.length - 1] !== last) indices.push(last);
   return indices;
 }
 
 export function snapToLoadedFrame(rawIndex, frameCount, step) {
   const clamped = Math.min(frameCount - 1, Math.max(0, Math.round(rawIndex)));
   if (step <= 1) return clamped;
-  const snapped = Math.round(clamped / step) * step;
-  return Math.min(frameCount - 1, snapped);
+  return Math.min(frameCount - 1, Math.round(clamped / step) * step);
 }
 
 export async function loadManifest() {
@@ -40,6 +36,7 @@ export async function loadManifest() {
       frameCount: Number(data.frameCount) || HERO_FRAME_COUNT_FALLBACK,
       pad: Number(data.pad) || HERO_FRAME_PAD,
       ext: data.extension || HERO_FRAME_EXT,
+      prefix: data.prefix || undefined,
       width: Number(data.width || data.sourceWidth) || HERO_FRAME_WIDTH_FALLBACK,
       height: Number(data.height || data.sourceHeight) || HERO_FRAME_HEIGHT_FALLBACK,
     };
@@ -55,25 +52,32 @@ export async function loadManifest() {
 }
 
 /**
- * Frame store optimized for continuous scrubbing:
- * - Prefetch blobs aggressively
- * - Keep a large sliding window of decoded bitmaps
- * - Directional prefetch based on scroll velocity
+ * Fixed-size ImageBitmap store.
+ * Decode size never changes with viewport → cache is never wiped mid-scroll
+ * (wiping on resize was a primary flicker source).
  */
 export function createFrameStore({
   frameCount,
   step,
   pad,
   ext,
+  prefix = HERO_FRAME_PREFIX,
   sourceWidth,
   sourceHeight,
-  getTargetSize,
 }) {
   const indices = buildFrameIndexList(frameCount, step);
   const indexSet = new Set(indices);
   const budget = resolveBitmapBudget();
   const maxDecodeW = resolveDecodeMaxWidth();
   const prefetchRadius = resolvePrefetchRadius();
+
+  // Fixed decode size once — canvas drawImage scales to cover.
+  const decodeWidth = Math.max(2, Math.min(sourceWidth, maxDecodeW) - (Math.min(sourceWidth, maxDecodeW) % 2));
+  const decodeHeight = Math.max(
+    2,
+    Math.round(decodeWidth * (sourceHeight / sourceWidth))
+      - (Math.round(decodeWidth * (sourceHeight / sourceWidth)) % 2),
+  );
 
   /** @type {Map<number, Blob>} */
   const blobs = new Map();
@@ -84,66 +88,18 @@ export function createFrameStore({
   /** @type {Map<number, Promise<ImageBitmap|null>>} */
   const bitmapLoads = new Map();
 
-  // Cap retained compressed blobs so we don't hold the whole 4K set in RAM.
-  const blobBudget = Math.min(indices.length, Math.max(budget * 3, 96));
+  const blobBudget = Math.min(indices.length, Math.max(budget * 4, 120));
 
-  let decodeWidth = 0;
-  let decodeHeight = 0;
   let disposed = false;
   let active = true;
   let lastCenter = 0;
-
-  const syncTargetSize = () => {
-    const size = getTargetSize?.() || { width: 0, height: 0 };
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cssW = Math.max(1, Math.round(size.width || window.innerWidth));
-    const cssH = Math.max(1, Math.round(size.height || window.innerHeight));
-
-    let tw = Math.min(sourceWidth, maxDecodeW, Math.round(cssW * dpr));
-    let th = Math.round(tw * (sourceHeight / sourceWidth));
-
-    const viewAspect = cssW / cssH;
-    const srcAspect = sourceWidth / sourceHeight;
-    if (srcAspect > viewAspect) {
-      // cover: height-limited
-      th = Math.min(sourceHeight, Math.round(cssH * dpr));
-      tw = Math.min(sourceWidth, maxDecodeW, Math.round(th * srcAspect));
-      th = Math.round(tw / srcAspect);
-    }
-
-    tw = Math.max(2, tw - (tw % 2));
-    th = Math.max(2, th - (th % 2));
-
-    if (tw !== decodeWidth || th !== decodeHeight) {
-      decodeWidth = tw;
-      decodeHeight = th;
-      for (const bmp of bitmaps.values()) {
-        try { bmp.close(); } catch { /* ignore */ }
-      }
-      bitmaps.clear();
-      bitmapLoads.clear();
-    }
-  };
-
-  const evictFarBlobs = (center) => {
-    if (blobs.size <= blobBudget) return;
-    const ranked = [...blobs.keys()]
-      .filter((key) => !bitmaps.has(key)) // never drop a blob whose bitmap is live
-      .sort((a, b) => Math.abs(b - center) - Math.abs(a - center)); // farthest first
-    let over = blobs.size - blobBudget;
-    for (let i = 0; i < ranked.length && over > 0; i += 1) {
-      blobs.delete(ranked[i]);
-      over -= 1;
-    }
-  };
+  let bgAbort = false;
 
   const fetchBlob = (index) => {
     if (blobs.has(index)) return Promise.resolve(blobs.get(index));
     if (blobLoads.has(index)) return blobLoads.get(index);
 
-    const url = frameUrl(index, { pad, ext });
-    // HTTP cache (force-cache) keeps frames on disk, so re-fetching an evicted
-    // blob is cheap — we don't need to hoard every decoded blob in memory.
+    const url = frameUrl(index, { pad, ext, prefix });
     const promise = fetch(url, { cache: 'force-cache' })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
@@ -152,7 +108,16 @@ export function createFrameStore({
       .then((blob) => {
         blobs.set(index, blob);
         blobLoads.delete(index);
-        evictFarBlobs(lastCenter);
+        if (blobs.size > blobBudget) {
+          const ranked = [...blobs.keys()]
+            .filter((k) => !bitmaps.has(k))
+            .sort((a, b) => Math.abs(b - lastCenter) - Math.abs(a - lastCenter));
+          let over = blobs.size - blobBudget;
+          for (let i = 0; i < ranked.length && over > 0; i += 1) {
+            blobs.delete(ranked[i]);
+            over -= 1;
+          }
+        }
         return blob;
       })
       .catch((err) => {
@@ -167,14 +132,14 @@ export function createFrameStore({
 
   const evictFarBitmaps = (center) => {
     if (bitmaps.size <= budget) return;
-    const first = indices[0];
-    const last = indices[indices.length - 1];
-    const protect = new Set([first, last, center]);
-
-    // Keep short runways at both ends (enter house + exit house)
-    for (let i = 0; i < Math.min(6, indices.length); i += 1) protect.add(indices[i]);
-    for (let i = Math.max(0, indices.length - 6); i < indices.length; i += 1) {
+    const protect = new Set([center, indices[0], indices[indices.length - 1]]);
+    for (let i = 0; i < Math.min(8, indices.length); i += 1) protect.add(indices[i]);
+    for (let i = Math.max(0, indices.length - 8); i < indices.length; i += 1) {
       protect.add(indices[i]);
+    }
+    // Protect a dense window around center
+    for (let d = -prefetchRadius; d <= prefetchRadius; d += 1) {
+      protect.add(snapToLoadedFrame(center + d * step, frameCount, step));
     }
 
     const ranked = [...bitmaps.keys()]
@@ -194,25 +159,23 @@ export function createFrameStore({
     if (disposed) return null;
     if (bitmaps.has(index)) return bitmaps.get(index);
     if (bitmapLoads.has(index)) return bitmapLoads.get(index);
-    if (!decodeWidth) syncTargetSize();
 
     const promise = (async () => {
       const blob = await fetchBlob(index);
       if (!blob || disposed) return null;
-
       try {
-        // medium = much faster decode during scrub; still sharp at decode size
+        // 'low' = fastest decode; frames are already 1600px so quality is fine
         const bmp = await createImageBitmap(blob, {
           resizeWidth: decodeWidth,
           resizeHeight: decodeHeight,
-          resizeQuality: 'medium',
+          resizeQuality: 'low',
         });
         if (disposed) {
           bmp.close();
           return null;
         }
         bitmaps.set(index, bmp);
-        evictFarBitmaps(index);
+        evictFarBitmaps(lastCenter || index);
         return bmp;
       } catch (err) {
         console.warn(`decode failed frame ${index}`, err);
@@ -245,13 +208,11 @@ export function createFrameStore({
     step,
     indices,
     indexSet,
+    decodeWidth,
+    decodeHeight,
 
     get readyCount() {
       return bitmaps.size;
-    },
-
-    get blobCount() {
-      return blobs.size;
     },
 
     isReady(index) {
@@ -259,70 +220,56 @@ export function createFrameStore({
     },
 
     async ensure(index) {
-      if (!indexSet.has(index)) {
-        index = snapToLoadedFrame(index, frameCount, step);
-      }
+      if (!indexSet.has(index)) index = snapToLoadedFrame(index, frameCount, step);
       lastCenter = index;
       return decodeBitmap(index);
     },
 
-    /**
-     * Decode a window around the current frame, biased toward the scroll
-     * direction so frames are ready *before* we reach them (kills the
-     * "stops in between" gaps). No-op when the hero is off-screen so it
-     * never competes with the rest of the page for the main thread.
-     */
     prefetch(center, opts = {}) {
       if (disposed || !active) return Promise.resolve();
-      if (!decodeWidth) syncTargetSize();
-
       const radius = opts.radius ?? prefetchRadius;
       const velocity = opts.velocity || 0;
-      // Look further ahead in the direction of travel, keep a small cushion behind.
-      const dir = velocity > 0.5 ? 1 : velocity < -0.5 ? -1 : 0;
-      const ahead = dir === 0 ? radius : Math.round(radius * 1.6);
-      const behind = dir === 0 ? radius : Math.max(4, Math.round(radius * 0.5));
+      const dir = velocity > 1 ? 1 : velocity < -1 ? -1 : 0;
+      const ahead = dir === 0 ? radius : Math.round(radius * 1.75);
+      const behind = dir === 0 ? radius : Math.max(6, Math.round(radius * 0.45));
 
       lastCenter = center;
-
-      // Build an ordered list: nearest frames first, ahead prioritised.
-      const wanted = [];
-      const maxD = Math.max(ahead, behind);
-      for (let d = 0; d <= maxD; d += 1) {
-        const forward = center + (dir >= 0 ? 1 : -1) * d * step;
-        const backward = center - (dir >= 0 ? 1 : -1) * d * step;
-        if (d <= ahead) wanted.push(forward);
-        if (d !== 0 && d <= behind) wanted.push(backward);
-      }
-
       const tasks = [];
-      for (const raw of wanted) {
-        const idx = snapToLoadedFrame(raw, frameCount, step);
-        if (!indexSet.has(idx)) continue;
-        if (bitmaps.has(idx) || bitmapLoads.has(idx)) continue;
-        tasks.push(decodeBitmap(idx));
-        if (tasks.length >= 16) break;
+      const maxD = Math.max(ahead, behind);
+
+      for (let d = 0; d <= maxD; d += 1) {
+        const fwd = center + (dir >= 0 ? 1 : -1) * d * step;
+        const back = center - (dir >= 0 ? 1 : -1) * d * step;
+        const candidates = d === 0 ? [fwd] : [fwd, back];
+        for (const raw of candidates) {
+          if (d > ahead && raw === fwd) continue;
+          if (d > behind && raw === back) continue;
+          const idx = snapToLoadedFrame(raw, frameCount, step);
+          if (!indexSet.has(idx)) continue;
+          if (bitmaps.has(idx) || bitmapLoads.has(idx)) continue;
+          tasks.push(decodeBitmap(idx));
+          if (tasks.length >= 12) break;
+        }
+        if (tasks.length >= 12) break;
       }
 
       return Promise.all(tasks);
     },
 
-    /**
-     * Enable/disable heavy work. When the hero scrolls out of view we stop
-     * decoding and release most bitmaps so the rest of the site stays smooth.
-     */
     setActive(next) {
       if (active === next) return;
       active = next;
       if (!active) {
-        // Keep a tiny cushion around the last position; drop the rest.
+        bgAbort = true;
         const ranked = [...bitmaps.keys()]
           .sort((a, b) => Math.abs(a - lastCenter) - Math.abs(b - lastCenter));
-        for (let i = 6; i < ranked.length; i += 1) {
+        for (let i = 4; i < ranked.length; i += 1) {
           const bmp = bitmaps.get(ranked[i]);
           bitmaps.delete(ranked[i]);
           try { bmp?.close(); } catch { /* ignore */ }
         }
+      } else {
+        bgAbort = false;
       }
     },
 
@@ -337,15 +284,14 @@ export function createFrameStore({
     },
 
     /**
-     * Decode a short opening runway so the top of the scroll is instantly
-     * smooth. Everything else is decoded on demand via prefetch — we do NOT
-     * decode the whole sequence (that pinned the CPU and lagged the site).
+     * Decode a solid opening runway BEFORE scrub unlocks, then keep decoding
+     * the rest in the background so mid-sequence never gaps.
      */
     async warmStart({ onProgress, signal } = {}) {
-      syncTargetSize();
       const total = indices.length;
-      const runway = indices.slice(0, Math.min(indices.length, 20));
-      const concurrency = 6;
+      const runwayLen = Math.min(indices.length, 48);
+      const runway = indices.slice(0, runwayLen);
+      const concurrency = 4;
 
       let done = 0;
       for (let i = 0; i < runway.length; i += concurrency) {
@@ -355,26 +301,33 @@ export function createFrameStore({
         onProgress?.(Math.min(done, total), total);
       }
 
-      // Warm just the disk/HTTP cache for the next stretch (blobs only, no
-      // decode) so early scrubbing has data ready without heavy work.
+      // Background: fetch + decode remaining frames slowly (yields to scroll)
+      bgAbort = false;
       (async () => {
-        const netConcurrency = 3;
-        const warmBlobs = indices.slice(0, Math.min(indices.length, 60));
-        for (let i = 0; i < warmBlobs.length; i += netConcurrency) {
-          if (signal?.aborted || disposed) break;
-          await Promise.all(warmBlobs.slice(i, i + netConcurrency).map(fetchBlob));
+        // First warm all blobs (HTTP cache) at low concurrency
+        for (let i = 0; i < indices.length; i += 3) {
+          if (signal?.aborted || disposed || bgAbort || !active) break;
+          await Promise.all(indices.slice(i, i + 3).map(fetchBlob));
+          await new Promise((r) => setTimeout(r, 8));
         }
+        // Then decode remaining into the sliding budget
+        for (let i = 0; i < indices.length; i += 2) {
+          if (signal?.aborted || disposed || bgAbort || !active) break;
+          await Promise.all(indices.slice(i, i + 2).map(decodeBitmap));
+          evictFarBitmaps(lastCenter);
+          await new Promise((r) => setTimeout(r, 10));
+        }
+        onProgress?.(total, total);
       })();
-
-      onProgress?.(total, total);
     },
 
     onResize() {
-      syncTargetSize();
+      // Intentionally no-op: decode size is fixed so cache never wipes.
     },
 
     dispose() {
       disposed = true;
+      bgAbort = true;
       for (const bmp of bitmaps.values()) {
         try { bmp.close(); } catch { /* ignore */ }
       }
@@ -386,7 +339,7 @@ export function createFrameStore({
   };
 }
 
-export async function loadFrameSequence({ onProgress, onFirstFrame, getTargetSize, signal } = {}) {
+export async function loadFrameSequence({ onProgress, onFirstFrame, signal } = {}) {
   const manifest = await loadManifest();
   const step = resolveFrameStep();
 
@@ -395,9 +348,9 @@ export async function loadFrameSequence({ onProgress, onFirstFrame, getTargetSiz
     step,
     pad: manifest.pad,
     ext: manifest.ext,
+    prefix: manifest.prefix || HERO_FRAME_PREFIX,
     sourceWidth: manifest.width,
     sourceHeight: manifest.height,
-    getTargetSize,
   });
 
   const first = store.indices[0];
@@ -411,7 +364,6 @@ export async function loadFrameSequence({ onProgress, onFirstFrame, getTargetSiz
     });
   }
 
-  // Keep warming before we consider scrubbing fully armed
   await store.warmStart({ onProgress, signal });
 
   return {

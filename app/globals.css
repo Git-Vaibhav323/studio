@@ -59,7 +59,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   font-size: 16px;
 }
 
@@ -338,20 +338,17 @@ button { cursor: pointer; border: none; background: none; }
 .animate-card {
   opacity: 0;
   transform: translateY(80px) scale(0.92);
-  filter: blur(3px);
   transition: none;
 }
 
 .animate-card-left {
   opacity: 0;
   transform: translateX(-60px) scale(0.95);
-  filter: blur(2px);
   transition: none;
 }
 
 .animate-card-right {
   opacity: 0;
   transform: translateX(60px) scale(0.95);
-  filter: blur(2px);
   transition: none;
 }

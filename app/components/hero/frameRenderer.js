@@ -1,6 +1,7 @@
 /**
  * Fixed-plane canvas renderer — no transforms / parallax.
- * Prefetches equally both sides so enter + exit stay smooth.
+ * Never clears to fill color between frames (that caused flicker).
+ * Only paints when a decoded frame is ready — never flashes empty.
  */
 
 const FILL = '#15130f';
@@ -40,7 +41,7 @@ function getCoverRect(canvasWidth, canvasHeight, srcW, srcH) {
   return coverCache;
 }
 
-export function drawCoverFrame(canvas, ctx, img) {
+export function drawCoverFrame(canvas, ctx, img, { clear = false } = {}) {
   const rect = canvas.getBoundingClientRect();
   const canvasWidth = rect.width;
   const canvasHeight = rect.height;
@@ -52,14 +53,17 @@ export function drawCoverFrame(canvas, ctx, img) {
 
   const { dw, dh, ox, oy } = getCoverRect(canvasWidth, canvasHeight, srcW, srcH);
 
-  ctx.fillStyle = FILL;
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  // Only clear once (first paint). Overwriting with drawImage avoids flicker.
+  if (clear) {
+    ctx.fillStyle = FILL;
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  }
   ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'medium';
+  ctx.imageSmoothingQuality = 'low';
   ctx.drawImage(img, ox, oy, dw, dh);
 }
 
-export function resizeCanvas(canvas, ctx, { maxDpr = 2 } = {}) {
+export function resizeCanvas(canvas, ctx, { maxDpr = 1.25 } = {}) {
   const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
   const rect = canvas.getBoundingClientRect();
   const width = Math.max(1, Math.round(rect.width));
@@ -72,31 +76,33 @@ export function resizeCanvas(canvas, ctx, { maxDpr = 2 } = {}) {
     canvas.height = nextH;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     coverCache = { w: 0, h: 0, srcW: 0, srcH: 0, dw: 0, dh: 0, ox: 0, oy: 0 };
+    return true;
   }
-
-  return { width, height, dpr };
+  return false;
 }
 
 export function createFrameRenderer(canvas, store) {
+  // alpha:false + no desynchronized → stable compositing (desync caused flicker)
   const ctx = canvas.getContext('2d', {
     alpha: false,
-    desynchronized: true,
+    desynchronized: false,
     colorSpace: 'srgb',
   });
 
   let lastRequested = -1;
   let lastDrawnKey = -1;
   let lastDrawnImg = null;
-  let pendingIndex = 0;
+  let pendingIndex = -1;
   let sized = false;
+  let paintedOnce = false;
   let prefetchTimer = 0;
+  let upgradeTimer = 0;
 
   const paintImage = (img, key) => {
-    if (!sized) {
-      resizeCanvas(canvas, ctx);
-      sized = true;
-    }
-    drawCoverFrame(canvas, ctx, img);
+    const resized = !sized ? resizeCanvas(canvas, ctx) : false;
+    if (!sized) sized = true;
+    drawCoverFrame(canvas, ctx, img, { clear: !paintedOnce || resized });
+    paintedOnce = true;
     lastDrawnKey = key;
     lastDrawnImg = img;
   };
@@ -105,11 +111,9 @@ export function createFrameRenderer(canvas, store) {
     if (prefetchTimer) cancelAnimationFrame(prefetchTimer);
     prefetchTimer = requestAnimationFrame(() => {
       prefetchTimer = 0;
-      // Small symmetric window (radius comes from device config) — decoded on
-      // demand so we never pin the CPU decoding the whole sequence.
       store.prefetch(frameIndex, { velocity });
-      // Immediate neighbours both ways for stutter-free single-frame steps.
-      for (let d = 1; d <= 2; d += 1) {
+      // Hot neighbours — must be ready for the next wheel notch
+      for (let d = 1; d <= 4; d += 1) {
         if (frameIndex - d >= 0) store.ensure(frameIndex - d);
         store.ensure(frameIndex + d);
       }
@@ -135,20 +139,26 @@ export function createFrameRenderer(canvas, store) {
       if (exact) {
         paintImage(exact, frameIndex);
       } else {
-        // Draw the nearest decoded frame so motion never freezes ("stops in
-        // between"). It gets upgraded to the exact frame as soon as it decodes.
+        // Prefer closest ready frame within ±2 so motion continues without jumps.
+        // If nothing close, HOLD lastDrawnImg (no flash, brief freeze until exact).
         const { key, bitmap } = store.nearestBitmap(frameIndex);
-        if (bitmap && key >= 0 && key !== lastDrawnKey) {
-          paintImage(bitmap, key);
+        if (bitmap && key >= 0 && Math.abs(key - frameIndex) <= 2) {
+          if (key !== lastDrawnKey) paintImage(bitmap, key);
         }
+        // Kick decode immediately (not deferred)
+        store.ensure(frameIndex).then((bmp) => {
+          if (pendingIndex !== frameIndex || !bmp) return;
+          // Coalesce upgrade into next rAF to avoid double-paint flicker
+          if (upgradeTimer) cancelAnimationFrame(upgradeTimer);
+          upgradeTimer = requestAnimationFrame(() => {
+            upgradeTimer = 0;
+            if (pendingIndex !== frameIndex) return;
+            if (frameIndex !== lastDrawnKey || bmp !== lastDrawnImg) {
+              paintImage(bmp, frameIndex);
+            }
+          });
+        });
       }
-
-      store.ensure(frameIndex).then((bmp) => {
-        if (pendingIndex !== frameIndex) return;
-        if (bmp && (frameIndex !== lastDrawnKey || bmp !== lastDrawnImg)) {
-          paintImage(bmp, frameIndex);
-        }
-      });
 
       schedulePrefetch(frameIndex, velocity);
       return lastDrawnKey;
@@ -156,15 +166,14 @@ export function createFrameRenderer(canvas, store) {
 
     redraw() {
       sized = false;
-      store.onResize?.();
-      if (lastRequested >= 0) {
-        store.ensure(lastRequested).then((bmp) => {
-          sized = false;
-          if (bmp) paintImage(bmp, lastRequested);
-          else if (lastDrawnImg) paintImage(lastDrawnImg, lastDrawnKey);
-        });
-      } else if (lastDrawnImg) {
+      const resized = resizeCanvas(canvas, ctx);
+      if (resized) paintedOnce = false;
+      if (lastDrawnImg) {
         paintImage(lastDrawnImg, lastDrawnKey);
+      } else if (lastRequested >= 0) {
+        store.ensure(lastRequested).then((bmp) => {
+          if (bmp) paintImage(bmp, lastRequested);
+        });
       }
     },
 
@@ -174,6 +183,7 @@ export function createFrameRenderer(canvas, store) {
 
     destroy() {
       if (prefetchTimer) cancelAnimationFrame(prefetchTimer);
+      if (upgradeTimer) cancelAnimationFrame(upgradeTimer);
       lastDrawnImg = null;
       lastDrawnKey = -1;
       lastRequested = -1;

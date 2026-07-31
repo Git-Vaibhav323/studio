@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './HeroSection.module.css';
 import { TITLE_RANGES, titleOpacity } from '../hero/config';
 import { loadFrameSequence, snapToLoadedFrame } from '../hero/loadFrames';
-import { bindScrollProgress, progressToFrameIndexStable } from '../hero/scrollProgress';
+import { bindScrollProgress, progressToFrameIndex, getScrollProgress } from '../hero/scrollProgress';
 import { createFrameRenderer } from '../hero/frameRenderer';
 
 export default function HeroSection() {
@@ -38,7 +38,7 @@ export default function HeroSection() {
     let lastChromeProgress = -1;
 
     const updateChrome = (progress) => {
-      if (Math.abs(progress - lastChromeProgress) < 0.002) return;
+      if (Math.abs(progress - lastChromeProgress) < 0.003) return;
       lastChromeProgress = progress;
 
       titleRefs.current.forEach((el, index) => {
@@ -54,26 +54,24 @@ export default function HeroSection() {
 
       if (progressBarRef.current) {
         progressBarRef.current.style.width = `${progress * 100}%`;
-        progressBarRef.current.style.transform = 'none';
       }
     };
 
     const paintForProgress = (progress, velocity = 0) => {
-      if (!renderer) return;
-      const raw = progressToFrameIndexStable(progress, frameCount, lastFrame);
-      const index = snapToLoadedFrame(raw, frameCount, step);
+      if (!renderer || frameCount <= 0) return;
+      const index = snapToLoadedFrame(
+        progressToFrameIndex(progress, frameCount),
+        frameCount,
+        step,
+      );
       lastFrame = index;
       renderer.show(index, { velocity });
       updateChrome(progress);
     };
 
-    (async () => {
+    const start = async () => {
       const result = await loadFrameSequence({
         signal: controller.signal,
-        getTargetSize: () => {
-          const rect = canvas.getBoundingClientRect();
-          return { width: rect.width, height: rect.height };
-        },
         onProgress: (loaded, total) => {
           setLoadPercent(Math.round((loaded / Math.max(1, total)) * 100));
         },
@@ -88,8 +86,14 @@ export default function HeroSection() {
           updateChrome(0);
           setHasPoster(true);
 
+          // Debounced resize — avoid thrashing paints mid-scroll
+          let resizeRaf = 0;
           resizeObserver = new ResizeObserver(() => {
-            renderer?.redraw();
+            if (resizeRaf) return;
+            resizeRaf = requestAnimationFrame(() => {
+              resizeRaf = 0;
+              renderer?.redraw();
+            });
           });
           resizeObserver.observe(canvas);
         },
@@ -103,30 +107,28 @@ export default function HeroSection() {
 
       const section = heroRef.current;
       if (section) {
-        unbindScroll = bindScrollProgress(
-          section,
-          (progress, meta) => {
-            paintForProgress(progress, meta?.velocity ?? 0);
-          },
-          { smoothing: 18 },
-        );
+        unbindScroll = bindScrollProgress(section, (progress, meta) => {
+          paintForProgress(progress, meta?.velocity ?? 0);
+        });
 
-        // Only do heavy scroll/decode work while the hero is on screen so the
-        // rest of the site never competes with it for the main thread.
         visibilityObserver = new IntersectionObserver(
           (entries) => {
             const visible = entries[0]?.isIntersecting ?? true;
             store?.setActive(visible);
             unbindScroll?.setEnabled?.(visible);
           },
-          { rootMargin: '200px 0px' },
+          { rootMargin: '150px 0px' },
         );
         visibilityObserver.observe(section);
       }
 
       setIsReady(true);
-      paintForProgress(0);
-    })();
+      // Lock to wherever the user already scrolled during prepare
+      paintForProgress(section ? getScrollProgress(section) : 0);
+    };
+
+    // Start immediately — don't idle-defer (that left scrub half-ready)
+    start();
 
     return () => {
       controller.abort();
@@ -200,7 +202,6 @@ export default function HeroSection() {
           <span ref={progressBarRef} />
         </div>
 
-        {/* Compact prepare chip — image stays visible underneath */}
         {!isReady && (
           <div className={`${styles.prepareChip} ${hasPoster ? styles.prepareChipOverImage : ''}`}>
             {!hasPoster && (
@@ -210,7 +211,7 @@ export default function HeroSection() {
               </div>
             )}
             <div className={styles.prepareMeta}>
-              <span>{hasPoster ? 'Optimizing scroll' : 'Loading visuals'}</span>
+              <span>{hasPoster ? 'Preparing scroll' : 'Loading visuals'}</span>
               <span>{loadPercent}%</span>
             </div>
             <div className={styles.prepareBar}>

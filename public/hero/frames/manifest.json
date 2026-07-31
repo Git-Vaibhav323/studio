@@ -1,17 +1,14 @@
 {
-  "version": 2,
-  "source": "Spatialedit-2.mp4",
+  "version": 3,
+  "source": "ezgif",
   "frameCount": 269,
-  "pattern": "frame_%04d.webp",
-  "pad": 4,
-  "extension": "webp",
-  "width": 3840,
-  "height": 2160,
-  "quality": 96,
-  "graded": true,
-  "extractFps": 30,
-  "sourceFps": 30,
-  "sourceWidth": 3840,
-  "sourceHeight": 2160,
-  "generatedAt": "2026-07-31T08:59:09.108Z"
+  "pattern": "ezgif-frame-%03d.jpg",
+  "prefix": "ezgif-frame-",
+  "pad": 3,
+  "extension": "jpg",
+  "width": 1600,
+  "height": 900,
+  "sourceWidth": 1600,
+  "sourceHeight": 900,
+  "generatedAt": "2026-07-31T17:40:00.000Z"
 }

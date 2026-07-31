@@ -1,7 +1,7 @@
 /**
- * Symmetric scroll → progress for enter + exit alignment.
- * Light time-based smoothing (same both directions) kills wheel jitter
- * without lagging one way more than the other.
+ * Native scroll → progress, locked 1:1.
+ * No lerp / no hysteresis — those caused "stops" and misalignment.
+ * One paint per animation frame via rAF coalesce.
  */
 
 export function clamp01(value) {
@@ -22,25 +22,9 @@ export function progressToFrameIndex(progress, frameCount) {
   return Math.min(frameCount - 1, Math.round(clamp01(progress) * (frameCount - 1)));
 }
 
-/**
- * Symmetric frame pick — same threshold entering and exiting.
- * Small hysteresis (0.5) prevents boundary flicker both ways.
- */
-export function progressToFrameIndexStable(progress, frameCount, lastFrame = -1) {
-  if (frameCount <= 1) return 0;
-  const exact = clamp01(progress) * (frameCount - 1);
-  const rounded = Math.round(exact);
-
-  if (lastFrame < 0 || lastFrame === rounded) {
-    return Math.min(frameCount - 1, Math.max(0, rounded));
-  }
-
-  // Identical threshold both directions
-  const threshold = 0.52;
-  if (rounded > lastFrame) {
-    return exact >= lastFrame + threshold ? Math.min(frameCount - 1, rounded) : lastFrame;
-  }
-  return exact <= lastFrame - threshold ? Math.max(0, rounded) : lastFrame;
+/** Direct round — no hysteresis (hysteresis felt like sticking / stops). */
+export function progressToFrameIndexStable(progress, frameCount) {
+  return progressToFrameIndex(progress, frameCount);
 }
 
 export function progressToFrameFloat(progress, frameCount) {
@@ -51,115 +35,72 @@ export function progressToFrameFloat(progress, frameCount) {
 /**
  * @param {HTMLElement} section
  * @param {(progress: number, meta: { velocity: number }) => void} onProgress
- * @param {{ smoothing?: number }} [options]
  */
-export function bindScrollProgress(section, onProgress, options = {}) {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Symmetric smoothing — identical enter/exit response
-  const smoothing = reduceMotion ? 80 : (options.smoothing ?? 18);
-
+export function bindScrollProgress(section, onProgress) {
   let active = true;
   let enabled = true;
   let rafId = 0;
-  let running = false;
-  let targetProgress = getScrollProgress(section);
-  let currentProgress = targetProgress;
-  let velocity = 0;
+  let queued = false;
   let lastY = window.scrollY;
-  let lastTime = performance.now();
+  let velocity = 0;
   let lastEmitted = -1;
 
-  const emit = (progress) => {
-    if (Math.abs(progress - lastEmitted) < 0.00004) return;
+  const emitNow = () => {
+    queued = false;
+    rafId = 0;
+    if (!active || !enabled) return;
+
+    const progress = getScrollProgress(section);
+    const dy = window.scrollY - lastY;
+    lastY = window.scrollY;
+    velocity = velocity * 0.65 + dy * 0.35;
+
+    if (Math.abs(progress - lastEmitted) < 0.00001) return;
     lastEmitted = progress;
     onProgress(progress, { velocity });
   };
 
-  const tick = (now) => {
-    if (!active) return;
-
-    const dt = Math.min(0.048, Math.max(0.001, (now - lastTime) / 1000));
-    lastTime = now;
-
-    targetProgress = getScrollProgress(section);
-
-    const dy = window.scrollY - lastY;
-    lastY = window.scrollY;
-    velocity = velocity * 0.75 + dy * 0.25;
-
-    const diff = targetProgress - currentProgress;
-    // Same exponential ease both ways
-    const alpha = 1 - Math.exp(-smoothing * dt);
-    currentProgress += diff * alpha;
-
-    // No overshoot either direction
-    if (diff > 0) currentProgress = Math.min(currentProgress, targetProgress);
-    else currentProgress = Math.max(currentProgress, targetProgress);
-
-    emit(currentProgress);
-
-    const settled = Math.abs(targetProgress - currentProgress) < 0.00012 && Math.abs(dy) < 0.4;
-    if (settled) {
-      currentProgress = targetProgress;
-      emit(currentProgress);
-      running = false;
-      rafId = 0;
-      return;
-    }
-
-    rafId = requestAnimationFrame(tick);
-  };
-
   const kick = () => {
-    if (!active || !enabled) return;
-    if (!running) {
-      running = true;
-      lastTime = performance.now();
-      rafId = requestAnimationFrame(tick);
-    }
+    if (!active || !enabled || queued) return;
+    queued = true;
+    rafId = requestAnimationFrame(emitNow);
   };
 
   const onScroll = () => kick();
 
   const onResize = () => {
-    targetProgress = getScrollProgress(section);
-    currentProgress = targetProgress;
     lastY = window.scrollY;
-    emit(currentProgress);
+    lastEmitted = -1;
+    emitNow();
   };
 
-  emit(currentProgress);
+  emitNow();
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
 
   const destroy = () => {
     active = false;
-    running = false;
+    queued = false;
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onResize);
     if (rafId) cancelAnimationFrame(rafId);
     rafId = 0;
   };
 
-  const setEnabled = (next) => {
+  destroy.setEnabled = (next) => {
     if (enabled === next) return;
     enabled = next;
     if (!enabled) {
-      running = false;
+      queued = false;
       if (rafId) cancelAnimationFrame(rafId);
       rafId = 0;
     } else {
-      // Re-sync so we don't jump when returning to the hero.
       lastY = window.scrollY;
-      lastTime = performance.now();
-      currentProgress = getScrollProgress(section);
-      targetProgress = currentProgress;
-      emit(currentProgress);
+      lastEmitted = -1;
+      emitNow();
     }
   };
 
-  destroy.destroy = destroy;
-  destroy.setEnabled = setEnabled;
   return destroy;
 }
