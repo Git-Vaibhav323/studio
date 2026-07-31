@@ -95,25 +95,6 @@ export default function OurStory() {
                 />
               </div>
             </div>
-
-            <div className={styles.namesBox}>
-              <div className={styles.nameBlock}>
-                <div className={styles.nameTitle}>Preksha Bhargav</div>
-                <div className={styles.nameSub}>CO-FOUNDER</div>
-              </div>
-              <div className={styles.nameSeparator}>
-                <div className={styles.nameSepLine} />
-                <div className={styles.sepDia}>
-                  {/* 4-point sparkle */}
-                  <svg viewBox="0 0 24 24"><path d="M12 0 C 12 10, 14 12, 24 12 C 14 12, 12 14, 12 24 C 12 14, 10 12, 0 12 C 10 12, 12 10, 12 0 Z" fill="var(--gold)"/></svg>
-                </div>
-                <div className={styles.nameSepLine} />
-              </div>
-              <div className={styles.nameBlock}>
-                <div className={styles.nameTitle}>Krishna Bhargav</div>
-                <div className={styles.nameSub}>CO-FOUNDER</div>
-              </div>
-            </div>
           </div>
 
           {/* Text and Quote Section with Vertical Line */}

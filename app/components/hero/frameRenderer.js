@@ -4,7 +4,7 @@
  * Only paints when a decoded frame is ready — never flashes empty.
  */
 
-const FILL = '#15130f';
+const FILL = '#f4ede0';
 
 let coverCache = { w: 0, h: 0, srcW: 0, srcH: 0, dw: 0, dh: 0, ox: 0, oy: 0 };
 
