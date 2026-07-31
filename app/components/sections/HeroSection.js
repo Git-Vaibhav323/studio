@@ -6,6 +6,7 @@ import { TITLE_RANGES, titleOpacity, frameUrl } from '../hero/config';
 import { loadFrameSequence, snapToLoadedFrame } from '../hero/loadFrames';
 import { bindScrollProgress, progressToFrameIndex, getScrollProgress } from '../hero/scrollProgress';
 import { createFrameRenderer } from '../hero/frameRenderer';
+import { markBootReady, reportBootProgress } from '../boot/siteBoot';
 
 const POSTER_SRC = frameUrl(0);
 
@@ -94,8 +95,16 @@ export default function HeroSection() {
 
     (async () => {
       try {
+        reportBootProgress(8, 'Loading hero');
+
         const result = await loadFrameSequence({
           signal: controller.signal,
+          blockingCount: 72,
+          onProgress: (loaded, total) => {
+            // Hero owns ~25–95% of the splash bar
+            const pct = 25 + Math.round((loaded / Math.max(1, total)) * 70);
+            reportBootProgress(pct, 'Preparing scroll');
+          },
           onFirstFrame: ({ store: frameStore, frameCount: count, step: frameStep }) => {
             if (controller.signal.aborted) return;
             store = frameStore;
@@ -103,7 +112,6 @@ export default function HeroSection() {
             step = frameStep;
             renderer = createFrameRenderer(canvas, store);
 
-            // Paint immediately — then reveal canvas over the CSS poster
             const painted = renderer.show(0, { force: true });
             lastFrame = 0;
             updateChrome(0);
@@ -120,9 +128,6 @@ export default function HeroSection() {
               });
             });
             resizeObserver.observe(canvas);
-
-            // Unlock scrub as soon as frame 0 is ready — no "optimizing" gate
-            bindScrollIfNeeded();
           },
         });
 
@@ -133,9 +138,13 @@ export default function HeroSection() {
         step = result.step;
         setCanvasLive(true);
         bindScrollIfNeeded();
+
+        reportBootProgress(98, 'Almost ready');
+        markBootReady();
       } catch (err) {
         console.warn('Hero frame load failed', err);
-        // Poster image stays visible — never leave a dead black screen
+        // Don't trap the splash forever
+        markBootReady();
       }
     })();
 
@@ -153,7 +162,6 @@ export default function HeroSection() {
   return (
     <section id="hero" className={styles.hero} ref={heroRef} aria-label="The Spatial Edit introduction">
       <div className={styles.sticky}>
-        {/* Instant poster — never a black void while JS/frames warm up */}
         <img
           className={styles.poster}
           src={POSTER_SRC}

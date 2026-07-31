@@ -287,34 +287,39 @@ export function createFrameStore({
      * Decode a solid opening runway BEFORE scrub unlocks, then keep decoding
      * the rest in the background so mid-sequence never gaps.
      */
-    async warmStart({ onProgress, signal } = {}) {
+    /**
+     * Decode a solid opening runway BEFORE returning (so splash can wait),
+     * then keep decoding the rest in the background.
+     */
+    async warmStart({ onProgress, signal, blockingCount = 64 } = {}) {
       const total = indices.length;
-      // Short runway only — rest loads while user scrolls
-      const runwayLen = Math.min(indices.length, 20);
+      const runwayLen = Math.min(indices.length, Math.max(24, blockingCount));
       const runway = indices.slice(0, runwayLen);
-      const concurrency = 3;
+      const concurrency = 4;
 
       let done = 0;
       for (let i = 0; i < runway.length; i += concurrency) {
         if (signal?.aborted || disposed) return;
         await Promise.all(runway.slice(i, i + concurrency).map(decodeBitmap));
         done += Math.min(concurrency, runway.length - i);
-        onProgress?.(Math.min(done, total), total);
+        onProgress?.(Math.min(done, runwayLen), runwayLen);
         await new Promise((r) => setTimeout(r, 0));
       }
+
+      onProgress?.(runwayLen, runwayLen);
 
       bgAbort = false;
       (async () => {
         for (let i = runwayLen; i < indices.length; i += 3) {
           if (signal?.aborted || disposed || bgAbort || !active) break;
           await Promise.all(indices.slice(i, i + 3).map(fetchBlob));
-          await new Promise((r) => setTimeout(r, 12));
+          await new Promise((r) => setTimeout(r, 10));
         }
         for (let i = runwayLen; i < indices.length; i += 2) {
           if (signal?.aborted || disposed || bgAbort || !active) break;
           await Promise.all(indices.slice(i, i + 2).map(decodeBitmap));
           evictFarBitmaps(lastCenter);
-          await new Promise((r) => setTimeout(r, 14));
+          await new Promise((r) => setTimeout(r, 12));
         }
         onProgress?.(total, total);
       })();
@@ -338,7 +343,12 @@ export function createFrameStore({
   };
 }
 
-export async function loadFrameSequence({ onProgress, onFirstFrame, signal } = {}) {
+export async function loadFrameSequence({
+  onProgress,
+  onFirstFrame,
+  signal,
+  blockingCount = 64,
+} = {}) {
   const manifest = await loadManifest();
   const step = resolveFrameStep();
 
@@ -367,8 +377,8 @@ export async function loadFrameSequence({ onProgress, onFirstFrame, signal } = {
     });
   }
 
-  // Warm in background — do NOT block the UI / scroll unlock
-  store.warmStart({ onProgress, signal });
+  // Block until a solid runway is decoded — splash waits on this
+  await store.warmStart({ onProgress, signal, blockingCount });
 
   return {
     store,

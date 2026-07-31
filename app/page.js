@@ -3,18 +3,16 @@ import Footer from './components/layout/Footer';
 import HeroSection from './components/sections/HeroSection';
 import SpatialIntelligence from './components/sections/SpatialIntelligence';
 import AboutSpatial from './components/sections/AboutSpatial';
-import dynamic from 'next/dynamic';
+import Comparison from './components/sections/Comparison';
+import AestheticDirection from './components/sections/AestheticDirection';
+import Promises from './components/sections/Promises';
+import Process from './components/sections/Process';
+import Insights from './components/sections/Insights';
+import OurStory from './components/sections/OurStory';
+import FAQs from './components/sections/FAQs';
+import ContactForm from './components/sections/ContactForm';
 
-// Below-fold only — keep first viewport sections eager so deploy boot isn't empty/slow
-const Comparison = dynamic(() => import('./components/sections/Comparison'));
-const AestheticDirection = dynamic(() => import('./components/sections/AestheticDirection'));
-const Promises = dynamic(() => import('./components/sections/Promises'));
-const Process = dynamic(() => import('./components/sections/Process'));
-const Insights = dynamic(() => import('./components/sections/Insights'));
-const OurStory = dynamic(() => import('./components/sections/OurStory'));
-const FAQs = dynamic(() => import('./components/sections/FAQs'));
-const ContactForm = dynamic(() => import('./components/sections/ContactForm'));
-
+/** Eager homepage — no dynamic() delays after splash. */
 export default function Home() {
   return (
     <>
