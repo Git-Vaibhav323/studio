@@ -41,4 +41,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# hero frame backups (never deploy — doubles size / slows CDN)
+public/hero/frames/_bak_4k/

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import styles from './HeroSection.module.css';
-import { TITLE_RANGES, titleOpacity } from '../hero/config';
+import { TITLE_RANGES, titleOpacity, frameUrl } from '../hero/config';
 import { loadFrameSequence, snapToLoadedFrame } from '../hero/loadFrames';
 import { bindScrollProgress, progressToFrameIndex, getScrollProgress } from '../hero/scrollProgress';
 import { createFrameRenderer } from '../hero/frameRenderer';
+
+const POSTER_SRC = frameUrl(0);
 
 export default function HeroSection() {
   const heroRef = useRef(null);
@@ -14,9 +16,7 @@ export default function HeroSection() {
   const cueRef = useRef(null);
   const progressBarRef = useRef(null);
 
-  const [loadPercent, setLoadPercent] = useState(0);
-  const [hasPoster, setHasPoster] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [canvasLive, setCanvasLive] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,6 +36,7 @@ export default function HeroSection() {
     let step = 1;
     let lastFrame = -1;
     let lastChromeProgress = -1;
+    let scrollBound = false;
 
     const updateChrome = (progress) => {
       if (Math.abs(progress - lastChromeProgress) < 0.003) return;
@@ -69,66 +70,74 @@ export default function HeroSection() {
       updateChrome(progress);
     };
 
-    const start = async () => {
-      const result = await loadFrameSequence({
-        signal: controller.signal,
-        onProgress: (loaded, total) => {
-          setLoadPercent(Math.round((loaded / Math.max(1, total)) * 100));
-        },
-        onFirstFrame: ({ store: frameStore, frameCount: count, step: frameStep }) => {
-          if (controller.signal.aborted) return;
-          store = frameStore;
-          frameCount = count;
-          step = frameStep;
-          renderer = createFrameRenderer(canvas, store);
-          renderer.show(0, { force: true });
-          lastFrame = 0;
-          updateChrome(0);
-          setHasPoster(true);
+    const bindScrollIfNeeded = () => {
+      const section = heroRef.current;
+      if (!section || scrollBound || !store) return;
+      scrollBound = true;
 
-          // Debounced resize — avoid thrashing paints mid-scroll
-          let resizeRaf = 0;
-          resizeObserver = new ResizeObserver(() => {
-            if (resizeRaf) return;
-            resizeRaf = requestAnimationFrame(() => {
-              resizeRaf = 0;
-              renderer?.redraw();
-            });
-          });
-          resizeObserver.observe(canvas);
-        },
+      unbindScroll = bindScrollProgress(section, (progress, meta) => {
+        paintForProgress(progress, meta?.velocity ?? 0);
       });
 
-      if (controller.signal.aborted) return;
+      visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries[0]?.isIntersecting ?? true;
+          store?.setActive(visible);
+          unbindScroll?.setEnabled?.(visible);
+        },
+        { rootMargin: '150px 0px' },
+      );
+      visibilityObserver.observe(section);
 
-      store = result.store;
-      frameCount = result.frameCount;
-      step = result.step;
-
-      const section = heroRef.current;
-      if (section) {
-        unbindScroll = bindScrollProgress(section, (progress, meta) => {
-          paintForProgress(progress, meta?.velocity ?? 0);
-        });
-
-        visibilityObserver = new IntersectionObserver(
-          (entries) => {
-            const visible = entries[0]?.isIntersecting ?? true;
-            store?.setActive(visible);
-            unbindScroll?.setEnabled?.(visible);
-          },
-          { rootMargin: '150px 0px' },
-        );
-        visibilityObserver.observe(section);
-      }
-
-      setIsReady(true);
-      // Lock to wherever the user already scrolled during prepare
-      paintForProgress(section ? getScrollProgress(section) : 0);
+      paintForProgress(getScrollProgress(section));
     };
 
-    // Start immediately — don't idle-defer (that left scrub half-ready)
-    start();
+    (async () => {
+      try {
+        const result = await loadFrameSequence({
+          signal: controller.signal,
+          onFirstFrame: ({ store: frameStore, frameCount: count, step: frameStep }) => {
+            if (controller.signal.aborted) return;
+            store = frameStore;
+            frameCount = count;
+            step = frameStep;
+            renderer = createFrameRenderer(canvas, store);
+
+            // Paint immediately — then reveal canvas over the CSS poster
+            const painted = renderer.show(0, { force: true });
+            lastFrame = 0;
+            updateChrome(0);
+            if (painted >= 0 || store.getBitmap(0)) {
+              setCanvasLive(true);
+            }
+
+            let resizeRaf = 0;
+            resizeObserver = new ResizeObserver(() => {
+              if (resizeRaf) return;
+              resizeRaf = requestAnimationFrame(() => {
+                resizeRaf = 0;
+                renderer?.redraw();
+              });
+            });
+            resizeObserver.observe(canvas);
+
+            // Unlock scrub as soon as frame 0 is ready — no "optimizing" gate
+            bindScrollIfNeeded();
+          },
+        });
+
+        if (controller.signal.aborted) return;
+
+        store = result.store;
+        frameCount = result.frameCount;
+        step = result.step;
+        setCanvasLive(true);
+        bindScrollIfNeeded();
+      } catch (err) {
+        console.warn('Hero frame load failed', err);
+        // Poster image stays visible — never leave a dead black screen
+      }
+    })();
 
     return () => {
       controller.abort();
@@ -144,20 +153,28 @@ export default function HeroSection() {
   return (
     <section id="hero" className={styles.hero} ref={heroRef} aria-label="The Spatial Edit introduction">
       <div className={styles.sticky}>
+        {/* Instant poster — never a black void while JS/frames warm up */}
+        <img
+          className={styles.poster}
+          src={POSTER_SRC}
+          alt=""
+          width={1600}
+          height={900}
+          decoding="async"
+          fetchPriority="high"
+          draggable={false}
+        />
+
         <canvas
           ref={canvasRef}
           className={styles.sequence}
           aria-label="Contemporary residence designed around effortless living"
-          style={{ opacity: hasPoster ? 1 : 0 }}
+          style={{ opacity: canvasLive ? 1 : 0 }}
         />
 
         <div className={styles.vignette} aria-hidden="true" />
 
-        <div
-          className={styles.titleStage}
-          aria-live="off"
-          style={{ opacity: hasPoster ? 1 : 0 }}
-        >
+        <div className={styles.titleStage} aria-live="off">
           <div
             ref={(node) => { titleRefs.current[0] = node; }}
             className={`${styles.titleCard} ${styles.titleLeft} ${styles.titleVisible}`}
@@ -184,41 +201,14 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div
-          className={styles.scrollCue}
-          ref={cueRef}
-          aria-hidden="true"
-          style={{ opacity: isReady ? 1 : 0 }}
-        >
+        <div className={styles.scrollCue} ref={cueRef} aria-hidden="true">
           <span>Scroll to explore</span>
           <i />
         </div>
 
-        <div
-          className={styles.progressTrack}
-          aria-hidden="true"
-          style={{ opacity: isReady ? 1 : 0 }}
-        >
+        <div className={styles.progressTrack} aria-hidden="true">
           <span ref={progressBarRef} />
         </div>
-
-        {!isReady && (
-          <div className={`${styles.prepareChip} ${hasPoster ? styles.prepareChipOverImage : ''}`}>
-            {!hasPoster && (
-              <div className={styles.prepareBrand}>
-                <p className={styles.prepareKicker}>The Spatial Edit</p>
-                <p className={styles.prepareTitle}>Crafting your experience</p>
-              </div>
-            )}
-            <div className={styles.prepareMeta}>
-              <span>{hasPoster ? 'Preparing scroll' : 'Loading visuals'}</span>
-              <span>{loadPercent}%</span>
-            </div>
-            <div className={styles.prepareBar}>
-              <span style={{ width: `${Math.max(loadPercent, hasPoster ? 8 : 2)}%` }} />
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

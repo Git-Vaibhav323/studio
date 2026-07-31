@@ -99,6 +99,14 @@ export function createFrameRenderer(canvas, store) {
   let upgradeTimer = 0;
 
   const paintImage = (img, key) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) {
+      // Layout not ready yet — retry next frame (prevents black empty canvas)
+      requestAnimationFrame(() => {
+        if (img) paintImage(img, key);
+      });
+      return;
+    }
     const resized = !sized ? resizeCanvas(canvas, ctx) : false;
     if (!sized) sized = true;
     drawCoverFrame(canvas, ctx, img, { clear: !paintedOnce || resized });
@@ -138,27 +146,27 @@ export function createFrameRenderer(canvas, store) {
       const exact = store.getBitmap(frameIndex);
       if (exact) {
         paintImage(exact, frameIndex);
-      } else {
-        // Prefer closest ready frame within ±2 so motion continues without jumps.
-        // If nothing close, HOLD lastDrawnImg (no flash, brief freeze until exact).
-        const { key, bitmap } = store.nearestBitmap(frameIndex);
-        if (bitmap && key >= 0 && Math.abs(key - frameIndex) <= 2) {
-          if (key !== lastDrawnKey) paintImage(bitmap, key);
-        }
-        // Kick decode immediately (not deferred)
-        store.ensure(frameIndex).then((bmp) => {
-          if (pendingIndex !== frameIndex || !bmp) return;
-          // Coalesce upgrade into next rAF to avoid double-paint flicker
-          if (upgradeTimer) cancelAnimationFrame(upgradeTimer);
-          upgradeTimer = requestAnimationFrame(() => {
-            upgradeTimer = 0;
-            if (pendingIndex !== frameIndex) return;
-            if (frameIndex !== lastDrawnKey || bmp !== lastDrawnImg) {
-              paintImage(bmp, frameIndex);
-            }
-          });
-        });
+        schedulePrefetch(frameIndex, velocity);
+        return lastDrawnKey;
       }
+
+      // Prefer closest ready frame within ±2 so motion continues without jumps.
+      const { key, bitmap } = store.nearestBitmap(frameIndex);
+      if (bitmap && key >= 0 && Math.abs(key - frameIndex) <= 2) {
+        if (key !== lastDrawnKey) paintImage(bitmap, key);
+      }
+
+      store.ensure(frameIndex).then((bmp) => {
+        if (pendingIndex !== frameIndex || !bmp) return;
+        if (upgradeTimer) cancelAnimationFrame(upgradeTimer);
+        upgradeTimer = requestAnimationFrame(() => {
+          upgradeTimer = 0;
+          if (pendingIndex !== frameIndex) return;
+          if (frameIndex !== lastDrawnKey || bmp !== lastDrawnImg) {
+            paintImage(bmp, frameIndex);
+          }
+        });
+      });
 
       schedulePrefetch(frameIndex, velocity);
       return lastDrawnKey;

@@ -289,9 +289,10 @@ export function createFrameStore({
      */
     async warmStart({ onProgress, signal } = {}) {
       const total = indices.length;
-      const runwayLen = Math.min(indices.length, 48);
+      // Short runway only — rest loads while user scrolls
+      const runwayLen = Math.min(indices.length, 20);
       const runway = indices.slice(0, runwayLen);
-      const concurrency = 4;
+      const concurrency = 3;
 
       let done = 0;
       for (let i = 0; i < runway.length; i += concurrency) {
@@ -299,23 +300,21 @@ export function createFrameStore({
         await Promise.all(runway.slice(i, i + concurrency).map(decodeBitmap));
         done += Math.min(concurrency, runway.length - i);
         onProgress?.(Math.min(done, total), total);
+        await new Promise((r) => setTimeout(r, 0));
       }
 
-      // Background: fetch + decode remaining frames slowly (yields to scroll)
       bgAbort = false;
       (async () => {
-        // First warm all blobs (HTTP cache) at low concurrency
-        for (let i = 0; i < indices.length; i += 3) {
+        for (let i = runwayLen; i < indices.length; i += 3) {
           if (signal?.aborted || disposed || bgAbort || !active) break;
           await Promise.all(indices.slice(i, i + 3).map(fetchBlob));
-          await new Promise((r) => setTimeout(r, 8));
+          await new Promise((r) => setTimeout(r, 12));
         }
-        // Then decode remaining into the sliding budget
-        for (let i = 0; i < indices.length; i += 2) {
+        for (let i = runwayLen; i < indices.length; i += 2) {
           if (signal?.aborted || disposed || bgAbort || !active) break;
           await Promise.all(indices.slice(i, i + 2).map(decodeBitmap));
           evictFarBitmaps(lastCenter);
-          await new Promise((r) => setTimeout(r, 10));
+          await new Promise((r) => setTimeout(r, 14));
         }
         onProgress?.(total, total);
       })();
@@ -354,7 +353,11 @@ export async function loadFrameSequence({ onProgress, onFirstFrame, signal } = {
   });
 
   const first = store.indices[0];
-  await store.ensure(first);
+  const firstBmp = await store.ensure(first);
+  if (!firstBmp) {
+    throw new Error('Failed to load hero poster frame');
+  }
+
   if (!signal?.aborted) {
     onFirstFrame?.({
       store,
@@ -364,7 +367,8 @@ export async function loadFrameSequence({ onProgress, onFirstFrame, signal } = {
     });
   }
 
-  await store.warmStart({ onProgress, signal });
+  // Warm in background — do NOT block the UI / scroll unlock
+  store.warmStart({ onProgress, signal });
 
   return {
     store,
