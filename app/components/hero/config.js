@@ -48,24 +48,34 @@ export function resolveFrameStep() {
 }
 
 /**
- * Max decoded ImageBitmaps retained.
- * Sized for smooth scrubbing without holding all 4K bitmaps.
+ * Decode width cap. Smaller = less memory per bitmap + faster decode.
  */
 export function resolveDecodeMaxWidth() {
-  if (typeof window === 'undefined') return 1600;
+  if (typeof window === 'undefined') return 1440;
   const mobile = window.matchMedia('(max-width: 768px)').matches;
-  // Faster decode = fewer scrub gaps (still sharp on retina displays)
-  if (mobile) return 1280;
-  return 1600;
+  if (mobile) return 1080;
+  return 1440;
 }
 
+/**
+ * Max decoded ImageBitmaps retained in memory.
+ * Kept intentionally small — we decode on demand around the current
+ * frame instead of holding the whole sequence (that lagged the whole site).
+ */
 export function resolveBitmapBudget() {
-  if (typeof window === 'undefined') return 96;
+  if (typeof window === 'undefined') return 56;
 
   const mobile = window.matchMedia('(max-width: 768px)').matches;
   const memory = navigator.deviceMemory;
 
-  if (mobile || (memory != null && memory <= 4)) return 56;
-  if (memory != null && memory <= 8) return 80;
-  return 120;
+  if (mobile || (memory != null && memory <= 4)) return 32;
+  if (memory != null && memory <= 8) return 52;
+  return 72;
+}
+
+/** How many frames to decode around the current position while scrubbing. */
+export function resolvePrefetchRadius() {
+  if (typeof window === 'undefined') return 14;
+  const mobile = window.matchMedia('(max-width: 768px)').matches;
+  return mobile ? 8 : 16;
 }

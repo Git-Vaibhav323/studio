@@ -59,6 +59,7 @@ export function bindScrollProgress(section, onProgress, options = {}) {
   const smoothing = reduceMotion ? 80 : (options.smoothing ?? 18);
 
   let active = true;
+  let enabled = true;
   let rafId = 0;
   let running = false;
   let targetProgress = getScrollProgress(section);
@@ -110,7 +111,7 @@ export function bindScrollProgress(section, onProgress, options = {}) {
   };
 
   const kick = () => {
-    if (!active) return;
+    if (!active || !enabled) return;
     if (!running) {
       running = true;
       lastTime = performance.now();
@@ -132,11 +133,33 @@ export function bindScrollProgress(section, onProgress, options = {}) {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
 
-  return () => {
+  const destroy = () => {
     active = false;
     running = false;
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onResize);
     if (rafId) cancelAnimationFrame(rafId);
+    rafId = 0;
   };
+
+  const setEnabled = (next) => {
+    if (enabled === next) return;
+    enabled = next;
+    if (!enabled) {
+      running = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else {
+      // Re-sync so we don't jump when returning to the hero.
+      lastY = window.scrollY;
+      lastTime = performance.now();
+      currentProgress = getScrollProgress(section);
+      targetProgress = currentProgress;
+      emit(currentProgress);
+    }
+  };
+
+  destroy.destroy = destroy;
+  destroy.setEnabled = setEnabled;
+  return destroy;
 }

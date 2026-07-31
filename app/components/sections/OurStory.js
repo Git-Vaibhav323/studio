@@ -86,9 +86,13 @@ export default function OurStory() {
           <div className={styles.founderCard}>
             <div className={styles.imageBox}>
               <div className={styles.imageInner}>
-                <div style={{ width: '100%', height: '100%', backgroundColor: '#dfd5c5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: 'var(--serif)', color: 'rgba(0,0,0,0.3)' }}>[Founder Image Placeholder]</span>
-                </div>
+                <Image
+                  src="https://i0.wp.com/picjumbo.com/wp-content/uploads/luxury-womens-salon-gold-and-white-interior-design-free-image.jpeg?w=600&quality=80"
+                  alt="Luxury gold and white interior design"
+                  fill
+                  sizes="(max-width: 900px) 100vw, 520px"
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
             </div>
 

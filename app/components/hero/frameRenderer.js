@@ -105,10 +105,11 @@ export function createFrameRenderer(canvas, store) {
     if (prefetchTimer) cancelAnimationFrame(prefetchTimer);
     prefetchTimer = requestAnimationFrame(() => {
       prefetchTimer = 0;
-      // Wide symmetric window — enter and exit both covered
-      store.prefetch(frameIndex, { radius: 36, velocity });
-      // Immediate neighbours both ways
-      for (let d = 1; d <= 4; d += 1) {
+      // Small symmetric window (radius comes from device config) — decoded on
+      // demand so we never pin the CPU decoding the whole sequence.
+      store.prefetch(frameIndex, { velocity });
+      // Immediate neighbours both ways for stutter-free single-frame steps.
+      for (let d = 1; d <= 2; d += 1) {
         if (frameIndex - d >= 0) store.ensure(frameIndex - d);
         store.ensure(frameIndex + d);
       }
@@ -134,9 +135,10 @@ export function createFrameRenderer(canvas, store) {
       if (exact) {
         paintImage(exact, frameIndex);
       } else {
-        // Closest within 1 frame only — avoids jitter jumps while still moving
+        // Draw the nearest decoded frame so motion never freezes ("stops in
+        // between"). It gets upgraded to the exact frame as soon as it decodes.
         const { key, bitmap } = store.nearestBitmap(frameIndex);
-        if (bitmap && key >= 0 && Math.abs(key - frameIndex) <= 1 && key !== lastDrawnKey) {
+        if (bitmap && key >= 0 && key !== lastDrawnKey) {
           paintImage(bitmap, key);
         }
       }

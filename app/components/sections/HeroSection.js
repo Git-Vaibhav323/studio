@@ -31,6 +31,7 @@ export default function HeroSection() {
     let store = null;
     let unbindScroll = null;
     let resizeObserver = null;
+    let visibilityObserver = null;
     let frameCount = 0;
     let step = 1;
     let lastFrame = -1;
@@ -109,6 +110,18 @@ export default function HeroSection() {
           },
           { smoothing: 18 },
         );
+
+        // Only do heavy scroll/decode work while the hero is on screen so the
+        // rest of the site never competes with it for the main thread.
+        visibilityObserver = new IntersectionObserver(
+          (entries) => {
+            const visible = entries[0]?.isIntersecting ?? true;
+            store?.setActive(visible);
+            unbindScroll?.setEnabled?.(visible);
+          },
+          { rootMargin: '200px 0px' },
+        );
+        visibilityObserver.observe(section);
       }
 
       setIsReady(true);
@@ -119,6 +132,7 @@ export default function HeroSection() {
       controller.abort();
       unbindScroll?.();
       resizeObserver?.disconnect();
+      visibilityObserver?.disconnect();
       renderer?.destroy();
       store?.dispose();
       root.style.scrollBehavior = prevScrollBehavior;
