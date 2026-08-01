@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import styles from './HeroSection.module.css';
 import { TITLE_RANGES, titleOpacity, frameUrl } from '../hero/config';
 import { loadFrameSequence, snapToLoadedFrame } from '../hero/loadFrames';
@@ -9,6 +10,8 @@ import { createFrameRenderer } from '../hero/frameRenderer';
 import { markBootReady, reportBootProgress } from '../boot/siteBoot';
 
 const POSTER_SRC = frameUrl(0);
+/** Fade end CTAs in over the last ~8% of the scroll */
+const END_CTA_START = 0.92;
 
 export default function HeroSection() {
   const heroRef = useRef(null);
@@ -16,6 +19,7 @@ export default function HeroSection() {
   const titleRefs = useRef([]);
   const cueRef = useRef(null);
   const progressBarRef = useRef(null);
+  const endCtaRef = useRef(null);
 
   const [canvasLive, setCanvasLive] = useState(false);
 
@@ -56,6 +60,15 @@ export default function HeroSection() {
 
       if (progressBarRef.current) {
         progressBarRef.current.style.width = `${progress * 100}%`;
+      }
+
+      if (endCtaRef.current) {
+        const endOpacity = progress <= END_CTA_START
+          ? 0
+          : Math.min(1, (progress - END_CTA_START) / (1 - END_CTA_START));
+        endCtaRef.current.style.opacity = String(endOpacity);
+        endCtaRef.current.style.visibility = endOpacity <= 0.02 ? 'hidden' : 'visible';
+        endCtaRef.current.style.pointerEvents = endOpacity > 0.4 ? 'auto' : 'none';
       }
     };
 
@@ -212,6 +225,24 @@ export default function HeroSection() {
         <div className={styles.scrollCue} ref={cueRef} aria-hidden="true">
           <span>Scroll to explore</span>
           <i />
+        </div>
+
+        <div
+          className={styles.endCta}
+          ref={endCtaRef}
+          aria-hidden="true"
+        >
+          <p className={styles.endTagline}>
+            Your space,<br />designed to last.
+          </p>
+          <div className={styles.endActions}>
+            <Link href="/contact" className={styles.endBtn}>
+              <span>Book a Consultation</span>
+            </Link>
+            <Link href="/projects" className={`${styles.endBtn} ${styles.endBtnGhost}`}>
+              <span>View Projects</span>
+            </Link>
+          </div>
         </div>
 
         <div className={styles.progressTrack} aria-hidden="true">
