@@ -59,7 +59,7 @@ export default function Navbar() {
         </div>
         <div className={styles.logoText}>
           <span className={styles.ltMain}>The Spatial Edit</span>
-          <span className={styles.ltSub}>Spatial Design Studio</span>
+          <span className={styles.ltSub}>Interior Design Studio</span>
         </div>
       </Link>
 

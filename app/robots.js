@@ -1,4 +1,4 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedit.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedits.com';
 const host = new URL(siteUrl).host;
 
 export default function robots() {

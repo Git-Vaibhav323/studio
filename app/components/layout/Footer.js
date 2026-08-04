@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -47,15 +48,54 @@ export default function Footer() {
         {/* Links columns */}
         <div className={styles.linksWrap}>
           {[
-            { heading: 'STUDIO', links: ['About Us','Our Approach','Process','Projects','Journal','Careers','Contact'] },
-            { heading: 'SERVICES', links: ['Spatial Planning','Space Optimization','Concept Design','Design Development','Project Coordination','FF&E & Styling'] },
-            { heading: 'SPACES', links: ['Villas & Bungalows','Apartments','Penthouses','Commercial','Renovations'] },
-            { heading: 'RESOURCES', links: ['Blog','Guides','FAQs','Materials','Downloads'] },
+            {
+              heading: 'STUDIO',
+              links: [
+                { label: 'About Us', href: '/about' },
+                { label: 'Process', href: '/process' },
+                { label: 'Services', href: '/services' },
+                { label: 'Projects', href: '/projects' },
+                { label: 'Insights', href: '/insights' },
+                { label: 'Contact', href: '/contact' },
+              ],
+            },
+            {
+              heading: 'SERVICES',
+              links: [
+                { label: 'Spatial Planning', href: '/services' },
+                { label: 'Space Optimization', href: '/services' },
+                { label: 'Concept Design', href: '/services' },
+                { label: 'Design Development', href: '/services' },
+                { label: 'Project Coordination', href: '/services' },
+                { label: 'FF&E & Styling', href: '/services' },
+              ],
+            },
+            {
+              heading: 'SPACES',
+              links: [
+                { label: 'Villas & Bungalows', href: '/projects' },
+                { label: 'Apartments', href: '/projects' },
+                { label: 'Penthouses', href: '/projects' },
+                { label: 'Commercial', href: '/projects' },
+                { label: 'Renovations', href: '/projects' },
+              ],
+            },
+            {
+              heading: 'RESOURCES',
+              links: [
+                { label: 'Blog', href: '/insights' },
+                { label: 'FAQs', href: '/#faqs' },
+                { label: 'Privacy Policy', href: '#' },
+                { label: 'Terms & Conditions', href: '#' },
+              ],
+            },
           ].map((col) => (
             <div className={styles.linkCol} key={col.heading}>
               <div className={styles.linkHeading}>{col.heading}</div>
               {col.links.map((l) => (
-                <a href="#" className={styles.link} key={l}>{l}</a>
+                <Link href={l.href} className={styles.link} key={l.label}>
+                  {l.label}
+                </Link>
               ))}
             </div>
           ))}

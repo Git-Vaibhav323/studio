@@ -164,6 +164,7 @@
   transition: opacity 0.4s ease;
 }
 
+.card:hover .cardFront,
 .cardHovered .cardFront {
   opacity: 0;
   pointer-events: none;
@@ -227,6 +228,7 @@
   pointer-events: none;
 }
 
+.card:hover .cardBack,
 .cardHovered .cardBack {
   opacity: 1;
   transform: translateY(0);

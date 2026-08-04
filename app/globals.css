@@ -131,11 +131,11 @@ button { cursor: pointer; border: none; background: none; }
   to   { transform: rotate(360deg); }
 }
 
-/* Title Appearing Animation - Smooth and fast rise */
+/* Title Appearing Animation - Smooth and slow rise */
 @keyframes titleAppear {
   0% { 
     opacity: 0; 
-    transform: translateY(24px) scale(0.98);
+    transform: translateY(32px) scale(0.99);
   }
   100% { 
     opacity: 1; 
@@ -143,11 +143,11 @@ button { cursor: pointer; border: none; background: none; }
   }
 }
 
-/* Smooth sliding animations for cards */
+/* Smooth sliding animations for cards - slow and elegant */
 @keyframes cardSlideIn {
   0% {
     opacity: 0;
-    transform: translateX(-30px) scale(0.98);
+    transform: translateX(-40px) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -158,7 +158,7 @@ button { cursor: pointer; border: none; background: none; }
 @keyframes cardSlideInFromRight {
   0% {
     opacity: 0;
-    transform: translateX(30px) scale(0.98);
+    transform: translateX(40px) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -169,7 +169,7 @@ button { cursor: pointer; border: none; background: none; }
 @keyframes cardSlideUp {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.98);
+    transform: translateY(50px) scale(0.97);
   }
   100% {
     opacity: 1;
@@ -178,47 +178,47 @@ button { cursor: pointer; border: none; background: none; }
 }
 
 .card-slide-in {
-  animation: cardSlideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: cardSlideIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card-slide-in-right {
-  animation: cardSlideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: cardSlideInFromRight 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card-slide-up {
-  animation: cardSlideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: cardSlideUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card-slide-delay-1 {
-  animation-delay: 0.15s;
+  animation-delay: 0.25s;
 }
 
 .card-slide-delay-2 {
-  animation-delay: 0.3s;
+  animation-delay: 0.5s;
 }
 
 .card-slide-delay-3 {
-  animation-delay: 0.45s;
+  animation-delay: 0.75s;
 }
 
 .card-slide-delay-4 {
-  animation-delay: 0.6s;
+  animation-delay: 1.0s;
 }
 
 .title-appear {
-  animation: titleAppear 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation: titleAppear 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .title-appear-delay-1 {
-  animation-delay: 0.2s;
+  animation-delay: 0.3s;
 }
 
 .title-appear-delay-2 {
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
 }
 
 .title-appear-delay-3 {
-  animation-delay: 0.6s;
+  animation-delay: 0.9s;
 }
 
 .reveal {
@@ -331,24 +331,59 @@ button { cursor: pointer; border: none; background: none; }
 /* Animation base styles - elements should start invisible */
 .animate-title {
   opacity: 0;
-  transform: translateY(20px) scale(0.98);
+  transform: translateY(32px) scale(0.99);
   transition: none;
 }
 
 .animate-card {
   opacity: 0;
-  transform: translateY(80px) scale(0.92);
+  transform: translateY(50px) scale(0.97);
   transition: none;
 }
 
 .animate-card-left {
   opacity: 0;
-  transform: translateX(-60px) scale(0.95);
+  transform: translateX(-40px) scale(0.98);
   transition: none;
 }
 
 .animate-card-right {
   opacity: 0;
-  transform: translateX(60px) scale(0.95);
+  transform: translateX(40px) scale(0.98);
   transition: none;
 }
+
+/* Scroll-driven animations fallback for elements/sections without JS hooks
+@supports (animation-timeline: view()) {
+  section h2[class*="title"],
+  section h2[class*="headline"],
+  section [class*="titleBlock"] h2,
+  section [class*="header"] h2,
+  section [class*="sectionHeader"] h2 {
+    animation: titleAppear 2.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+  }
+
+  section [class*="cardsWrap"] > div,
+  section [class*="grid"] > a,
+  section [class*="threeCols"] > [class*="storyCol"],
+  section [class*="founderCard"] {
+    animation: cardSlideUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+
+  .title-appear,
+  .card-slide-in,
+  .card-slide-in-right,
+  .card-slide-up,
+  .title-appear *,
+  .card-slide-in *,
+  .card-slide-in-right *,
+  .card-slide-up * {
+    animation-timeline: none !important;
+    animation-range: none !important;
+  }
+}
+*/

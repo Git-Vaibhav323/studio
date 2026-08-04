@@ -1,7 +1,7 @@
 import './globals.css';
 import LoadingScreen from './components/LoadingScreen';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedit.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedits.com';
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
