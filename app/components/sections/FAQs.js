@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './FAQs.module.css';
 
 const faqs = [
@@ -12,13 +13,17 @@ export default function FAQs() {
   const [openIdx, setOpenIdx] = useState(null);
   const toggle = (i) => setOpenIdx(openIdx === i ? null : i);
 
+  const titleRef = useRevealAnimation(100);
+  const subtitleRef = useRevealAnimation(200);
+  const listRef = useCardAnimation('slideUp', 300);
+
   return (
     <section id="faqs" className={styles.section}>
       {/* Top Bar and sidebar removed per design request */}
 
       <div className={styles.content}>
         <div className={styles.titleBlock}>
-          <h2 className={styles.title}>FAQ<span style={{ fontFamily: 'var(--serif-italic)', fontWeight: '400', color: 'var(--gold)', marginLeft: '2px' }}>s</span></h2>
+          <h2 className={styles.title} ref={titleRef}>FAQ<span style={{ fontFamily: 'var(--serif-italic)', fontWeight: '400', color: 'var(--gold)', marginLeft: '2px' }}>s</span></h2>
         </div>
         
         <div className={styles.separatorShort}>
@@ -29,8 +34,8 @@ export default function FAQs() {
           <div className={styles.sepLine} />
         </div>
 
-        <p className={styles.subtitle}>CLEAR ANSWERS. COMPLETE CLARITY.</p>
-        <div className={styles.faqList}>
+        <p className={styles.subtitle} ref={subtitleRef}>CLEAR ANSWERS. COMPLETE CLARITY.</p>
+        <div className={styles.faqList} ref={listRef}>
           {faqs.map((faq, i) => (
             <div className={`${styles.faqItem} ${openIdx === i ? styles.faqOpen : ''}`} key={i} onClick={() => toggle(i)}>
               <div className={styles.faqTop}>

@@ -1,21 +1,30 @@
 
 .section {
   position: relative;
-  background: var(--cream) url('/images/bg/bg-sec-2.webp') center bottom/cover no-repeat;
+  background: var(--cream);
   padding: 50px 0 50px;
   overflow: visible;
 }
 
-@media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
+.bgVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
 }
 
 .section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 75% 55% at 62% 28%, rgba(180,144,79,0.055) 0%, transparent 68%);
+  background: rgba(244, 237, 224, 0.65);
   pointer-events: none;
+  z-index: 1;
 }
 
 /* Vertical line */

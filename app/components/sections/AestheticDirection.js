@@ -15,7 +15,8 @@ export default function AestheticDirection() {
   const carouselRef = useRef(null);
   const titleRef = useRevealAnimation(200);
   const subtitleRef = useRevealAnimation(400);
-  const carouselWrapperRef = useCardAnimation('slideUp', 600);
+  const descRef = useRevealAnimation(600);
+  const carouselWrapperRef = useCardAnimation('slideUp', 800);
 
   const scroll = (dir) => {
     const el = carouselRef.current;
@@ -43,7 +44,7 @@ export default function AestheticDirection() {
               <svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)"/></svg>
             </div>
             <div className={styles.trSubtitle} ref={subtitleRef}>THE AESTHETICS WE LOVE MOST.</div>
-            <div className={styles.trDesc}>Every style begins with how the space works, and then we curate its soul.</div>
+            <div className={styles.trDesc} ref={descRef}>Every style begins with how the space works, and then we curate its soul.</div>
           </div>
         </div>
 

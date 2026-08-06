@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './Comparison.module.css';
 
 const withoutItems = [
@@ -66,6 +69,9 @@ const withItems = [
 ];
 
 export default function Comparison() {
+  const titleRef = useRevealAnimation(100);
+  const cardsRef = useCardAnimation('slideUp', 300);
+
   return (
     <section id="comparison" className={styles.section}>
       {/* Vertical decoration removed per request */}
@@ -78,14 +84,14 @@ export default function Comparison() {
         {/* Header */}
         <div className={styles.header}>
           {/* header label/number removed per request */}
-          <h2 className={styles.title}>
+          <h2 className={styles.title} ref={titleRef}>
             Why It Comes<br />
             <span>Before Aesthetics.</span>
           </h2>
         </div>
 
         {/* Cards — symmetrical, pushed lower */}
-        <div className={styles.cardsWrap}>
+        <div className={styles.cardsWrap} ref={cardsRef}>
           {/* Card 1 — Without */}
           <div className={styles.card}>                 
                 <div className={styles.cardHeader}>

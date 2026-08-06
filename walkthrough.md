@@ -1,40 +1,36 @@
-# Walkthrough — Premium Styling, Mobile Fixes, and Launch-Ready SEO
+# Walkthrough — Video Backgrounds, FAQs Heights, and Slow Rise Anim System
 
-We have implemented styling improvements, mobile layout fixes, and configured high-level SEO optimizations for domain launch at `thespatialedits.com` / `thespatialedits.in`.
+We have successfully implemented the requested background video integration, slow rise animation behaviors (with fade-in during movement), FAQs spacing height adjustment, and removed the zoom transition on the contact form.
 
 ## Changes Made
 
-### 1. Arched Cards (Spatial Intelligence) & Global Card Visibility
-- Reverted the client-side IntersectionObserver thresholds and root margins in [useRevealAnimation.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/lib/useRevealAnimation.js) to their original settings (e.g. `threshold: 0.1` and `rootMargin: '0px 0px -10px/20px 0px'`). This fixes the issue where hydration settings caused IntersectionObservers to fail and hide JS-animated card containers (like `Promises.js`, `Services.js`, and `Process.js`).
-- Excluded JS-based arched cards (`section [class*="cardsRow"] > [class*="archCard"]`) from the scroll-timeline rules in [globals.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/globals.css) so they are animated purely and cleanly by the native JS hooks.
-- Adjusted static CSS card scroll-timeline selectors to target only non-JS container wrappers (`cardsWrap > div`, `grid > a`, etc.), ensuring all cards are fully visible and transition beautifully.
+### 1. Spatial Intelligence Background Video (with Creamy Overlay)
+- Updated the background video source to `/bg-sec2.mp4` playing on a continuous loop in [SpatialIntelligence.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/SpatialIntelligence.js).
+- Configured a light creamy overlay (`background: rgba(244, 237, 224, 0.65)`) inside `.section::before` with `z-index: 1` in [SpatialIntelligence.module.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/SpatialIntelligence.module.css).
+- Configured the background video `.bgVideo` with `z-index: 0` and opacity `0.85` so it renders beautifully under the creamy tint while staying fully visible and matching the studio's color palette.
 
-### 2. Service Cards Hover Fix (Services Page)
-- Added pure CSS `:hover` selectors alongside JS `.cardHovered` class in [Services.module.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/Services.module.css) to trigger front/back transitions smoothly on desktop browsers.
+### 2. FAQs Section Spacing Height
+- Increased the top and bottom padding of the FAQs section to `120px` in [FAQs.module.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/FAQs.module.css) to add elegant breathing room and height.
 
-### 3. CTA Buttons Glowing & Light Styling
-- Updated the primary hero CTA button (`BOOK A CONSULTATION`) in [HeroSection.module.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/HeroSection.module.css) to use a lighter, warmer gold (`rgba(229, 193, 125, 0.95)`) and a glowing golden box shadow (`box-shadow: 0 0 20px rgba(229, 193, 125, 0.4)`).
-- Updated the ghost button (`VIEW PROJECTS`) to have a light glassmorphic background (`rgba(255, 255, 255, 0.12)`) and brighter border, matching the background perfectly.
-- Enhanced hover shadow glows for an ultra-premium feel.
+### 3. Removed Contact Form Zoom Effect
+- Removed the zoom observer and the dynamic scaling active classes in [ContactForm.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/ContactForm.js) and [ContactForm.module.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/ContactForm.module.css) to leave the contact background, vase, and inputs unscaled.
 
-### 4. Slower Title Reveal Transitions
-- Changed `.title-appear` transition duration to `2.2s` for a slower, more graceful entry.
+### 4. Slow Rise Animations with Smooth Fade-in Appearance
+- Restored smooth opacity transition to `@keyframes titleAppear` in [globals.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/globals.css) so it starts at `opacity: 0` (translated down by `80px`) and transitions gracefully to `opacity: 1` and `translateY(0)` over `3.0s`.
+- Integrated JS IntersectionObserver hooks to animate secondary text/subtitles/paragraphs in addition to major section headings:
+  - **SpatialIntelligence**: Description paragraph (*Three things we solve...*)
+  - **AboutSpatial**: Large description (*Spatial design is the discipline...*)
+  - **AestheticDirection**: Paragraph detail (*Every style begins with...*)
+  - **Promises**: Section subtitle (*CLEAR PROCESS. CONSTANT...*)
+  - **Process**: Section subtitle (*END TO END. THOUGHTFUL...*)
+  - **Insights**: Section subtitle (*PERSPECTIVES ON DESIGN...*)
+  - **OurStory**: Founder paragraph (*The Spatial Edit was founded by...*)
+  - **FAQs**: Section subtitle (*CLEAR ANSWERS. COMPLETE CLARITY.*)
 
-### 5. Hero Scroll Timeline Mobile Glitch Fix
-- Fixed the glitch where scrolling a small amount on mobile ended the hero section.
-- Replaced the fixed viewport canvas positioning on mobile with `position: sticky; top: 0` in [HeroSection.module.css](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/HeroSection.module.css), matching desktop behavior, and increased the scrolling wrapper height on mobile to `800vh`. The frame sequence and scroll indicators now work smoothly on mobile.
-
-### 6. Interactive Footer Links
-- Imported Next.js `Link` component in [Footer.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/layout/Footer.js) and mapped all dummy list links (`href="#"`) to their respective page routes (`/process`, `/services`, `/projects`, `/insights`, `/contact`).
-
-### 7. Launch-Ready SEO Configuration
-- Updated domain fallback site URL to `https://thespatialedits.com` in [layout.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/layout.js), [robots.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/robots.js), and [sitemap.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/sitemap.js).
-- Added `layout.js` files with server-side static/dynamic SEO metadata generator exports for pages containing client-side components:
-  - `app/about/layout.js`
-  - `app/insights/layout.js`
-  - `app/insights/[slug]/layout.js`
-  - `app/projects/[slug]/layout.js`
-
-## Verification
-
-- **Production Build**: Ran `next build` which successfully compiled all dynamic layout routes, static site maps, and client components.
+### 5. Slow Reveal Card Animation
+- Updated `@keyframes cardSlideUp` starting transition offset to `translateY(60px)` and extended card slide animation duration to a slow, elegant `2.2s` for all sections.
+- Integrated JS IntersectionObserver hooks to animate cards/grids in sections that were previously static:
+  - [Comparison.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/Comparison.js) (symmetrical comparison wrappers)
+  - [Insights.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/Insights.js) (insights grids)
+  - [OurStory.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/OurStory.js) (story columns and founder card)
+  - [FAQs.js](file:///c:/Users/sujal/OneDrive/Desktop/Clients/studio/app/components/sections/FAQs.js) (FAQ lists)

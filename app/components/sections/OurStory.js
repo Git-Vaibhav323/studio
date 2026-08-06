@@ -1,7 +1,15 @@
+'use client';
+
 import Image from 'next/image';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './OurStory.module.css';
 
 export default function OurStory() {
+  const titleRef = useRevealAnimation(100);
+  const founderParaRef = useRevealAnimation(200);
+  const colsRef = useCardAnimation('slideUp', 300);
+  const cardRef = useCardAnimation('slideUp', 400);
+
   return (
     <section id="story" className={styles.section}>
       {/* Top bar and left sidebar removed per request */}
@@ -11,7 +19,7 @@ export default function OurStory() {
         
         {/* LEFT COLUMN */}
         <div className={styles.leftCol}>
-          <h2 className={styles.title}>Our <span className={styles.titleGold}>Story.</span></h2>
+          <h2 className={styles.title} ref={titleRef}>Our <span className={styles.titleGold}>Story.</span></h2>
           {/* subtitle removed per request */}
           
           <div className={styles.separatorShort}>
@@ -22,7 +30,7 @@ export default function OurStory() {
             <div className={styles.sepLine} />
           </div>
 
-          <p className={styles.founderPara}>
+          <p className={styles.founderPara} ref={founderParaRef}>
             The Spatial Edit was founded by Preksha Bhargav and Krishna Bhargav — partners in life, who started this studio for a very personal reason.
           </p>
 
@@ -34,7 +42,7 @@ export default function OurStory() {
             <div className={styles.sepLine} />
           </div>
 
-          <div className={styles.threeCols}>
+          <div className={styles.threeCols} ref={colsRef}>
             {/* Col 1 */}
             <div className={styles.storyCol}>
               <div className={styles.iconWrap}>
@@ -83,7 +91,7 @@ export default function OurStory() {
         <div className={styles.rightCol}>
           
           {/* Unified Founder Card */}
-          <div className={styles.founderCard}>
+          <div className={styles.founderCard} ref={cardRef}>
             <div className={styles.imageBox}>
               <div className={styles.imageInner}>
                 <Image

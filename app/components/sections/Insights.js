@@ -4,12 +4,17 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createSupabaseClient } from '@/lib/supabase';
+import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
 import styles from './Insights.module.css';
 
 export default function Insights() {
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const supabase = createSupabaseClient();
+  
+  const titleRef = useRevealAnimation(100);
+  const subtitleRef = useRevealAnimation(200);
+  const gridRef = useCardAnimation('slideUp', 300);
 
   useEffect(() => {
     fetchFeaturedBlogs();
@@ -57,9 +62,9 @@ export default function Insights() {
     <section id="insights" className={styles.section}>
       <div className={styles.content}>
         <div className={styles.titleBlock}>
-          <h2 className={styles.title}>Ideas That <span>Shape Better Spaces.</span></h2>
+          <h2 className={styles.title} ref={titleRef}>Ideas That <span>Shape Better Spaces.</span></h2>
         </div>
-        <p className={styles.subtitle}>PERSPECTIVES ON DESIGN, PLANNING, AND SPACES THAT WORK.</p>
+        <p className={styles.subtitle} ref={subtitleRef}>PERSPECTIVES ON DESIGN, PLANNING, AND SPACES THAT WORK.</p>
         
         {loading ? (
           <div style={{ 
@@ -73,7 +78,7 @@ export default function Insights() {
           </div>
         ) : featuredBlogs.length > 0 ? (
           <>
-            <div className={styles.grid}>
+            <div className={styles.grid} ref={gridRef}>
               {featuredBlogs.map((blog, index) => (
                 <Link href={`/insights/${blog.slug}`} key={blog.id} className={styles.card}>
                   <div className={styles.imgWrap}>

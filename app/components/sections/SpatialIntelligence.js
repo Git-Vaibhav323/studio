@@ -68,12 +68,22 @@ const cards = [
 export default function SpatialIntelligence() {
   const headlineRef = useRevealAnimation(100);
   const overlineRef = useRevealAnimation(0);
+  const descRef = useRevealAnimation(300);
   const card1Ref = useCardAnimation('slideLeft', 0);
   const card2Ref = useCardAnimation('slideUp', 150);
   const card3Ref = useCardAnimation('slideRight', 300);
   
   return (
     <section id="spatial" className={styles.section}>
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className={styles.bgVideo}
+      >
+        <source src="/images/bg-sec2.mp4" type="video/mp4" />
+      </video>
       <div className={styles.vline} />
       
       <div className={styles.diamond + ' ' + styles.diaTop} />
@@ -101,7 +111,7 @@ export default function SpatialIntelligence() {
               <span className={styles.gold}>Spatial<br />Intelligence.</span>
             </h2>
 
-            <p className={styles.desc}>
+            <p className={styles.desc} ref={descRef}>
               Three things we solve before design begins.
               Because the way a space works is what
               makes it beautiful, functional and effortless

@@ -131,15 +131,15 @@ button { cursor: pointer; border: none; background: none; }
   to   { transform: rotate(360deg); }
 }
 
-/* Title Appearing Animation - Smooth and slow rise */
+/* Title Appearing Animation - Smooth, slow rise with elegant fade-in */
 @keyframes titleAppear {
   0% { 
     opacity: 0; 
-    transform: translateY(32px) scale(0.99);
+    transform: translateY(80px);
   }
   100% { 
     opacity: 1; 
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -169,7 +169,7 @@ button { cursor: pointer; border: none; background: none; }
 @keyframes cardSlideUp {
   0% {
     opacity: 0;
-    transform: translateY(50px) scale(0.97);
+    transform: translateY(60px) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -178,35 +178,35 @@ button { cursor: pointer; border: none; background: none; }
 }
 
 .card-slide-in {
-  animation: cardSlideIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: cardSlideIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card-slide-in-right {
-  animation: cardSlideInFromRight 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: cardSlideInFromRight 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card-slide-up {
-  animation: cardSlideUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: cardSlideUp 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card-slide-delay-1 {
-  animation-delay: 0.25s;
+  animation-delay: 0.3s;
 }
 
 .card-slide-delay-2 {
-  animation-delay: 0.5s;
+  animation-delay: 0.6s;
 }
 
 .card-slide-delay-3 {
-  animation-delay: 0.75s;
+  animation-delay: 0.9s;
 }
 
 .card-slide-delay-4 {
-  animation-delay: 1.0s;
+  animation-delay: 1.2s;
 }
 
 .title-appear {
-  animation: titleAppear 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: titleAppear 3.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .title-appear-delay-1 {
@@ -331,13 +331,13 @@ button { cursor: pointer; border: none; background: none; }
 /* Animation base styles - elements should start invisible */
 .animate-title {
   opacity: 0;
-  transform: translateY(32px) scale(0.99);
+  transform: translateY(120px);
   transition: none;
 }
 
 .animate-card {
   opacity: 0;
-  transform: translateY(50px) scale(0.97);
+  transform: translateY(60px) scale(0.98);
   transition: none;
 }
 

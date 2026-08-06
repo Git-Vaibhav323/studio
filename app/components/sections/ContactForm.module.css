@@ -1,7 +1,18 @@
-.section{position:relative;padding:30px 5vw 30px;background:var(--cream) url('/images/bg/bg-sec-con.webp') center bottom/cover no-repeat;display:flex;flex-direction:column;overflow:hidden;}
+.section {
+  position: relative;
+  padding: 30px 5vw 30px;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-@media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
+.sectionBg {
+  position: absolute;
+  inset: 0;
+  background: url('/images/bg/bg-sec-con.webp') center bottom/cover no-repeat;
+  z-index: 0;
+  pointer-events: none;
 }
 .topBar {display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 40px; padding: 0 5vw;}
 .topLeft { display: flex; align-items: flex-start; gap: 12px; }
@@ -161,4 +172,7 @@ select.input{appearance:none;-webkit-appearance:none;cursor:pointer;}
   .submitBtn{ padding: 16px; font-size: 12px; }
   .archFooter{ left: 0; transform: none; width: 100%; }
   .vline,.verticalText,.contactLabel{ display: none; }
+  .sectionBg { display: none; }
 }
+
+

@@ -95,6 +95,7 @@ export default function Process() {
   
   // Animation refs
   const titleRef = useRevealAnimation(100);
+  const subtitleRef = useRevealAnimation(200);
   const timelineRef = useCardAnimation('slideUp', 300);
 
   useEffect(() => {
@@ -171,7 +172,7 @@ export default function Process() {
           </div>
           <div className={styles.divLine} />
         </div>
-        <p className={styles.subtitle}>END TO END. THOUGHTFUL AT EVERY STEP.</p>
+        <p className={styles.subtitle} ref={subtitleRef}>END TO END. THOUGHTFUL AT EVERY STEP.</p>
 
         {/* Timeline */}
         <div className={styles.timeline} ref={timelineRef}>

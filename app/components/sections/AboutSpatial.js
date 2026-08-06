@@ -7,6 +7,7 @@ import styles from './AboutSpatial.module.css';
 export default function AboutSpatial() {
   const headlineRef = useRevealAnimation(100);
   const overlineRef = useRevealAnimation(0);
+  const descLargeRef = useRevealAnimation(300);
   
   return (
     <section id="about" className={styles.section}>
@@ -57,7 +58,7 @@ export default function AboutSpatial() {
               <span className={styles.gold}>Always</span><span className={styles.goldDot} aria-hidden="true" />
             </h2>
 
-            <p className={styles.descLarge}>
+            <p className={styles.descLarge} ref={descLargeRef}>
               Spatial design is the discipline of understanding how a space functions.
             </p>
             <p className={styles.desc}>

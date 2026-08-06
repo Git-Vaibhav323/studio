@@ -28,7 +28,8 @@ const promises = [
 
 export default function Promises() {
   const titleRef = useRevealAnimation(100);
-  const cardsRef = useCardAnimation('slideUp', 300);
+  const subtitleRef = useRevealAnimation(300);
+  const cardsRef = useCardAnimation('slideUp', 400);
   
   return (
     <section id="promises" className={styles.section}>
@@ -63,7 +64,7 @@ export default function Promises() {
         </div>
 
         {/* Subtitle */}
-        <p className={styles.subtitle}>
+        <p className={styles.subtitle} ref={subtitleRef}>
           CLEAR PROCESS. CONSTANT COMMUNICATION. COMPLETE OWNERSHIP.
         </p>
 

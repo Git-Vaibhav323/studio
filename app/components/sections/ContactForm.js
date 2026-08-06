@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { createSupabaseClient } from '@/lib/supabase';
+import { useRevealAnimation } from '@/lib/useRevealAnimation';
 import toast, { Toaster } from 'react-hot-toast';
 import styles from './ContactForm.module.css';
 
@@ -11,6 +12,8 @@ export default function ContactForm() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const labelRef = useRevealAnimation(100);
+  const labelMobileRef = useRevealAnimation(100);
   const supabase = createSupabaseClient();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -54,14 +57,15 @@ export default function ContactForm() {
 
   return (
     <section id="contact" className={styles.section}>
+      <div className={styles.sectionBg} />
       <Toaster position="top-center" />
-      <div className={styles.contactLabel}>Contact Us</div>
+      <div className={styles.contactLabel} ref={labelRef}>Contact Us</div>
       {/* Top Bar and sidebar removed per design request */}
       <div className={styles.content}>
         <div className={styles.split}>
           <div className={styles.leftCol}>
             {/* "Contact Us" label — visible on mobile above the image */}
-            <div className={styles.contactLabelMobile}>Contact Us</div>
+            <div className={styles.contactLabelMobile} ref={labelMobileRef}>Contact Us</div>
             {/* Decorative image — hidden on desktop per request */}
             <div className={styles.vaseLine} aria-hidden="true" />
             <div className={styles.imgWrap}>
