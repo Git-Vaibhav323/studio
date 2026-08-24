@@ -97,13 +97,13 @@
 .stepCircle {
   width: 62px; height: 62px;
   border-radius: 50%;
-  border: 1.5px solid rgba(180,144,79,0.45);
+  border: 1.5px solid rgba(180,144,79,0.7);
   background: var(--cream);
   display: flex; align-items: center; justify-content: center;
   font-family: var(--serif-display, 'DM Serif Display', var(--serif));
-  font-size: 22px; color: var(--gold); font-weight: 400;
+  font-size: 22px; color: #8a6a1f; font-weight: 600;
   margin-bottom: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   transition:
     background 0.4s var(--ease-smooth),
     border-color 0.4s var(--ease-smooth),

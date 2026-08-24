@@ -51,10 +51,6 @@ export default function AestheticDirection() {
         <hr className={styles.divider} />
 
         <div className={styles.carouselWrapper} ref={carouselWrapperRef}>
-          <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={() => scroll(-1)} aria-label="Previous">
-            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-
           <div className={styles.carousel} ref={carouselRef}>
             {cards.map((card) => (
               <div className={styles.card} key={card.num}>
@@ -69,10 +65,6 @@ export default function AestheticDirection() {
               </div>
             ))}
           </div>
-
-          <button className={`${styles.navBtn} ${styles.nextBtn}`} onClick={() => scroll(1)} aria-label="Next">
-            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
         </div>
 
         <div className={styles.footer}>

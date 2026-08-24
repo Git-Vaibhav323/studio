@@ -577,8 +577,8 @@
 .ribbonStepNum {
   font-family: var(--serif);
   font-size: clamp(48px, 6vw, 80px);
-  color: rgba(180, 144, 79, 0.15);
-  font-weight: 400;
+  color: rgba(138, 106, 31, 0.75);
+  font-weight: 600;
   line-height: 1;
   letter-spacing: -0.02em;
   display: block;

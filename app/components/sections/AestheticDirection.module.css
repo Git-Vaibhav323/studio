@@ -30,14 +30,8 @@
 .trDesc{font-size:13px;line-height:1.6;color:var(--dark);font-weight:500;}
 .divider{border:none;border-top:1px solid rgba(180,144,79,0.25);width:100%;margin:0 0 4vh 0;}
 .carouselWrapper{position:relative;display:flex;align-items:center;width:100%;}
-.navBtn{width:42px;height:42px;border-radius:50%;background:var(--cream);border:1px solid rgba(180,144,79,0.3);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.05);flex-shrink:0;z-index:2;transition:all 0.3s;}
-.navBtn:hover{border-color:var(--gold);background:var(--gold-faint);}
-.navBtn svg{width:16px;height:16px;}
-.prevBtn{margin-right:18px;}
-.nextBtn{margin-left:18px;}
-.carousel{display:flex;gap:28px;overflow-x:auto;padding:20px 4px;scroll-behavior:smooth;-ms-overflow-style:none;scrollbar-width:none;flex:1;}
-.carousel::-webkit-scrollbar{display:none;}
-.card{min-width:270px;width:270px;display:flex;flex-direction:column;background:var(--cream);border-radius:14px;border:1px solid rgba(180,144,79,0.2);box-shadow:18px 28px 55px rgba(0,0,0,0.13),0 8px 18px rgba(0,0,0,0.07);position:relative;transition: transform 0.55s var(--ease-expo), box-shadow 0.55s var(--ease-expo), border-color 0.4s ease; overflow: hidden; will-change: transform;}
+.carousel{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:20px 0;width:100%;}
+.card{display:flex;flex-direction:column;background:var(--cream);border-radius:14px;border:1px solid rgba(180,144,79,0.2);box-shadow:18px 28px 55px rgba(0,0,0,0.13),0 8px 18px rgba(0,0,0,0.07);position:relative;transition: transform 0.55s var(--ease-expo), box-shadow 0.55s var(--ease-expo), border-color 0.4s ease; overflow: hidden; will-change: transform;}
 
 /* Gold stripe sweep on hover */
 .card::before {
@@ -91,51 +85,41 @@
   .titleText h2{ font-size: clamp(28px, 8vw, 42px); }
   .titleRight{ border-left:none; padding-left:0; border-top:1px solid rgba(180,144,79,0.3); padding-top:16px; max-width:100%; }
 
-  /* Carousel wrapper: full content width, buttons float over the card edges */
   .carouselWrapper{
     width: 100%;
-    margin-left: 0;
     padding: 0;
-    position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
 
-  /* Nav buttons: absolutely positioned over card, don't push card width */
-  .navBtn{ width: 32px; height: 32px; position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; }
-  .prevBtn{ left: 6px; margin: 0; }
-  .nextBtn{ right: 6px; margin: 0; }
-
-  /* Carousel strip: full width */
+  /* 2x2 grid on mobile */
   .carousel{
-    gap: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
     padding: 16px 0;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
   }
 
-  /* Card: full content width */
   .card{
-    min-width: 100%;
+    min-width: unset;
     width: 100%;
     max-width: 100%;
-    flex-shrink: 0;
-    scroll-snap-align: center;
+    scroll-snap-align: unset;
     margin: 0;
   }
 
-  .cardTop{ height: 200px; }
+  .cardTop{ height: 160px; }
 
   .cardBottom{
-    padding: 28px 16px 20px;
+    padding: 20px 12px 16px;
     overflow: hidden;
   }
   .cardBottom h3{
-    font-size: 18px;
+    font-size: 16px;
     word-break: break-word;
     overflow-wrap: break-word;
   }
   .cardBottom p{
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.6;
   }
 

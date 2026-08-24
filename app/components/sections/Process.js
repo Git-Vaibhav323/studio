@@ -13,7 +13,7 @@ export const steps = [
     expandedText: 'We begin with a detailed conversation about your life — how you use your home, what frustrates you, your vision and budget. No assumptions.',
     expandedList: ['In-depth lifestyle interview', 'Site visit scheduling', 'Budget & timeline alignment'],
     expandedNote: 'Typically 60–90 minutes. In-person or video call.',
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=400&q=80',
+    image: '/images/blueprint_desk.png',
     icon: (
       <svg viewBox="0 0 24 24" stroke="var(--gold)" strokeWidth="1.2" fill="none" strokeLinecap="round">
         <circle cx="10" cy="10" r="6"/>
@@ -29,7 +29,7 @@ export const steps = [
     expandedText: 'We create the blueprint for how your space will work.',
     expandedList: ['Layout & circulation planning', 'Proportion & scale optimisation', 'Natural light mapping', 'Zone definition & adjacencies'],
     expandedNote: 'The spatial plan is the foundation of everything that follows.',
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=400&q=80',
+    image: '/images/floor_plan_rect.png',
     icon: (
       <svg viewBox="0 0 24 24" stroke="var(--gold)" strokeWidth="1.2" fill="none" strokeLinecap="round">
         <rect x="3" y="3" width="18" height="18"/>
@@ -46,7 +46,7 @@ export const steps = [
     expandedText: 'Two to three distinct design directions developed into full concept presentations.',
     expandedList: ['Mood boards & material palettes', 'Furniture plans & layouts', '3D visualisations', 'Design sign-off'],
     expandedNote: 'You choose the direction. We refine it to perfection.',
-    image: 'https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=400&q=80',
+    image: '/images/hero_living_room.png',
     icon: (
       <svg viewBox="0 0 24 24" stroke="var(--gold)" strokeWidth="1.2" fill="none" strokeLinecap="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
@@ -62,7 +62,7 @@ export const steps = [
     expandedText: 'We manage every contractor and supplier — so you never have to coordinate across multiple vendors.',
     expandedList: ['Civil & structural work', 'Carpentry & custom joinery', 'FF&E procurement', 'Quality control at each stage'],
     expandedNote: 'Weekly update reports keep you fully informed.',
-    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=400&q=80',
+    image: '/images/proportion_room.png',
     icon: (
       <svg viewBox="0 0 24 24" stroke="var(--gold)" strokeWidth="1.2" fill="none" strokeLinecap="round">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
@@ -77,7 +77,7 @@ export const steps = [
     expandedText: 'We walk you through your completed home — explaining every system, surface, and specification.',
     expandedList: ['Complete documentation package', 'Maintenance & care guide', '30-day aftercare support', 'Site snagging & resolution'],
     expandedNote: 'Our relationship continues well beyond handover day.',
-    image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&w=400&q=80',
+    image: '/images/bedroom_luxury.png',
     icon: (
       <svg viewBox="0 0 24 24" stroke="var(--gold)" strokeWidth="1.2" fill="none" strokeLinecap="round">
         <polyline points="20 6 9 17 4 12"/>
@@ -200,7 +200,7 @@ export default function Process() {
                   </div>
                   <div className={styles.expLeft}>
                     {step.image && (
-                      <Image src={step.image} alt={step.label} fill style={{objectFit:'cover'}} />
+                      <Image src={step.image} alt={step.label} fill sizes="220px" style={{objectFit:'cover'}} />
                     )}
                   </div>
                   <div className={styles.expRight}>

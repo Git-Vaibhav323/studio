@@ -10,7 +10,6 @@ import styles from './Insights.module.css';
 export default function Insights() {
   const [featuredBlogs, setFeaturedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const supabase = createSupabaseClient();
   
   const titleRef = useRevealAnimation(100);
   const subtitleRef = useRevealAnimation(200);
@@ -21,6 +20,11 @@ export default function Insights() {
   }, []);
 
   const fetchFeaturedBlogs = async () => {
+    const supabase = createSupabaseClient();
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       const { data, error } = await supabase
