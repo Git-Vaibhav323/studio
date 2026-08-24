@@ -6,7 +6,7 @@ A professional Next.js website with a comprehensive admin panel for The Spatial 
 
 This website was developed as a client project to establish The Spatial Edit's premium digital presence and support its day-to-day content management. The visual direction, responsive experience, portfolio, service pages, lead collection, and custom admin tools were built around the studio's brand and business requirements.
 
-## 🚀 Features Completed
+## 🚀 Features Completed ok
 
 ### ✅ Complete Admin Panel System
 - **Authentication System** - Secure login with Supabase Auth
