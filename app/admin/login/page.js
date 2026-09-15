@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { createSupabaseClient } from '@/lib/supabase';
 import toast, { Toaster } from 'react-hot-toast';
 import styles from './Login.module.css';
@@ -42,7 +43,13 @@ export default function AdminLogin() {
       
       <div className={styles.loginBox}>
         <div className={styles.logo}>
-          <h1>The Spatial Edit</h1>
+          <Image
+            src="/logo.png"
+            alt="The Spatial Edit"
+            width={160}
+            height={50}
+            style={{ objectFit: 'contain' }}
+          />
           <p>Admin Panel</p>
         </div>
 

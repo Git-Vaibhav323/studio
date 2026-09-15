@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -16,13 +17,13 @@ export default function Footer() {
         {/* Brand column */}
         <div className={styles.brandCol}>
           <div className={styles.logo}>
-            <svg viewBox="0 0 40 40" width="44" height="44">
-              <path d="M20 2v36M12 10h16M14 20h12M12 30h16" stroke="#b4904f" strokeWidth="2" fill="none"/>
-            </svg>
-            <div>
-              <div className={styles.logoName}>The Spatial Edit</div>
-              <div className={styles.logoSub}>An Interior Design Studio</div>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="The Spatial Edit"
+              width={160}
+              height={50}
+              style={{ objectFit: 'contain', objectPosition: 'left center', filter: 'brightness(0) invert(1)' }}
+            />
           </div>
           <p className={styles.brandDesc}>
             We design thoughtful, timeless spaces that are as functional as they are beautiful. From concept to completion, we shape environments that elevate everyday living.

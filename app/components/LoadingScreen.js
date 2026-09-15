@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './LoadingScreen.module.css';
+import Image from 'next/image';
 import {
   BOOT_EVENTS,
   CRITICAL_SITE_IMAGES,
@@ -98,7 +99,14 @@ export default function LoadingScreen() {
       <div className={styles.content}>
         <div className={styles.logoSection}>
           <div className={styles.brandSection}>
-            <h1 className={styles.brand}>The Spatial Edit</h1>
+            <Image
+              src="/logo.png"
+              alt="The Spatial Edit"
+              width={200}
+              height={60}
+              style={{ objectFit: 'contain' }}
+              priority
+            />
             <p className={styles.subtitle}>Spaces designed to work. Finished to last.</p>
           </div>
         </div>

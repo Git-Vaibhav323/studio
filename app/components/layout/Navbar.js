@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styles from './Navbar.module.css';
 
@@ -51,16 +52,14 @@ export default function Navbar() {
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <Link href="/" className={styles.logo}>
-        <div className={styles.logoMark}>
-          <div className={styles.logoMarkInner}>
-            <span className={styles.lmT}>T</span>
-            <span className={styles.lmS}>S</span>
-          </div>
-        </div>
-        <div className={styles.logoText}>
-          <span className={styles.ltMain}>The Spatial Edit</span>
-          <span className={styles.ltSub}>Interior Design Studio</span>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="The Spatial Edit"
+          width={160}
+          height={48}
+          style={{ objectFit: 'contain', objectPosition: 'left center' }}
+          priority
+        />
       </Link>
 
       <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ''}`}>
