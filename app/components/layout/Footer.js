@@ -22,7 +22,7 @@ export default function Footer() {
               alt="The Spatial Edit"
               width={160}
               height={50}
-              style={{ objectFit: 'contain', objectPosition: 'left center', filter: 'brightness(0) invert(1)' }}
+              style={{ objectFit: 'contain', objectPosition: 'left center' }}
             />
           </div>
           <p className={styles.brandDesc}>
