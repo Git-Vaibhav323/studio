@@ -261,19 +261,16 @@
   .timeline { flex-direction: column; align-items: center; gap: 40px; }
   .timelineLine { display: none; }
   .vline { display: none; }
-  /* fixed height causes overflow on mobile — let it grow naturally */
   .stepDesc { height: auto; min-height: unset; }
-  /* each step is a block; open step sits above siblings */
-  .step { isolation: isolate; }
+  .step { isolation: isolate; width: 100%; max-width: 420px; cursor: pointer; }
   .stepOpen { z-index: 20; isolation: isolate; }
-  /* card hidden on mobile — no layout space taken, animates open on tap */
   .expandedCard {
     position: relative; top: 0; left: 0;
     transform: scale(0.95) translateY(-6px);
     width: 100%; margin-top: 0;
     opacity: 0; pointer-events: none;
     max-height: 0; overflow: hidden;
-    flex-direction: column; /* stack image above text */
+    flex-direction: column;
     transition:
       opacity 0.35s var(--ease-expo),
       transform 0.35s var(--ease-expo),
@@ -294,7 +291,6 @@
   .expRight {
     padding: 12px 12px 16px;
   }
-  .step { width: 100%; max-width: 400px; cursor: pointer; }
 }
 @media (max-width: 600px) {
   .expandedCard { flex-direction: column; }

@@ -28,19 +28,19 @@ export default function Footer() {
           <p className={styles.brandDesc}>
             We design thoughtful, timeless spaces that are as functional as they are beautiful. From concept to completion, we shape environments that elevate everyday living.
           </p>
-          <a href="#contact" className={styles.ctaBtn}>
+          <Link href="/contact" className={styles.ctaBtn}>
             BOOK DISCOVERY CALL
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          </Link>
           <div className={styles.social}>
             <div className={styles.socialLabel}>FOLLOW US</div>
             <div className={styles.socialIcons}>
               {[
-                { label:'Instagram', svg:<svg viewBox="0 0 24 24" fill="var(--cream)" strokeWidth="1.5" stroke="var(--cream)"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="none"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="#111"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#111" strokeWidth="2"/></svg> },
-                { label:'LinkedIn', svg:<svg viewBox="0 0 24 24" fill="var(--cream)" strokeWidth="0"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" fill="var(--cream)"/><rect x="2" y="9" width="4" height="12" fill="var(--cream)"/><circle cx="4" cy="4" r="2" fill="var(--cream)"/></svg> },
-                { label:'YouTube', svg:<svg viewBox="0 0 24 24" fill="var(--cream)"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#111"/></svg> },
+                { label:'Instagram', href:'https://www.instagram.com/thespatialedits/', svg:<svg viewBox="0 0 24 24" fill="var(--cream)" strokeWidth="1.5" stroke="var(--cream)"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="none"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="#111"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="#111" strokeWidth="2"/></svg> },
+                { label:'LinkedIn', href:'https://www.linkedin.com/company/thespatialedits/', svg:<svg viewBox="0 0 24 24" fill="var(--cream)" strokeWidth="0"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" fill="var(--cream)"/><rect x="2" y="9" width="4" height="12" fill="var(--cream)"/><circle cx="4" cy="4" r="2" fill="var(--cream)"/></svg> },
+                { label:'YouTube', href:'https://www.youtube.com/@thespatialedits', svg:<svg viewBox="0 0 24 24" fill="var(--cream)"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#111"/></svg> },
               ].map((s) => (
-                <a href="#" key={s.label} className={styles.socialIcon} aria-label={s.label}>{s.svg}</a>
+                <a href={s.href} key={s.label} className={styles.socialIcon} aria-label={s.label} target="_blank" rel="noopener noreferrer">{s.svg}</a>
               ))}
             </div>
           </div>
@@ -86,8 +86,8 @@ export default function Footer() {
               links: [
                 { label: 'Blog', href: '/insights' },
                 { label: 'FAQs', href: '/#faqs' },
-                { label: 'Privacy Policy', href: '#' },
-                { label: 'Terms & Conditions', href: '#' },
+                { label: 'Privacy Policy', href: '/privacy-policy' },
+                { label: 'Terms & Conditions', href: '/terms' },
               ],
             },
           ].map((col) => (
@@ -138,9 +138,9 @@ export default function Footer() {
         </div>
         <div className={styles.copy}>&copy; 2026 The Spatial Edit. All rights reserved.</div>
         <div className={styles.legal}>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms &amp; Conditions</a>
-          <a href="#">Sitemap</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms &amp; Conditions</a>
+          <a href="/contact">Contact</a>
         </div>
       </div>
     </footer>

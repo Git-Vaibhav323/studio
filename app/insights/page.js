@@ -12,13 +12,14 @@ export default function InsightsPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const supabase = createSupabaseClient();
 
   useEffect(() => {
     fetchBlogs();
   }, []);
 
   const fetchBlogs = async () => {
+    const supabase = createSupabaseClient();
+    if (!supabase) { setLoading(false); return; }
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -195,6 +196,7 @@ export default function InsightsPage() {
                           src={blog.featured_image}
                           alt={blog.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           style={{ objectFit: 'cover' }}
                         />
                       ) : (

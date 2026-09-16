@@ -320,9 +320,10 @@ button { cursor: pointer; border: none; background: none; }
   .content { padding-left: 0 !important; }
 }
 
-/* Mobile: ensure section backgrounds keep bottom visible and avoid over-zoom */
+/* Mobile: avoid over-zoom on bg images for specific sections */
 @media (max-width: 768px) {
-  .section {
+  .section[class*="process"],
+  .section[class*="aesthetic"] {
     background-position: center bottom !important;
     background-size: 110% auto !important;
     background-repeat: no-repeat !important;

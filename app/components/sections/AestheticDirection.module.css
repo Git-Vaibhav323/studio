@@ -95,8 +95,10 @@
   .carousel{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
+    gap: 12px;
     padding: 16px 0;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .card{
@@ -107,14 +109,14 @@
     margin: 0;
   }
 
-  .cardTop{ height: 160px; }
+  .cardTop{ height: 140px; }
 
   .cardBottom{
-    padding: 20px 12px 16px;
+    padding: 16px 10px 14px;
     overflow: hidden;
   }
   .cardBottom h3{
-    font-size: 16px;
+    font-size: 14px;
     word-break: break-word;
     overflow-wrap: break-word;
   }

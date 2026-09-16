@@ -22,22 +22,14 @@ export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-  const supabase = createSupabaseClient();
 
   // Skip auth check for login page
   const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
-    if (isLoginPage) {
-      setLoading(false);
-      return;
-    }
-
-    // If Supabase is not configured, skip auth check
-    if (!supabase) {
-      setLoading(false);
-      return;
-    }
+    if (isLoginPage) { setLoading(false); return; }
+    const supabase = createSupabaseClient();
+    if (!supabase) { setLoading(false); return; }
 
     const getUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -69,6 +61,7 @@ export default function AdminLayout({ children }) {
 
   const signOut = async () => {
     try {
+      const supabase = createSupabaseClient();
       if (!supabase) return;
       await supabase.auth.signOut();
       toast.success('Logged out successfully');

@@ -183,8 +183,12 @@
   .subCol { margin-top: 40px; align-self: flex-start; width: 100%; max-width: 400px; }
   .brandCol { max-width: 100%; }
 }
-@media (max-width: 100px) {
+@media (max-width: 768px) {
   .footer { padding: 5vh 6vw 4vh; }
   .bottom { flex-direction: column; gap: 20px; text-align: center; }
   .ctaBtn { width: 100%; max-width: 280px; }
+  .inner { margin-top: 4vh; gap: 32px; }
+  .brandCol { flex: none; width: 100%; }
+  .linksWrap { gap: 28px; }
+  .subCol { width: 100%; }
 }

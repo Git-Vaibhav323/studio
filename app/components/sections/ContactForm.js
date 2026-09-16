@@ -14,7 +14,6 @@ export default function ContactForm() {
   const [submitting, setSubmitting] = useState(false);
   const labelRef = useRevealAnimation(100);
   const labelMobileRef = useRevealAnimation(100);
-  const supabase = createSupabaseClient();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
   
@@ -23,6 +22,12 @@ export default function ContactForm() {
     setSubmitting(true);
 
     try {
+      const supabase = createSupabaseClient();
+      if (!supabase) {
+        toast.error('Contact form is not available right now. Please call or email us directly.');
+        return;
+      }
+
       const { error } = await supabase
         .from('leads')
         .insert([{
@@ -69,7 +74,7 @@ export default function ContactForm() {
             {/* Decorative image — hidden on desktop per request */}
             <div className={styles.vaseLine} aria-hidden="true" />
             <div className={styles.imgWrap}>
-              <Image src="/images/vase_books.png" alt="vase and books" fill style={{ objectFit: 'cover', objectPosition: 'center bottom' }} />
+              <Image src="/images/vase_books.png" alt="decorative vase and books" fill sizes="(max-width: 768px) 100vw, 40vw" style={{ objectFit: 'cover', objectPosition: 'center bottom' }} />
             </div>
           </div>
           <div className={styles.rightCol}>
@@ -92,28 +97,28 @@ export default function ContactForm() {
                 <p>We&apos;ll be in touch soon.</p>
               </div>
             ) : (
-              <form className={styles.formGrid} onSubmit={handleSubmit}>
+              <form className={styles.formGrid} onSubmit={handleSubmit} suppressHydrationWarning>
                 {/* Full Name */}
                 <div className={styles.formGroup}>
-                  <input type="text" name="name" className={styles.input} placeholder="Full Name" value={form.name} onChange={handleChange} required />
+                  <input suppressHydrationWarning type="text" name="name" className={styles.input} placeholder="Full Name" value={form.name} onChange={handleChange} required />
                   <div className={styles.icon}><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
                 </div>
 
                 {/* Phone Number */}
                 <div className={styles.formGroup}>
-                  <input type="tel" name="phone" className={styles.input} placeholder="Phone Number" value={form.phone} onChange={handleChange} required />
+                  <input suppressHydrationWarning type="tel" name="phone" className={styles.input} placeholder="Phone Number" value={form.phone} onChange={handleChange} required />
                   <div className={styles.icon}><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
                 </div>
 
                 {/* Email Address */}
                 <div className={`${styles.formGroup} ${styles.full}`}>
-                  <input type="email" name="email" className={styles.input} placeholder="Email Address" value={form.email} onChange={handleChange} required />
+                  <input suppressHydrationWarning type="email" name="email" className={styles.input} placeholder="Email Address" value={form.email} onChange={handleChange} required />
                   <div className={styles.icon}><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
                 </div>
 
                 {/* Project Type — dropdown */}
                 <div className={styles.formGroup}>
-                  <select name="project" className={styles.input} value={form.project} onChange={handleChange} required>
+                  <select suppressHydrationWarning name="project" className={styles.input} value={form.project} onChange={handleChange} required>
                     <option value="" disabled>Project Type</option>
                     <option value="residential">Residential</option>
                     <option value="commercial">Commercial</option>
@@ -123,13 +128,13 @@ export default function ContactForm() {
 
                 {/* Location — text input */}
                 <div className={styles.formGroup}>
-                  <input type="text" name="location" className={styles.input} placeholder="Enter your location" value={form.location} onChange={handleChange} />
+                  <input suppressHydrationWarning type="text" name="location" className={styles.input} placeholder="Enter your location" value={form.location} onChange={handleChange} />
                   <div className={styles.icon}><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                 </div>
 
                 {/* Project Description */}
                 <div className={`${styles.formGroup} ${styles.full}`}>
-                  <textarea name="message" className={`${styles.input} ${styles.textarea}`} placeholder="Tell us about your project (project size, location, budget, design preferences, and any specific requirements)." value={form.message} onChange={handleChange} />
+                  <textarea suppressHydrationWarning name="message" className={`${styles.input} ${styles.textarea}`} placeholder="Tell us about your project (project size, location, budget, design preferences, and any specific requirements)." value={form.message} onChange={handleChange} />
                   <div className={styles.icon}><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="1.5" strokeLinecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                 </div>
 

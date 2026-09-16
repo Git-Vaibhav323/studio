@@ -12,13 +12,14 @@ export default function BlogsManagement() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const supabase = createSupabaseClient();
 
   useEffect(() => {
     fetchBlogs();
   }, []);
 
   const fetchBlogs = async () => {
+    const supabase = createSupabaseClient();
+    if (!supabase) { setLoading(false); return; }
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -42,10 +43,9 @@ export default function BlogsManagement() {
   };
 
   const deleteBlog = async (id, title) => {
-    if (!window.confirm(`Are you sure you want to delete "${title}"?`)) {
-      return;
-    }
-
+    if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
+    const supabase = createSupabaseClient();
+    if (!supabase) return;
     try {
       const { error } = await supabase
         .from('blogs')
@@ -63,6 +63,8 @@ export default function BlogsManagement() {
   };
 
   const toggleStatus = async (id, currentStatus) => {
+    const supabase = createSupabaseClient();
+    if (!supabase) return;
     try {
       const newStatus = currentStatus === 'published' ? 'draft' : 'published';
       const { error } = await supabase
@@ -178,6 +180,7 @@ export default function BlogsManagement() {
                     src={blog.featured_image}
                     alt={blog.title}
                     fill
+                    sizes="280px"
                     style={{ objectFit: 'cover' }}
                   />
                 ) : (

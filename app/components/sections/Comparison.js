@@ -107,7 +107,7 @@ export default function Comparison() {
               </div>
             </div>
             <div className={styles.imageBox}>
-              <Image src="/images/without_spatial_room.png" alt="Awkward room flow" fill style={{objectFit:'cover'}} />
+              <Image src="/images/without_spatial_room.png" alt="Awkward room flow" fill sizes="(max-width: 768px) 100vw, 50vw" style={{objectFit:'cover'}} />
             </div>
             <div className={styles.list}>
               {withoutItems.map((item) => (
@@ -136,7 +136,7 @@ export default function Comparison() {
               </div>
             </div>
             <div className={styles.imageBox}>
-              <Image src="/images/with_spatial_room.png" alt="Smooth room flow" fill style={{objectFit:'cover'}} />
+              <Image src="/images/with_spatial_room.png" alt="Smooth room flow" fill sizes="(max-width: 768px) 100vw, 50vw" style={{objectFit:'cover'}} />
             </div>
             <div className={styles.list}>
               {withItems.map((item) => (

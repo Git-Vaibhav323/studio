@@ -55,7 +55,7 @@ export default function AestheticDirection() {
             {cards.map((card) => (
               <div className={styles.card} key={card.num}>
                 <div className={styles.cardTop}>
-                  <Image src={card.img} alt={card.title} fill style={{objectFit:'cover'}} />
+                  <Image src={card.img} alt={card.title} fill sizes="(max-width: 768px) 50vw, 25vw" style={{objectFit:'cover'}} />
                   <div className={styles.cardNumber}>{card.num}</div>
                 </div>
                 <div className={styles.cardBottom}>

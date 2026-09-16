@@ -96,8 +96,8 @@ export default function AboutPage() {
                 <div className={`${styles.founderStoryCard} ${aboutStyles.founderCard}`}>
                   <div className={`${styles.founderImage} ${aboutStyles.founderImg}`}>
                     <Image
-                      src="https://i0.wp.com/picjumbo.com/wp-content/uploads/luxury-womens-salon-gold-and-white-interior-design-free-image.jpeg?w=600&quality=80"
-                      alt="Luxury gold and white interior design"
+                      src="/images/bedroom_luxury.png"
+                      alt="Luxury interior design by The Spatial Edit"
                       fill
                       sizes="(max-width: 900px) 100vw, 520px"
                       style={{ objectFit: 'cover' }}

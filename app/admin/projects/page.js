@@ -161,6 +161,7 @@ export default function ProjectsManagement() {
                     src={project.featured_image}
                     alt={project.title}
                     fill
+                    sizes="280px"
                     style={{ objectFit: 'cover' }}
                   />
                 ) : (

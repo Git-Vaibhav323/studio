@@ -181,6 +181,7 @@ export default function ServicesManagement() {
                     src={service.featured_image}
                     alt={service.title}
                     fill
+                    sizes="120px"
                     style={{ objectFit: 'cover' }}
                   />
                 ) : (

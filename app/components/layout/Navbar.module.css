@@ -10,7 +10,6 @@
   background: rgba(244,237,224,0.97) url('/images/navbarbg.png') center center/cover no-repeat;
   border-bottom: 1px solid rgba(180,144,79,0.18);
   transition: box-shadow 0.35s var(--ease-smooth), border-color 0.35s ease, padding 0.35s ease;
-  position: relative;
 }
 .navbar::before {
   content: '';
@@ -233,6 +232,11 @@
     padding: 10px 13px;
     letter-spacing: 0.1em;
   }
-  .navCta span { display: none; }
+  .navCta span { display: inline; }
   .hamburger { display: flex; }
+}
+
+@media (max-width: 400px) {
+  .navCta span { display: none; }
+  .navbar { padding: 14px 12px 14px 16px; }
 }

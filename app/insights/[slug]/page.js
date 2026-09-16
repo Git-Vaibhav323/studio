@@ -16,7 +16,6 @@ export default function BlogDetailPage() {
   const [relatedBlogs, setRelatedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const supabase = createSupabaseClient();
 
   useEffect(() => {
     if (params.slug) {
@@ -25,6 +24,8 @@ export default function BlogDetailPage() {
   }, [params.slug]);
 
   const fetchBlog = async (slug) => {
+    const supabase = createSupabaseClient();
+    if (!supabase) { setLoading(false); setNotFound(true); return; }
     try {
       setLoading(true);
       
@@ -168,6 +169,7 @@ export default function BlogDetailPage() {
                   src={blog.featured_image}
                   alt={blog.title}
                   fill
+                  sizes="100vw"
                   style={{ objectFit: 'contain' }}
                   priority
                 />
@@ -316,6 +318,7 @@ export default function BlogDetailPage() {
                           src={relatedBlog.featured_image}
                           alt={relatedBlog.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           style={{ objectFit: 'cover' }}
                         />
                       ) : (

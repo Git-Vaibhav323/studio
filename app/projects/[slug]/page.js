@@ -16,7 +16,6 @@ export default function ProjectDetailPage() {
   const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const supabase = createSupabaseClient();
 
   useEffect(() => {
     if (params.slug) {
@@ -25,6 +24,8 @@ export default function ProjectDetailPage() {
   }, [params.slug]);
 
   const fetchProject = async (slug) => {
+    const supabase = createSupabaseClient();
+    if (!supabase) { setLoading(false); setNotFound(true); return; }
     try {
       setLoading(true);
       
@@ -141,6 +142,7 @@ export default function ProjectDetailPage() {
               src={project.featured_image}
               alt={project.title}
               fill
+              sizes="100vw"
               style={{ objectFit: 'cover' }}
               priority
             />
@@ -579,6 +581,7 @@ export default function ProjectDetailPage() {
                       src={image}
                       alt={`${project.title} - Gallery Image ${index + 1}`}
                       fill
+                      sizes="(max-width: 768px) 100vw, 80vw"
                       style={{ objectFit: 'contain' }}
                     />
                   </div>
@@ -604,6 +607,7 @@ export default function ProjectDetailPage() {
                           src={relatedProject.featured_image}
                           alt={relatedProject.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           style={{ objectFit: 'cover' }}
                         />
                       ) : (
