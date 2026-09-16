@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { createSupabaseClient } from '@/lib/supabase';
 import styles from './Navbar.module.css';
 
 const DIAMOND = (
@@ -11,10 +12,10 @@ const DIAMOND = (
   </svg>
 );
 
-const navLinks = [
+const baseNavLinks = [
   { label: 'Process', href: '/process' },
   { label: 'Services', href: '/services' },
-  { label: 'Projects', href: '/projects' },
+  { label: 'Projects', href: '/projects', requiresProjects: true },
   { label: 'About', href: '/about' },
   { label: 'Insights', href: '/insights' },
   { label: 'Contact', href: '/contact' },
@@ -23,6 +24,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasProjects, setHasProjects] = useState(true); // optimistic — hide only if confirmed 0
   const pathname = usePathname();
 
   useEffect(() => {
@@ -49,17 +51,42 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const checkProjects = async () => {
+      const supabase = createSupabaseClient();
+      if (!supabase) return;
+      try {
+        const { count } = await supabase
+          .from('projects')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'published');
+        setHasProjects((count ?? 0) > 0);
+      } catch {
+        // keep optimistic default
+      }
+    };
+    checkProjects();
+  }, []);
+
+  const navLinks = baseNavLinks.filter(
+    (l) => !l.requiresProjects || hasProjects
+  );
+
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <Link href="/" className={styles.logo}>
         <Image
           src="/logo.png"
           alt="The Spatial Edit"
-          width={160}
-          height={48}
-          style={{ objectFit: 'contain', objectPosition: 'left center' }}
+          width={44}
+          height={44}
+          style={{ objectFit: 'contain' }}
           priority
         />
+        <div className={styles.logoText}>
+          <span className={styles.ltMain}>The Spatial Edit</span>
+          <span className={styles.ltSub}>Interior Design Studio</span>
+        </div>
       </Link>
 
       <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ''}`}>

@@ -92,6 +92,19 @@
 .socialIcon:hover { border-color: var(--gold); background: rgba(180,144,79,0.1); }
 .socialIcon svg { width: 14px; height: 14px; }
 
+.phoneLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: rgba(246,240,230,0.7);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+.phoneLink:hover { color: var(--gold); }
+
 /* Links wrap */
 .linksWrap {
   flex: 1; display: flex;
