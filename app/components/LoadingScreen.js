@@ -104,7 +104,7 @@ export default function LoadingScreen() {
               alt="The Spatial Edit"
               width={200}
               height={60}
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }}
               priority
             />
             <p className={styles.subtitle}>Spaces designed to work. Finished to last.</p>

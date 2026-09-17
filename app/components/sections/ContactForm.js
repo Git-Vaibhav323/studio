@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { createSupabaseClient } from '@/lib/supabase';
 import { useRevealAnimation } from '@/lib/useRevealAnimation';
 import toast, { Toaster } from 'react-hot-toast';
 import styles from './ContactForm.module.css';
@@ -22,32 +21,21 @@ export default function ContactForm() {
     setSubmitting(true);
 
     try {
-      const supabase = createSupabaseClient();
-      if (!supabase) {
-        toast.error('Contact form is not available right now. Please call or email us directly.');
-        return;
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Submission failed');
       }
 
-      const { error } = await supabase
-        .from('leads')
-        .insert([{
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          project_type: form.project,
-          location: form.location,
-          message: form.message,
-          source: 'website',
-          status: 'new',
-          priority: 'medium'
-        }]);
-
-      if (error) throw error;
-
       setSubmitted(true);
-      toast.success('Thank you! We\'ll be in touch soon.');
-      
-      // Reset form after delay
+      toast.success("Thank you! We'll be in touch soon.");
+
       setTimeout(() => {
         setForm({ name:'', phone:'', email:'', project:'', location:'', message:'' });
         setSubmitted(false);

@@ -78,8 +78,8 @@ export default function Navbar() {
         <Image
           src="/logo.png"
           alt="The Spatial Edit"
-          width={44}
-          height={44}
+          width={56}
+          height={56}
           style={{ objectFit: 'contain' }}
           priority
         />

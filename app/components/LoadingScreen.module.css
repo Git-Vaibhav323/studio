@@ -301,6 +301,22 @@
     gap: 2rem;
     padding: 0 1.5rem;
     max-width: 320px;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .logoSection {
+    align-items: center;
+    width: 100%;
+  }
+
+  .brandSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
   }
   
   .logoMark {
@@ -310,10 +326,12 @@
   
   .brand {
     font-size: 1.6rem;
+    text-align: center;
   }
   
   .subtitle {
     font-size: 0.85rem;
+    text-align: center;
   }
   
   .floatingElement {

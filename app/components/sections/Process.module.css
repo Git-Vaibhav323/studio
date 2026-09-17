@@ -5,15 +5,18 @@
 
 .section {
   position: relative;
-  /* reduced bottom padding to tighten space below steps */
   padding: 5vh 5vw 80px;
-  background: var(--cream) url('/images/bg/bg-sec-7.webp') center bottom/cover no-repeat;
+  background: var(--cream) url('/images/bg/bg-sec-7.webp') center center/cover no-repeat;
   display: flex; flex-direction: column;
   overflow: hidden; min-height: 100vh;
 }
 
 @media (max-width: 768px) {
-  .section { background-position: center bottom; background-size: 110% auto; background-repeat: no-repeat; }
+  .section { 
+    background-attachment: scroll;
+    background-position: center center;
+    background-size: cover;
+  }
 }
 .vline {
   position: absolute; left: 46px; top: 0; bottom: 0;
