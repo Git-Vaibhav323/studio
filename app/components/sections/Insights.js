@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createSupabaseClient } from '@/lib/supabase';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './Insights.module.css';
 
 export default function Insights() {
@@ -13,7 +13,7 @@ export default function Insights() {
   
   const titleRef = useRevealAnimation(100);
   const subtitleRef = useRevealAnimation(200);
-  const gridRef = useCardAnimation('slideUp', 300);
+  const gridRef = useStaggerChildren(140, 'slideUp');
 
   useEffect(() => {
     fetchFeaturedBlogs();

@@ -63,6 +63,19 @@ html {
   font-size: 16px;
 }
 
+/* Smooth overscroll feel on supported browsers */
+@supports (overscroll-behavior: none) {
+  body { overscroll-behavior-y: none; }
+}
+
+/* Ensure will-change is only active during animation, not permanently */
+.animate-title,
+.animate-card,
+.animate-card-left,
+.animate-card-right {
+  will-change: opacity, transform;
+}
+
 body {
   font-family: var(--sans);
   background: var(--cream);
@@ -131,11 +144,11 @@ button { cursor: pointer; border: none; background: none; }
   to   { transform: rotate(360deg); }
 }
 
-/* Title Appearing Animation - Smooth, slow rise with elegant fade-in */
+/* Title Appearing Animation - Cinematic slow rise */
 @keyframes titleAppear {
   0% { 
     opacity: 0; 
-    transform: translateY(80px);
+    transform: translateY(60px);
   }
   100% { 
     opacity: 1; 
@@ -143,11 +156,11 @@ button { cursor: pointer; border: none; background: none; }
   }
 }
 
-/* Smooth sliding animations for cards - slow and elegant */
+/* Card slide animations — subtle scale adds depth */
 @keyframes cardSlideIn {
   0% {
     opacity: 0;
-    transform: translateX(-40px) scale(0.98);
+    transform: translateX(-44px) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -158,7 +171,7 @@ button { cursor: pointer; border: none; background: none; }
 @keyframes cardSlideInFromRight {
   0% {
     opacity: 0;
-    transform: translateX(40px) scale(0.98);
+    transform: translateX(44px) scale(0.98);
   }
   100% {
     opacity: 1;
@@ -169,7 +182,7 @@ button { cursor: pointer; border: none; background: none; }
 @keyframes cardSlideUp {
   0% {
     opacity: 0;
-    transform: translateY(60px) scale(0.98);
+    transform: translateY(48px) scale(0.97);
   }
   100% {
     opacity: 1;
@@ -177,55 +190,63 @@ button { cursor: pointer; border: none; background: none; }
   }
 }
 
-.card-slide-in {
-  animation: cardSlideIn 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* ── CINEMATIC ANIMATION SYSTEM ─────────────────────────────────────────── */
+
+/* --- Initial hidden states --- */
+.animate-title {
+  opacity: 0 !important;
+  transform: translateY(60px) !important;
+  transition: none !important;
+}
+.animate-card {
+  opacity: 0 !important;
+  transform: translateY(48px) scale(0.97) !important;
+  transition: none !important;
+}
+.animate-card-left {
+  opacity: 0 !important;
+  transform: translateX(-44px) scale(0.98) !important;
+  transition: none !important;
+}
+.animate-card-right {
+  opacity: 0 !important;
+  transform: translateX(44px) scale(0.98) !important;
+  transition: none !important;
 }
 
-.card-slide-in-right {
-  animation: cardSlideInFromRight 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.card-slide-up {
-  animation: cardSlideUp 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.card-slide-delay-1 {
-  animation-delay: 0.3s;
-}
-
-.card-slide-delay-2 {
-  animation-delay: 0.6s;
-}
-
-.card-slide-delay-3 {
-  animation-delay: 0.9s;
-}
-
-.card-slide-delay-4 {
-  animation-delay: 1.2s;
-}
-
+/* --- Reveal animations (keyframe-driven) --- */
+/* Title: slow, dignified rise — 1.6s, expo ease */
 .title-appear {
-  animation: titleAppear 3.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: titleAppear 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.title-appear-delay-1 {
-  animation-delay: 0.3s;
+/* Cards: slightly shorter but still editorial */
+.card-slide-up {
+  animation: cardSlideUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.card-slide-in {
+  animation: cardSlideIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.card-slide-in-right {
+  animation: cardSlideInFromRight 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.title-appear-delay-2 {
-  animation-delay: 0.6s;
-}
+/* Delay utilities for staggered grids */
+.card-slide-delay-1 { animation-delay: 0.1s; }
+.card-slide-delay-2 { animation-delay: 0.22s; }
+.card-slide-delay-3 { animation-delay: 0.34s; }
+.card-slide-delay-4 { animation-delay: 0.46s; }
+.title-appear-delay-1 { animation-delay: 0.15s; }
+.title-appear-delay-2 { animation-delay: 0.3s; }
+.title-appear-delay-3 { animation-delay: 0.45s; }
 
-.title-appear-delay-3 {
-  animation-delay: 0.9s;
-}
-
+/* --- Transition-based reveals (useSectionReveal) --- */
 .reveal {
   opacity: 0;
-  transform: translateY(36px);
-  transition: opacity var(--dur-slower) var(--ease-expo),
-              transform var(--dur-slower) var(--ease-expo);
+  transform: translateY(40px);
+  transition:
+    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.visible {
   opacity: 1;
@@ -233,9 +254,10 @@ button { cursor: pointer; border: none; background: none; }
 }
 .reveal-right {
   opacity: 0;
-  transform: translateX(40px);
-  transition: opacity var(--dur-slower) var(--ease-expo),
-              transform var(--dur-slower) var(--ease-expo);
+  transform: translateX(44px);
+  transition:
+    opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-right.visible {
   opacity: 1;
@@ -244,12 +266,39 @@ button { cursor: pointer; border: none; background: none; }
 .reveal-scale {
   opacity: 0;
   transform: scale(0.94);
-  transition: opacity var(--dur-slower) var(--ease-expo),
-              transform var(--dur-slower) var(--ease-expo);
+  transition:
+    opacity 1.0s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.0s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal-scale.visible {
   opacity: 1;
   transform: scale(1);
+}
+
+/* --- prefers-reduced-motion: disable all --- */
+@media (prefers-reduced-motion: reduce) {
+  .animate-title,
+  .animate-card,
+  .animate-card-left,
+  .animate-card-right {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .title-appear,
+  .card-slide-up,
+  .card-slide-in,
+  .card-slide-in-right {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .reveal,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ---- SECTION DIVIDER ---- */

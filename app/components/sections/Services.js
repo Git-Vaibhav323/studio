@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './Services.module.css';
 
 export const services = [
@@ -135,7 +135,7 @@ export default function Services() {
   const [hovered, setHovered] = useState(null);
   const titleRef = useRevealAnimation(100);
   const overlineRef = useRevealAnimation(0);
-  const gridRef = useCardAnimation('slideUp', 400);
+  const gridRef = useStaggerChildren(120, 'slideUp');
 
   return (
     <section id="services" className={styles.section}>

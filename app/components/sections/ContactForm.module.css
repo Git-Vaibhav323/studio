@@ -1,188 +1,308 @@
+/* ─── SECTION ──────────────────────────────────────────────────────────────── */
 .section {
   position: relative;
-  padding: 30px 5vw 30px;
-  background: var(--cream);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 0;
 }
 
+/* Full-section background — the dining space image */
 .sectionBg {
   position: absolute;
   inset: 0;
-  background: url('/images/bg/bg-sec-con.webp') center bottom/cover no-repeat;
+  background: url('/images/dining_space.png') center center / cover no-repeat;
   z-index: 0;
   pointer-events: none;
 }
-.topBar {display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 40px; padding: 0 5vw;}
-.topLeft { display: flex; align-items: flex-start; gap: 12px; }
-.logoTS { margin-right: 8px; }
-.logoTextWrap { display: flex; flex-direction: column; gap: 4px; }
-.logoTitle { font-family: var(--serif); font-size: 14px; font-weight: 500; color: var(--dark); letter-spacing: 0.1em; }
-.logoSub { font-size: 8px; font-weight: 100; letter-spacing: 0.25em; color: var(--gold); }
-.topRight { display: flex; align-items: center; gap: 16px; }
-.topRightText { font-size: 10px; font-weight: 100; letter-spacing: 0.15em; color: var(--dark); }
-.topRightLine { width: 1px; height: 16px; background: rgba(180,144,79,0.5); }
-.topRightNum { font-family: var(--serif); font-size: 18px; color: var(--dark); }
-.separatorShort { display: flex; align-items: center; width: 100%; max-width: 250px; margin: 24px 0; }
-.separatorCenter { display: flex; align-items: center; width: 100%; max-width: 250px; margin: 24px auto; }
-.sepLine { height: 1px; flex: 1; background: rgba(180, 144, 79, 0.4); }
-.sepDia { margin: 0 12px; display: flex; align-items: center; }
-.sepDia svg { width: 8px; height: 8px; }
 
-.vline { position: absolute; left: 46px; top: 0; bottom: 0; width: 1px; background: rgba(180,144,79,0.35); z-index: 4; pointer-events: none; }
-.sideNum { position: absolute; left: 46px; top: 120px; transform: translateX(-50%); font-family: var(--serif); font-size: 24px; color: var(--gold); background: var(--cream); padding: 10px 0; z-index: 5; }
-.sideText1 { position: absolute; left: 46px; top: 180px; transform: translateX(-50%); font-size: 8px; letter-spacing: 0.15em; color: rgba(180, 144, 79, 0.8); background: var(--cream); padding: 10px 0; z-index: 5; }
-.sideDia { position: absolute; left: 46px; top: 250px; transform: translateX(-50%); width: 12px; height: 12px; background: var(--cream); padding: 4px 0; z-index: 5; display: flex; justify-content: center; }
-.sideDia svg { width: 100%; height: 100%; }
-
-.verticalText {
-  position: absolute; left: 46px; top: 50%; transform: translateX(-50%) translateY(-50%) rotate(180deg);
-  writing-mode: vertical-rl; font-size: 9px; letter-spacing: 0.2em; color: var(--dark); font-weight: 100; white-space: nowrap;
-  background: var(--cream); padding: 20px 0; z-index: 10;
-}
-.cornerStar { position: absolute; left: 46px; bottom: 120px; transform: translateX(-50%); background: var(--cream); padding: 10px 0; z-index: 5; display: flex; justify-content: center; }
-.cornerStar svg { width: 24px; height: 24px; }
-.centerLine{position:absolute;left:50%;top:5vh;bottom:100px;width:1px;background:rgba(180,144,79,0.25);z-index:0;}
-.centerStar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--cream);padding:10px 0;z-index:1;}
-.centerStar svg{width:12px;height:12px;}
-.content{position:relative;z-index:2;width:100%;max-width:1400px;margin:0 auto;display:flex;flex-direction:column;flex:1;}
-.split{display:flex;align-items:stretch;margin-top:5vh;flex:1;margin-bottom:80px;gap:0;}
-.leftCol{flex:1;padding-right:5vw;display:flex;flex-direction:column;justify-content:center;}
-.title{font-family:var(--serif);font-size:clamp(28px,3.8vw,50px);line-height:1.1;color:var(--dark);font-weight:400;margin-bottom:24px;}
-.title span{color:var(--gold);font-style:italic;}
-.desc{font-size:15px;line-height:1.6;color:var(--mid);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid rgba(180,144,79,0.3);max-width:400px;}
-.imgWrap{width:100%;max-width:450px;border-radius:12px;overflow:hidden;margin-top:auto;height:280px;position:relative;}
-
-/* On desktop we hide the decorative image and show a gold "Contact Us" label instead */
-.imgWrap{display:block}
-.contactLabel{display:none}
-@media(min-width:901px){
-  .imgWrap{display:none}
-  .contactLabel{display:block;position:absolute;left:5vw;top:5vh;font-family:var(--serif);font-size:40px;color:var(--gold);font-weight:100;z-index:12;letter-spacing:0.06em;}
-}
-/* mobile-only "Contact Us" label inside the card, above the image */
-.contactLabelMobile{
-  display:none;
-}
-@media(max-width:768px){
-  .contactLabelMobile{
-    display:block;
-    font-family:var(--serif);
-    font-size:28px;
-    color:var(--gold);
-    font-weight:100;
-    letter-spacing:0.08em;
-    text-align:center;
-    padding:20px 0 14px;
-  }
+/* Cream overlay so form text stays legible — stronger on right, lighter on left */
+.sectionBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      rgba(244, 237, 224, 0.28) 0%,
+      rgba(244, 237, 224, 0.72) 48%,
+      rgba(244, 237, 224, 0.94) 100%
+    );
 }
 
-/* thin decorative line above vase to help composition */
-.vaseLine{width:60%;height:1px;background:rgba(180,144,79,0.35);margin:18px 0;border-radius:2px;}
-
-/* Reserve space near title so background has breathing room and title stays on one line */
-.leftCol { padding-top: 28px; min-height: 220px; }
-.title { white-space: nowrap; }
-.rightCol{flex:1;padding-left:5vw;display:flex;flex-direction:column;justify-content:center;}
-.formHeader{text-align:center;margin-bottom:0;}
-.formTitle{font-family:var(--serif);font-size:16px;letter-spacing:0.2em;color:#9b8054;text-transform:uppercase;font-weight:500;display:inline-flex;align-items:center;gap:16px;}
-.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.formGroup{position:relative;}
-.full{grid-column:1 / -1;}
-.input{width:100%;background:transparent;border:1px solid rgba(180,144,79,0.25);border-radius:6px;padding:16px 16px 16px 44px;font-family:var(--sans);font-size:13px;color:var(--dark);transition:all var(--dur-fast) var(--ease-smooth);box-sizing:border-box;outline:none;}
-.input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(180,144,79,0.05);}
-.input::placeholder{color:var(--mid);opacity:0.7;}
-.input select{appearance:none;}
-textarea.input{padding-top:16px;min-height:110px;resize:vertical;}
-textarea.input.textarea{min-height:150px;}
-select.input{appearance:none;-webkit-appearance:none;cursor:pointer;}
-.icon{position:absolute;left:15px;top:15px;width:16px;height:16px;}
-.icon svg{width:100%;height:100%;stroke:var(--mid);opacity:0.7;}
-.selectArrow{position:absolute;right:15px;top:15px;width:14px;height:14px;pointer-events:none;stroke:var(--mid);}
-.submitBtn{width:100%;background:rgba(180,144,79,0.9);color:#fff;border:none;border-radius:6px;padding:18px;font-family:var(--serif);font-size:14px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:all var(--dur-fast) var(--ease-smooth);margin-top:10px;}
-.submitBtn:hover{background:#96763f;box-shadow:0 10px 20px rgba(180,144,79,0.2);}
-.submitBtn svg{width:16px;height:16px;}
-.note{text-align:center;font-size:11px;color:var(--mid);margin-top:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
-.note svg{width:14px;height:14px;}
-.thankYou{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;}
-.thankYou svg{width:48px;height:48px;}
-.thankYou h3{font-family:var(--serif);font-size:28px;color:var(--dark);}
-.thankYou p{font-size:14px;color:var(--mid);}
-.archFooter{position:relative;width:100vw;left:50%;transform:translateX(-50%);height:100px;flex-shrink:0;}
-.archSvg{position:absolute;top:0;left:0;width:100%;height:100%;}
-.archDecor{position:absolute;top:18%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:20px;}
-.archStar svg{width:28px;height:28px;}
-.archArrow{width:14px;height:14px;}
-@media(max-width:900px){
-  .split{flex-direction:column;gap:0;}
-  .centerLine,.centerStar{display:none;}
-  .leftCol,.rightCol{padding:0;}
-  .formGrid{grid-template-columns:1fr;}
+/* ─── CONTENT WRAPPER ──────────────────────────────────────────────────────── */
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-@media(max-width:768px){
-  .section{
-    padding: 5vh 16px 40px;
-    overflow-x: hidden;
-    /* elegant subtle pattern bg on mobile */
-    background: var(--cream);
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(180,144,79,0.07) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(180,144,79,0.06) 0%, transparent 50%),
-      radial-gradient(circle at 60% 40%, rgba(180,144,79,0.04) 0%, transparent 40%),
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 28px,
-        rgba(180,144,79,0.025) 28px,
-        rgba(180,144,79,0.025) 29px
-      );
-  }
-  .content{
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-  .split{
+/* ─── SPLIT ROW ────────────────────────────────────────────────────────────── */
+/* 50/50 two-column row, full height */
+.split {
+  display: flex;
+  align-items: stretch;
+  min-height: 640px;
+}
+
+/* ─── LEFT COLUMN — transparent, lets bg show through ─────────────────────── */
+.leftCol {
+  flex: 0 0 50%;
+  position: relative;
+  min-height: 640px;
+  overflow: hidden;
+}
+
+/* Vase/plant image fills the left panel */
+.leftImgWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.leftImgFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(244,237,224,0.15) 0%, transparent 35%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.imgWrap    { display: none; }
+.imgOverlay { display: none; }
+.imgCaption { display: none; }
+
+/* ─── RIGHT COLUMN — form panel, floats over bg ──────────────────────────── */
+.rightCol {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 5vw 60px 4vw;
+  position: relative;
+  z-index: 1;
+  background: rgba(244, 237, 224, 0.88);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* ─── CONTACT US HEADING ──────────────────────────────────────────────────── */
+.formKicker {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 10px;
+  text-align: center;
+}
+.formHeading {
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.5vw, 48px);
+  font-weight: 400;
+  color: var(--dark);
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  margin: 0;
+  text-align: center;
+}
+
+/* ─── GOLD CENTER DIVIDER ─────────────────────────────────────────────────── */
+/* This divider sits inside .rightCol formHeader — no separate element needed */
+.separatorCenter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto 32px;
+}
+.sepLine {
+  height: 1px;
+  flex: 1;
+  background: rgba(180, 144, 79, 0.4);
+}
+.sepDia {
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+}
+.sepDia svg {
+  width: 8px;
+  height: 8px;
+}
+
+/* ─── FORM ────────────────────────────────────────────────────────────────── */
+.formHeader { text-align: center; margin-bottom: 0; }
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.formGroup { position: relative; }
+.full { grid-column: 1 / -1; }
+
+.input {
+  width: 100%;
+  background: rgba(255, 252, 247, 0.85);
+  border: 1px solid rgba(180, 144, 79, 0.4);
+  border-radius: 6px;
+  padding: 15px 15px 15px 42px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--dark);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+  outline: none;
+}
+.input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(180, 144, 79, 0.08);
+  background: rgba(255, 252, 247, 1);
+}
+.input::placeholder { color: #7a6a50; opacity: 1; }
+
+textarea.input { padding-top: 15px; min-height: 110px; resize: vertical; }
+textarea.input.textarea { min-height: 150px; }
+select.input { appearance: none; -webkit-appearance: none; cursor: pointer; }
+
+.icon {
+  position: absolute;
+  left: 14px;
+  top: 15px;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+}
+.icon svg { width: 100%; height: 100%; stroke: #8a7050; opacity: 1; }
+
+.selectArrow {
+  position: absolute;
+  right: 14px;
+  top: 15px;
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
+  stroke: var(--mid);
+}
+
+.submitBtn {
+  width: 100%;
+  background: rgba(180, 144, 79, 0.9);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 18px;
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  margin-top: 8px;
+}
+.submitBtn:hover {
+  background: #96763f;
+  box-shadow: 0 10px 24px rgba(180, 144, 79, 0.22);
+}
+.submitBtn svg { width: 16px; height: 16px; }
+
+/* ─── THANK YOU STATE ─────────────────────────────────────────────────────── */
+.thankYou {
+  text-align: center;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.thankYou svg { width: 48px; height: 48px; }
+.thankYou h3 { font-family: var(--serif); font-size: 28px; color: var(--dark); }
+.thankYou p { font-size: 14px; color: var(--mid); }
+
+/* ─── MISC ELEMENTS (kept but hidden — not used in current layout) ─────────── */
+.contactLabel     { display: none; }
+.contactLabelMobile { display: none; }
+.vaseLine         { display: none; }
+.vline            { display: none; }
+.verticalText     { display: none; }
+.centerLine       { display: none; }
+.centerStar       { display: none; }
+.topBar           { display: none; }
+
+/* ─── ARCH FOOTER (if still used) ────────────────────────────────────────── */
+.archFooter {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
+}
+.archSvg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.archDecor {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.archStar svg { width: 28px; height: 28px; }
+.archArrow { width: 14px; height: 14px; }
+
+/* ─── TABLET (900px and below) ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .split {
     flex-direction: column;
-    gap: 0;
-    margin-top: 3vh;
-    margin-bottom: 40px;
-    border: 1px solid rgba(180,144,79,0.2);
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--cream);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.07);
-  }
-  .leftCol{
-    padding: 0;
     min-height: unset;
-    width: 100%;
   }
-  .imgWrap{
+  .leftCol {
     display: block;
-    height: 240px;
-    max-width: 100%;
-    border-radius: 0;   /* card clips it */
-    margin: 0;
+    flex: none;
+    width: 100%;
+    height: 260px;
+    min-height: unset;
   }
-  .vaseLine{ display: none; }
-  /* Allow title to wrap on mobile */
-  .title{
-    white-space: normal;
-    font-size: clamp(22px, 6vw, 34px);
-    margin-bottom: 16px;
+  .rightCol {
+    flex: none;
+    width: 100%;
+    padding: 40px 24px 48px;
+    background: rgba(244, 237, 224, 0.92);
   }
-  .rightCol{
-    padding: 20px 16px 24px;
-  }
-  .formGrid{ grid-template-columns: 1fr; gap: 12px; }
-  .input{ font-size: 14px; padding: 14px 14px 14px 40px; }
-  .submitBtn{ padding: 16px; font-size: 12px; }
-  .archFooter{ left: 0; transform: none; width: 100%; }
-  .vline,.verticalText,.contactLabel{ display: none; }
-  .sectionBg { display: none; }
+  .formGrid { grid-template-columns: 1fr; }
 }
 
+/* ─── MOBILE (768px and below) ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    padding: 0;
+    overflow-x: hidden;
+  }
+  /* Darken overlay on mobile so form bg is solid enough */
+  .sectionBg::after {
+    background: rgba(244, 237, 224, 0.92);
+  }
+  .rightCol {
+    padding: 28px 16px 40px;
+    background: transparent; /* overlay handles it */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .formGrid { gap: 10px; }
+  .input { font-size: 14px; padding: 13px 13px 13px 38px; }
+  .submitBtn { padding: 16px; font-size: 12px; }
+}
 
+/* ─── prefers-reduced-motion ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .input, .submitBtn { transition: none; }
+}

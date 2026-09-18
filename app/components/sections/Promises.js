@@ -1,6 +1,6 @@
 'use client';
 
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './Promises.module.css';
 
 const promises = [
@@ -28,8 +28,8 @@ const promises = [
 
 export default function Promises() {
   const titleRef = useRevealAnimation(100);
-  const subtitleRef = useRevealAnimation(300);
-  const cardsRef = useCardAnimation('slideUp', 400);
+  const subtitleRef = useRevealAnimation(200);
+  const cardsRef = useStaggerChildren(130, 'slideUp');
   
   return (
     <section id="promises" className={styles.section}>

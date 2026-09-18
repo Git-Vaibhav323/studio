@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './SpatialIntelligence.module.css';
 
 const cards = [
@@ -68,11 +68,9 @@ const cards = [
 export default function SpatialIntelligence() {
   const headlineRef = useRevealAnimation(100);
   const overlineRef = useRevealAnimation(0);
-  const descRef = useRevealAnimation(300);
-  const card1Ref = useCardAnimation('slideLeft', 0);
-  const card2Ref = useCardAnimation('slideUp', 150);
-  const card3Ref = useCardAnimation('slideRight', 300);
-  
+  const descRef = useRevealAnimation(250);
+  const cardsRowRef = useStaggerChildren(160, 'slideUp');
+
   return (
     <section id="spatial" className={styles.section}>
       <video
@@ -120,14 +118,11 @@ export default function SpatialIntelligence() {
 
           </div>
 
-          <div className={styles.cardsRow}>
-            {cards.map((card, index) => {
-              const cardRef = index === 0 ? card1Ref : index === 1 ? card2Ref : card3Ref;
-              return (
+          <div className={styles.cardsRow} ref={cardsRowRef}>
+            {cards.map((card) => (
                 <div
                   key={card.id}
                   id={card.id}
-                  ref={cardRef}
                   className={`${styles.archCard} ${card.featured ? styles.featured : ''}`}
                 >
                   <div className={styles.iconWrap}>
@@ -154,8 +149,7 @@ export default function SpatialIntelligence() {
 
                   {(card.featured || true) && <div className={styles.featDiamond} />}
                 </div>
-              );
-            })}
+            ))}
           </div>
         </div>
       </div>

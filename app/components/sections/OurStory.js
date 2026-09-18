@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './OurStory.module.css';
 
 export default function OurStory() {
   const titleRef = useRevealAnimation(100);
   const founderParaRef = useRevealAnimation(200);
-  const colsRef = useCardAnimation('slideUp', 300);
-  const cardRef = useCardAnimation('slideUp', 400);
+  const colsRef = useStaggerChildren(140, 'slideUp');
+  const cardRef = useRevealAnimation(300);
 
   return (
     <section id="story" className={styles.section}>

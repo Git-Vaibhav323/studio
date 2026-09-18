@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './Comparison.module.css';
 
 const withoutItems = [
@@ -70,7 +70,7 @@ const withItems = [
 
 export default function Comparison() {
   const titleRef = useRevealAnimation(100);
-  const cardsRef = useCardAnimation('slideUp', 300);
+  const cardsRef = useStaggerChildren(130, 'slideUp');
 
   return (
     <section id="comparison" className={styles.section}>

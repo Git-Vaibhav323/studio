@@ -1,7 +1,7 @@
 'use client';
-import { useRef } from 'react';
+'use client';
 import Image from 'next/image';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './AestheticDirection.module.css';
 
 const cards = [
@@ -12,17 +12,10 @@ const cards = [
 ];
 
 export default function AestheticDirection() {
-  const carouselRef = useRef(null);
-  const titleRef = useRevealAnimation(200);
-  const subtitleRef = useRevealAnimation(400);
-  const descRef = useRevealAnimation(600);
-  const carouselWrapperRef = useCardAnimation('slideUp', 800);
-
-  const scroll = (dir) => {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * 320, behavior: 'smooth' });
-  };
+  const titleRef = useRevealAnimation(0);
+  const subtitleRef = useRevealAnimation(150);
+  const descRef = useRevealAnimation(250);
+  const carouselWrapperRef = useStaggerChildren(140, 'slideUp');
 
   return (
     <section id="aesthetics" className={styles.section}>
@@ -50,8 +43,8 @@ export default function AestheticDirection() {
 
         <hr className={styles.divider} />
 
-        <div className={styles.carouselWrapper} ref={carouselWrapperRef}>
-          <div className={styles.carousel} ref={carouselRef}>
+        <div className={styles.carouselWrapper}>
+          <div className={styles.carousel} ref={carouselWrapperRef}>
             {cards.map((card) => (
               <div className={styles.card} key={card.num}>
                 <div className={styles.cardTop}>

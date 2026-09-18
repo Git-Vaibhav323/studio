@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './FAQs.module.css';
 
 const faqs = [
@@ -15,7 +15,7 @@ export default function FAQs() {
 
   const titleRef = useRevealAnimation(100);
   const subtitleRef = useRevealAnimation(200);
-  const listRef = useCardAnimation('slideUp', 300);
+  const listRef = useStaggerChildren(100, 'slideUp');
 
   return (
     <section id="faqs" className={styles.section}>

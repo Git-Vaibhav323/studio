@@ -1,7 +1,6 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useRevealAnimation } from '@/lib/useRevealAnimation';
 import toast, { Toaster } from 'react-hot-toast';
 import styles from './ContactForm.module.css';
 
@@ -11,8 +10,6 @@ export default function ContactForm() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const labelRef = useRevealAnimation(100);
-  const labelMobileRef = useRevealAnimation(100);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
   
@@ -50,25 +47,30 @@ export default function ContactForm() {
 
   return (
     <section id="contact" className={styles.section}>
-      <div className={styles.sectionBg} />
+      <div className={styles.sectionBg} aria-hidden="true" />
       <Toaster position="top-center" />
-      <div className={styles.contactLabel} ref={labelRef}>Contact Us</div>
-      {/* Top Bar and sidebar removed per design request */}
       <div className={styles.content}>
         <div className={styles.split}>
           <div className={styles.leftCol}>
-            {/* "Contact Us" label — visible on mobile above the image */}
-            <div className={styles.contactLabelMobile} ref={labelMobileRef}>Contact Us</div>
-            {/* Decorative image — hidden on desktop per request */}
-            <div className={styles.vaseLine} aria-hidden="true" />
-            <div className={styles.imgWrap}>
-              <Image src="/images/vase_books.png" alt="decorative vase and books" fill sizes="(max-width: 768px) 100vw, 40vw" style={{ objectFit: 'cover', objectPosition: 'center bottom' }} />
+            {/* Vase / plant image visible on the left panel over the bg */}
+            <div className={styles.leftImgWrap}>
+              <Image
+                src="/images/vase_books.png"
+                alt="Decorative vase with plant — The Spatial Edit"
+                fill
+                sizes="(max-width: 900px) 100vw, 50vw"
+                style={{ objectFit: 'cover', objectPosition: 'center bottom' }}
+                priority
+              />
+              {/* subtle gradient so image blends upward into the bg */}
+              <div className={styles.leftImgFade} aria-hidden="true" />
             </div>
           </div>
           <div className={styles.rightCol}>
             <div className={styles.formHeader}>
-              {/* form title removed per request */}
-              <div className={styles.separatorCenter} style={{ marginTop: '16px', marginBottom: '32px' }}>
+              <p className={styles.formKicker}>GET IN TOUCH</p>
+              <h2 className={styles.formHeading}>Contact Us</h2>
+              <div className={styles.separatorCenter} style={{ marginTop: '20px', marginBottom: '28px' }}>
                 <div className={styles.sepLine} />
                 <div className={styles.sepDia}>
                   <svg viewBox="0 0 24 24"><path d="M12 0 C 12 10, 14 12, 24 12 C 14 12, 12 14, 12 24 C 12 14, 10 12, 0 12 C 10 12, 12 10, 12 0 Z" fill="var(--gold)"/></svg>

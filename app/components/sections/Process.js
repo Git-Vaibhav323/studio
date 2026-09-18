@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { useRevealAnimation, useCardAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation';
 import styles from './Process.module.css';
 
 export const steps = [
@@ -96,7 +96,7 @@ export default function Process() {
   // Animation refs
   const titleRef = useRevealAnimation(100);
   const subtitleRef = useRevealAnimation(200);
-  const timelineRef = useCardAnimation('slideUp', 300);
+  const timelineRef = useStaggerChildren(160, 'slideUp');
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');

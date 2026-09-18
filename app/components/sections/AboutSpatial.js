@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { useRevealAnimation } from '@/lib/useRevealAnimation';
+import { useRevealAnimation, useCinematicParallax } from '@/lib/useRevealAnimation';
 import styles from './AboutSpatial.module.css';
 
 export default function AboutSpatial() {
   const headlineRef = useRevealAnimation(100);
   const overlineRef = useRevealAnimation(0);
-  const descLargeRef = useRevealAnimation(300);
+  const descLargeRef = useRevealAnimation(250);
+  const imgParallaxRef = useCinematicParallax(0.1, 60);
   
   return (
     <section id="about" className={styles.section}>
@@ -100,7 +101,7 @@ export default function AboutSpatial() {
           </div>
 
           {/* ── RIGHT COL — single flattened image ─────────── */}
-          <div className={styles.rightImage}>
+          <div className={styles.rightImage} ref={imgParallaxRef}>
             {/*
               rightfinal.png (696×772px, AR 0.9016) contains:
               — Floor plan with dashed circulation paths
