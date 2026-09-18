@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import styles from './LoadingScreen.module.css';
@@ -15,107 +15,96 @@ import {
   waitForBootReady,
 } from './boot/siteBoot';
 
-// ─── Floor plan path definition ───────────────────────────────────────────────
-// A simplified architectural floor plan drawn as a single SVG path.
-// Rooms are drawn left-to-right, bottom-to-top — outer walls first, then
-// interior partitions, then door notches. All coordinates fit in a 280×200 viewBox.
-const PLAN_PATH = `
-  M 20,180
-  L 20,20
-  L 260,20
-  L 260,180
-  L 160,180
-  L 160,160
-  L 200,160
-  L 200,120
-  L 260,120
-  M 160,180
-  L 20,180
-  M 80,180
-  L 80,120
-  L 160,120
-  L 160,180
-  M 80,120
-  L 80,60
-  L 160,60
-  L 160,20
-  M 160,120
-  L 260,120
-  M 80,60
-  L 20,60
-  M 140,60
-  L 140,120
-  M 200,120
-  L 200,60
-  L 260,60
-  M 200,60
-  L 260,60
-  M 48,60
-  L 48,20
-  M 20,100
-  L 80,100
-  M 170,160
-  L 200,160
-`
-  .trim()
-  .replace(/\n\s*/g, ' ');
+// ─── Floor plan path ──────────────────────────────────────────────────────────
+// Simplified architectural floor plan in a 300×220 viewBox
+const PLAN_PATH = [
+  'M 20,200',   // start bottom-left
+  'L 20,20',    // left wall up
+  'L 280,20',   // top wall across
+  'L 280,200',  // right wall down
+  'L 20,200',   // bottom wall back (close outer)
+  // Interior partitions
+  'M 100,200 L 100,120', // vertical divider left
+  'M 100,120 L 280,120', // horizontal mid-right
+  'M 180,120 L 180,20',  // vertical divider right
+  'M 100,120 L 100,20',  // full vertical left
+  'M 20,100 L 100,100',  // horizontal left section
+  'M 180,160 L 280,160', // horizontal right section
+  // Door notches (small gaps shown as arcs)
+  'M 100,70 L 130,70 L 130,20', // room top-right partition
+].join(' ');
 
-// Total path length — measured empirically for this exact path.
-// We compute it from the SVG element at runtime instead.
-const VIEWBOX = '0 0 280 200';
+const VIEWBOX = '0 0 300 220';
 
 export default function LoadingScreen() {
-  const pathname  = usePathname();
-  const isHome    = pathname === '/' || pathname === '';
+  const pathname = usePathname();
+  const isHome   = pathname === '/' || pathname === '';
 
-  const [progress, setProgress] = useState(0);
-  const [done,     setDone]     = useState(!isHome);
-  const [fadeOut,  setFadeOut]  = useState(false);
+  const [progress,    setProgress]    = useState(0);
+  const [displayPct,  setDisplayPct]  = useState(0);
+  const [done,        setDone]        = useState(!isHome);
+  const [fadeOut,     setFadeOut]     = useState(false);
+  const [planReady,   setPlanReady]   = useState(false);
 
-  const pathRef       = useRef(null);
-  const dotRef        = useRef(null);
-  const totalLenRef   = useRef(0);
-  const rafRef        = useRef(0);
-  const displayedRef  = useRef(0);  // smoothed display value
-  const targetRef     = useRef(0);
+  const svgRef      = useRef(null);
+  const pathRef     = useRef(null);
+  const dotRef      = useRef(null);
+  const rafRef      = useRef(0);
+  const smoothRef   = useRef(0);   // smoothed progress for animation
+  const targetRef   = useRef(0);   // real progress target
+  const totalRef    = useRef(0);   // total path length
 
-  // Compute total path length once the SVG is mounted
-  const onPathMount = useCallback((el) => {
-    pathRef.current = el;
-    if (el) {
-      totalLenRef.current = el.getTotalLength?.() ?? 900;
-      // Start fully hidden
-      el.style.strokeDasharray  = `${totalLenRef.current}`;
-      el.style.strokeDashoffset = `${totalLenRef.current}`;
+  // ── Initialise path once SVG is in DOM ──────────────────────────────────────
+  useEffect(() => {
+    if (!planReady) return;
+    const path = pathRef.current;
+    if (!path) return;
+
+    const len = path.getTotalLength?.() ?? 800;
+    totalRef.current = len;
+
+    // Hide completely before first paint
+    path.style.strokeDasharray  = `${len}`;
+    path.style.strokeDashoffset = `${len}`;
+
+    if (dotRef.current) {
+      dotRef.current.style.opacity = '0';
     }
-  }, []);
+  }, [planReady]);
 
-  // rAF loop — smoothly animate the drawn line to match progress
+  // ── rAF loop: smooth progress → update line + dot ──────────────────────────
   useEffect(() => {
     if (done || !isHome) return;
 
     const tick = () => {
       rafRef.current = requestAnimationFrame(tick);
-      const target    = targetRef.current;
-      const current   = displayedRef.current;
-      // Ease toward target — fast catch-up, smooth feel
-      const next      = current + (target - current) * 0.06;
-      displayedRef.current = next;
 
-      const totalLen  = totalLenRef.current;
-      if (!totalLen || !pathRef.current) return;
+      const target  = targetRef.current;
+      const current = smoothRef.current;
 
-      const drawn   = (next / 100) * totalLen;
-      const offset  = totalLen - drawn;
+      // Ease toward target — 8% per frame feels natural
+      const next = current + (target - current) * 0.08;
+      smoothRef.current = next;
 
-      pathRef.current.style.strokeDashoffset = `${offset}`;
+      // Update percentage display
+      setDisplayPct(Math.round(next));
 
-      // Move dot to tip of drawn line
-      if (dotRef.current && pathRef.current.getPointAtLength) {
-        const pt = pathRef.current.getPointAtLength(Math.min(drawn, totalLen - 0.1));
-        dotRef.current.setAttribute('cx', String(pt.x));
-        dotRef.current.setAttribute('cy', String(pt.y));
-        dotRef.current.style.opacity = next < 1 ? '0' : '1';
+      const len = totalRef.current;
+      const path = pathRef.current;
+      const dot  = dotRef.current;
+
+      if (!len || !path) return;
+
+      const drawn  = (next / 100) * len;
+      const offset = len - drawn;
+      path.style.strokeDashoffset = `${offset}`;
+
+      // Position dot at tip of drawn line
+      if (dot && path.getPointAtLength && drawn > 2) {
+        const pt = path.getPointAtLength(Math.min(drawn, len - 0.5));
+        dot.setAttribute('cx', String(pt.x.toFixed(2)));
+        dot.setAttribute('cy', String(pt.y.toFixed(2)));
+        dot.style.opacity = '1';
       }
     };
 
@@ -123,6 +112,7 @@ export default function LoadingScreen() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [done, isHome]);
 
+  // ── Boot coordination ────────────────────────────────────────────────────────
   useEffect(() => {
     if (!isHome) { setDone(true); return undefined; }
 
@@ -164,25 +154,26 @@ export default function LoadingScreen() {
       targetRef.current = 100;
       setProgress(100);
 
-      // Hold at 100% briefly so the complete floor plan is visible
+      // Hold at 100% so complete floor plan is visible, then fade out
       window.setTimeout(() => {
         if (cancelled) return;
         setFadeOut(true);
         window.setTimeout(() => {
           if (!cancelled) {
+            cancelAnimationFrame(rafRef.current);
             setDone(true);
             document.documentElement.style.overflow = '';
           }
         }, 900);
-      }, 600);
+      }, 700);
     });
 
     return () => {
       cancelled = true;
       window.clearTimeout(failSafe);
       window.removeEventListener(BOOT_EVENTS.PROGRESS_EVENT, onProgress);
-      document.documentElement.style.overflow = '';
       cancelAnimationFrame(rafRef.current);
+      document.documentElement.style.overflow = '';
     };
   }, [isHome]);
 
@@ -191,16 +182,12 @@ export default function LoadingScreen() {
   return (
     <div
       className={`${styles.loader} ${fadeOut ? styles.loaderDone : ''}`}
-      aria-hidden="true"
       aria-label="Loading"
       role="progressbar"
       aria-valuenow={progress}
       aria-valuemin={0}
       aria-valuemax={100}
     >
-      {/* Subtle warm radial bg */}
-      <div className={styles.bg} />
-
       <div className={styles.content}>
 
         {/* Logo */}
@@ -208,88 +195,98 @@ export default function LoadingScreen() {
           <Image
             src="/logo.png"
             alt="The Spatial Edit"
-            width={72}
-            height={72}
-            style={{ objectFit: 'contain', display: 'block', margin: '0 auto' }}
+            width={64}
+            height={64}
+            style={{ objectFit: 'contain', display: 'block' }}
             priority
           />
           <div className={styles.logoName}>The Spatial Edit</div>
           <div className={styles.logoSub}>Interior Design Studio</div>
         </div>
 
-        {/* Floor plan SVG */}
+        {/* Floor plan */}
         <div className={styles.planWrap}>
-          {/* Room labels — faint, appear as sections complete */}
           <svg
             className={styles.planSvg}
             viewBox={VIEWBOX}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
+            ref={(el) => {
+              svgRef.current = el;
+              if (el && !planReady) setPlanReady(true);
+            }}
           >
-            {/* Grid dots — architectural reference */}
-            {[20,80,140,200,260].map(x =>
-              [20,60,120,180].map(y => (
-                <circle key={`${x}-${y}`} cx={x} cy={y} r="1"
-                  fill="rgba(180,144,79,0.18)" />
+            {/* Faint grid reference dots */}
+            {[20, 100, 130, 180, 280].flatMap(x =>
+              [20, 100, 120, 160, 200].map(y => (
+                <circle key={`d${x}-${y}`} cx={x} cy={y} r="1.2"
+                  fill="rgba(180,144,79,0.15)" />
               ))
             )}
 
-            {/* Shadow line — ghost of the full plan */}
+            {/* Ghost — full path at very low opacity */}
             <path
               d={PLAN_PATH}
-              stroke="rgba(180,144,79,0.12)"
+              stroke="rgba(180,144,79,0.15)"
               strokeWidth="1"
               strokeLinecap="round"
               strokeLinejoin="round"
-              fill="none"
             />
 
-            {/* Active drawn line — progress controlled via JS ref */}
+            {/* Active drawn line — JS controls strokeDashoffset */}
             <path
-              ref={onPathMount}
+              ref={pathRef}
               d={PLAN_PATH}
-              stroke="rgba(180,144,79,0.9)"
-              strokeWidth="1.2"
+              stroke="#b4904f"
+              strokeWidth="1.4"
               strokeLinecap="round"
               strokeLinejoin="round"
-              fill="none"
-              style={{ transition: 'none' }}
+              strokeDasharray="0"
+              strokeDashoffset="0"
             />
 
-            {/* Travelling dot — positioned by JS ref */}
+            {/* Travelling dot */}
             <circle
               ref={dotRef}
-              cx="20" cy="180" r="2.5"
+              cx="20" cy="200" r="3"
               fill="#b4904f"
-              style={{ opacity: 0, filter: 'drop-shadow(0 0 3px rgba(180,144,79,0.8))' }}
+              style={{
+                opacity: 0,
+                filter: 'drop-shadow(0 0 4px rgba(180,144,79,0.9))',
+              }}
             />
 
-            {/* Room label overlays — very faint architectural text */}
-            <text x="38" y="145" className={styles.roomLabel}>LIVING</text>
-            <text x="92" y="145" className={styles.roomLabel}>DINING</text>
-            <text x="92" y="95" className={styles.roomLabel}>KITCHEN</text>
-            <text x="170" y="145" className={styles.roomLabel}>BEDROOM</text>
-            <text x="170" y="95" className={styles.roomLabel}>STUDY</text>
-            <text x="28" y="42" className={styles.roomLabel}>ENTRY</text>
-          </svg>
+            {/* Room labels */}
+            <text x="30"  y="165" className={styles.roomLabel}>LIVING</text>
+            <text x="108" y="165" className={styles.roomLabel}>DINING</text>
+            <text x="108" y="75"  className={styles.roomLabel}>KITCHEN</text>
+            <text x="190" y="145" className={styles.roomLabel}>BEDROOM</text>
+            <text x="190" y="75"  className={styles.roomLabel}>STUDY</text>
 
-          {/* Compass rose — bottom right of plan */}
-          <div className={styles.compass} aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="rgba(180,144,79,0.25)" strokeWidth="0.8"/>
-              <line x1="12" y1="4" x2="12" y2="20" stroke="rgba(180,144,79,0.4)" strokeWidth="0.8"/>
-              <line x1="4" y1="12" x2="20" y2="12" stroke="rgba(180,144,79,0.4)" strokeWidth="0.8"/>
-              <polygon points="12,5 13.2,11 12,10.5 10.8,11" fill="rgba(180,144,79,0.7)"/>
-              <text x="11.2" y="3.5" style={{fontSize:'3px',fill:'rgba(180,144,79,0.6)',fontFamily:'serif'}}>N</text>
-            </svg>
-          </div>
+            {/* Compass */}
+            <g transform="translate(262, 185)">
+              <circle cx="10" cy="10" r="9"
+                stroke="rgba(180,144,79,0.3)" strokeWidth="0.8" fill="none"/>
+              <line x1="10" y1="2" x2="10" y2="18"
+                stroke="rgba(180,144,79,0.4)" strokeWidth="0.8"/>
+              <line x1="2" y1="10" x2="18" y2="10"
+                stroke="rgba(180,144,79,0.4)" strokeWidth="0.8"/>
+              <polygon points="10,3 11,9 10,8 9,9"
+                fill="rgba(180,144,79,0.8)"/>
+              <text x="7.5" y="2"
+                style={{fontSize:'4px',fill:'rgba(180,144,79,0.7)',fontFamily:'serif'}}>N</text>
+            </g>
+          </svg>
         </div>
 
-        {/* Percentage — refined, minimal */}
+        {/* Meta row */}
         <div className={styles.meta}>
           <span className={styles.metaLabel}>PREPARING SPACE</span>
-          <span className={styles.metaPct}>{String(progress).padStart(2,'0')}%</span>
+          <span className={styles.metaPct}>
+            {String(displayPct).padStart(2, '0')}
+            <span className={styles.metaPctSymbol}>%</span>
+          </span>
         </div>
 
       </div>
