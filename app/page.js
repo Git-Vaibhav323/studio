@@ -7,7 +7,6 @@ import Comparison from './components/sections/Comparison';
 import AestheticDirection from './components/sections/AestheticDirection';
 import Promises from './components/sections/Promises';
 import Process from './components/sections/Process';
-import Insights from './components/sections/Insights';
 import OurStory from './components/sections/OurStory';
 import FAQs from './components/sections/FAQs';
 import ContactForm from './components/sections/ContactForm';
@@ -25,7 +24,6 @@ export default function Home() {
         <AestheticDirection />
         <Promises />
         <Process />
-        <Insights />
         <OurStory />
         <FAQs />
         <ContactForm />

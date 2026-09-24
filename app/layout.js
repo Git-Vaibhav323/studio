@@ -65,11 +65,10 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/logo.png', type: 'image/png', sizes: '32x32' },
+      { url: '/logo-favicon.png', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    shortcut: '/logo-favicon.png',
+    apple: '/logo-favicon.png',
   },
 };
 
@@ -98,6 +97,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/logo-favicon.png" type="image/png" />
+        <link rel="shortcut icon" href="/logo-favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo-favicon.png" />
         <link
           rel="preload"
           as="image"

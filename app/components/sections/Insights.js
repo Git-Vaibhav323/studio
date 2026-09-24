@@ -27,7 +27,8 @@ export default function Insights() {
     }
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      // Prefer featured posts; fall back to the 3 most recent published posts
+      const { data: featured, error: featuredError } = await supabase
         .from('blogs')
         .select('*')
         .eq('status', 'published')
@@ -35,12 +36,25 @@ export default function Insights() {
         .order('published_at', { ascending: false })
         .limit(3);
 
-      if (error) {
-        console.error('Error fetching featured blogs:', error);
+      if (!featuredError && featured && featured.length > 0) {
+        setFeaturedBlogs(featured);
         return;
       }
 
-      setFeaturedBlogs(data || []);
+      // No featured posts — fall back to latest published
+      const { data: recent, error: recentError } = await supabase
+        .from('blogs')
+        .select('*')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+        .limit(3);
+
+      if (recentError) {
+        console.error('Error fetching blogs:', recentError);
+        return;
+      }
+
+      setFeaturedBlogs(recent || []);
     } catch (error) {
       console.error('Error:', error);
     } finally {
