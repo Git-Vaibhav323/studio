@@ -106,7 +106,8 @@ export default function Navbar() {
       <div className={styles.navRight}>
         <Link href="/contact" className={styles.navCta}>
           {DIAMOND}
-          <span>Book a Consultation</span>
+          <span className={styles.ctaFull}>Book a Consultation</span>
+          <span className={styles.ctaShort}>Consult</span>
         </Link>
         <button
           className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ''}`}

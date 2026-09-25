@@ -153,6 +153,10 @@
 .navCta:hover svg { transform: rotate(90deg); }
 .navCta:active { transform: translateY(0); }
 
+/* Show full label by default (desktop), hide short label */
+.ctaFull { display: inline; }
+.ctaShort { display: none; }
+
 /* -------------------------------------
    HAMBURGER
    ------------------------------------- */
@@ -232,7 +236,8 @@
     padding: 10px 13px;
     letter-spacing: 0.1em;
   }
-  .navCta span { display: inline; }
+  .ctaFull { display: none; }
+  .ctaShort { display: inline; }
   .hamburger { display: flex; }
 }
 

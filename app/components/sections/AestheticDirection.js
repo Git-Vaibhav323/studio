@@ -5,9 +5,9 @@ import { useRevealAnimation, useStaggerChildren } from '@/lib/useRevealAnimation
 import styles from './AestheticDirection.module.css';
 
 const cards = [
-  { num: '01', title: 'Minimalism', img: '/images/card_light.png', desc: 'Less, but better. Clean lines, soft neutral tones, and nothing that doesn\'t need to be there. Every piece chosen with intention — so the space feels calm, spacious, and effortless.' },
-  { num: '02', title: 'Contemporary Indian', img: '/images/card_proportion.png', desc: 'Modern living with Indian soul. Handcrafted textures, warm woods, and traditional motifs reimagined for how we live today — familiar, yet entirely current.' },
-  { num: '03', title: 'Biophilic Living', img: '/images/card_circulation.png', desc: 'Designed to breathe. Natural light, greenery, and organic textures bring the calm of the outdoors in — spaces that feel alive, not just decorated.' },
+  { num: '01', title: 'Minimalism', img: '/minimlisim.jpg', desc: 'Less, but better. Clean lines, soft neutral tones, and nothing that doesn\'t need to be there. Every piece chosen with intention — so the space feels calm, spacious, and effortless.' },
+  { num: '02', title: 'Contemporary Indian', img: '/contemporyindia.jpg', desc: 'Modern living with Indian soul. Handcrafted textures, warm woods, and traditional motifs reimagined for how we live today — familiar, yet entirely current.' },
+  { num: '03', title: 'Biophilic Living', img: '/biophilic.jpg', desc: 'Designed to breathe. Natural light, greenery, and organic textures bring the calm of the outdoors in — spaces that feel alive, not just decorated.' },
   { num: '04', title: 'Eclectic Luxury', img: '/images/hero_living_room.png', desc: 'Bold, layered, and unmistakably yours. Rich textures and statement pieces come together with confidence — a home that feels curated, not matched.' },
 ];
 
