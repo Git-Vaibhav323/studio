@@ -2,13 +2,14 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import OurWork from '../components/sections/OurWork';
 import styles from '../components/PageDetail.module.css';
+import { createPageMetadata } from '../../lib/siteMetadata';
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: 'Interior Design Projects in Hyderabad',
   description: 'Selected living room, dining, kitchen, and bedroom spaces by The Spatial Edit, a spatial design studio in Hyderabad.',
   keywords: ['interior design projects Hyderabad', 'home interior portfolio', 'luxury home interiors Hyderabad', 'living room design Hyderabad', 'kitchen interiors Hyderabad'],
-  alternates: { canonical: '/projects' },
-};
+  path: '/projects',
+});
 
 export default function ProjectsPage() {
   return (

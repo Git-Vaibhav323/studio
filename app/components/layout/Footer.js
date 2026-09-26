@@ -58,8 +58,8 @@ export default function Footer() {
           </svg>
         </div>
         <div className={styles.credit}>
-          <span>Made By Assanj</span>
-          <Image src="/assanj-logo.png" alt="Assanj" width={80} height={36} />
+          <span>MADE BY</span>
+          <Image src="/assanj-logo.png" alt="Assanj" width={112} height={92} />
         </div>
         <div className={styles.copy}>&copy; 2026 The Spatial Edit. All rights reserved.</div>
       </div>

@@ -86,12 +86,20 @@ export const steps = [
   },
 ];
 
+const standards = [
+  { value: 1, label: 'Studio point of contact' },
+  { value: 9, label: 'Execution layers managed' },
+  { value: 30, label: 'Day aftercare support' },
+  { value: 100, label: 'Space-first thinking', percent: true },
+];
+
 export default function Process() {
   const [hovered, setHovered] = useState(null);
   const [tapped, setTapped] = useState(null); // mobile tap state
   const [progress, setProgress] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
+  const standardsRef = useRef(null);
+  const [standardValues, setStandardValues] = useState(standards.map(() => 0));
   
   // Animation refs
   const titleRef = useRevealAnimation(100);
@@ -99,11 +107,36 @@ export default function Process() {
   const timelineRef = useStaggerChildren(160, 'slideUp');
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 900px)');
-    setIsMobile(mq.matches);
-    const handler = (e) => setIsMobile(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
+    const node = standardsRef.current;
+    if (!node) return undefined;
+
+    let frame = 0;
+    let startedAt = 0;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setStandardValues(standards.map(({ value }) => value));
+        return;
+      }
+
+      const animate = (time) => {
+        if (!startedAt) startedAt = time;
+        const progress = Math.min(1, (time - startedAt) / 2400);
+        const eased = 1 - ((1 - progress) ** 3);
+        setStandardValues(standards.map(({ value }) => Math.round(value * eased)));
+        if (progress < 1) frame = requestAnimationFrame(animate);
+      };
+
+      frame = requestAnimationFrame(animate);
+    }, { threshold: 0.35 });
+
+    observer.observe(node);
+    return () => {
+      observer.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
@@ -178,14 +211,16 @@ export default function Process() {
         <div className={styles.timeline} ref={timelineRef}>
           <div className={styles.timelineLine} />
           {steps.map((step) => {
+          const isMobile = typeof window !== 'undefined'
+            && window.matchMedia('(max-width: 900px)').matches;
           const isOpen = isMobile ? tapped === step.num : hovered === step.num;
             return (
               <div
                 key={step.num}
                 className={`${styles.step} ${isOpen ? styles.stepOpen : ''}`}
-                onMouseEnter={() => !isMobile && setHovered(step.num)}
-                onMouseLeave={() => !isMobile && setHovered(null)}
-                onClick={() => isMobile && setTapped(tapped === step.num ? null : step.num)}
+                onMouseEnter={() => !window.matchMedia('(max-width: 900px)').matches && setHovered(step.num)}
+                onMouseLeave={() => !window.matchMedia('(max-width: 900px)').matches && setHovered(null)}
+                onClick={() => window.matchMedia('(max-width: 900px)').matches && setTapped(tapped === step.num ? null : step.num)}
               >
                 <div className={styles.stepCircle}>{step.num}</div>
                 <div className={styles.stepLabel}>{step.label}</div>
@@ -228,6 +263,19 @@ export default function Process() {
               </div>
             );
           })}
+        </div>
+
+        <div className={styles.standards} ref={standardsRef} aria-label="Studio service standards">
+          {standards.map((standard, index) => (
+            <div className={styles.standard} key={standard.label}>
+              <span className={styles.standardValue} aria-label={`${standard.value}${standard.percent ? '%' : ''}`}>
+                {standard.percent
+                  ? `${standardValues[index]}%`
+                  : String(standardValues[index]).padStart(2, '0')}
+              </span>
+              <span className={styles.standardLabel}>{standard.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 

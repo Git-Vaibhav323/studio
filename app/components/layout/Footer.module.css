@@ -191,13 +191,15 @@
 .credit {
   display: inline-flex;
   align-items: center;
-  gap: 0;
+  gap: 4px;
   color: var(--cream);
   font-family: var(--serif);
-  font-size: 14px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   line-height: 1;
 }
-.credit img { width: 112px; height: 48px; margin-left: -4px; object-fit: contain; }
+.credit img { width: 112px; height: 92px; object-fit: contain; }
 .legal { display: flex; gap: 20px; }
 .legal a {
   font-size: 10px; color: rgba(246,240,230,0.5);

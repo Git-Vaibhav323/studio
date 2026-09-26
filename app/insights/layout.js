@@ -1,9 +1,11 @@
-export const metadata = {
-  title: 'Design Insights & Perspectives | The Spatial Edit',
-  description: 'Discover expert viewpoints, interior design tips, spatial design insights, and articles from our team at The Spatial Edit.',
+import { createPageMetadata } from '../../lib/siteMetadata';
+
+export const metadata = createPageMetadata({
+  title: 'Design Insights & Perspectives',
+  description: 'Explore practical interior design advice, spatial design insights, home styling ideas, and articles from The Spatial Edit team.',
   keywords: ['interior design blog Hyderabad', 'spatial design guides', 'home styling tips', 'interior decoration trends'],
-  alternates: { canonical: '/insights' },
-};
+  path: '/insights',
+});
 
 export default function InsightsLayout({ children }) {
   return children;

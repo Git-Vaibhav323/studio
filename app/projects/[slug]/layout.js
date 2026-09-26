@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@/lib/supabase';
+import { createPageMetadata } from '@/lib/siteMetadata';
 
 async function getProject(slug) {
   const supabase = createServerSupabaseClient();
@@ -21,23 +22,17 @@ export async function generateMetadata({ params }) {
   if (!project) {
     return {
       title: 'Project Not Found | The Spatial Edit',
+      robots: { index: false, follow: false },
     };
   }
 
-  return {
-    title: `${project.title} | The Spatial Edit`,
+  return createPageMetadata({
+    title: project.title,
     description: project.description || `Explore our spatial design work on ${project.title}.`,
-    alternates: {
-      canonical: `/projects/${project.slug}`,
-    },
-    openGraph: {
-      title: project.title,
-      description: project.description,
-      images: project.featured_image ? [project.featured_image] : [],
-      url: `/projects/${project.slug}`,
-      type: 'article',
-    },
-  };
+    path: `/projects/${project.slug}`,
+    image: project.featured_image || undefined,
+    type: 'article',
+  });
 }
 
 export default function ProjectLayout({ children }) {

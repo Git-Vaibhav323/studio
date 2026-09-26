@@ -1,12 +1,11 @@
 import './globals.css';
 import LoadingScreen from './components/LoadingScreen';
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedits.com';
+import { SITE_URL } from '../lib/siteMetadata';
 
 export const metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'The Spatial Edit | Spatial Design Studio in Hyderabad',
+    default: 'The Spatial Edit | Interior Design Studio in Hyderabad',
     template: '%s | The Spatial Edit',
   },
   description: 'The Spatial Edit is a spatial design and turnkey interior design studio in Hyderabad crafting homes that work beautifully and are finished to last.',
@@ -27,6 +26,11 @@ export const metadata = {
   authors: [{ name: 'The Spatial Edit' }],
   creator: 'The Spatial Edit',
   publisher: 'The Spatial Edit',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   alternates: {
     canonical: '/',
   },
@@ -42,9 +46,9 @@ export const metadata = {
     },
   },
   openGraph: {
-    title: 'The Spatial Edit | Spatial Design Studio in Hyderabad',
-    description: 'Spaces designed to work. Finished to last.',
-    url: siteUrl,
+    title: 'The Spatial Edit | Interior Design Studio in Hyderabad',
+    description: 'Spatial design and turnkey interiors in Hyderabad. Spaces designed to work, finished to last.',
+    url: SITE_URL,
     siteName: 'The Spatial Edit',
     images: [
       {
@@ -59,10 +63,11 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Spatial Edit | Spatial Design Studio in Hyderabad',
-    description: 'Spaces designed to work. Finished to last.',
+    title: 'The Spatial Edit | Interior Design Studio in Hyderabad',
+    description: 'Spatial design and turnkey interiors in Hyderabad. Spaces designed to work, finished to last.',
     images: ['/images/hero_living_room.png'],
   },
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: [
       { url: '/logo-favicon.png', type: 'image/png' },
@@ -75,22 +80,37 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'InteriorDesignBusiness',
-    name: 'The Spatial Edit',
-    url: siteUrl,
-    description: metadata.description,
-    image: `${siteUrl}/images/hero_living_room.png`,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Hyderabad',
-      addressRegion: 'Telangana',
-      addressCountry: 'IN',
-    },
-    areaServed: ['Hyderabad', 'Telangana', 'India'],
-    serviceType: ['Spatial Design', 'Interior Design', 'Turnkey Home Interiors', 'Spatial Planning'],
-    founder: [
-      { '@type': 'Person', name: 'Preksha Bhargav' },
-      { '@type': 'Person', name: 'Krishna Bhargav' },
+    '@graph': [
+      {
+        '@type': 'HomeAndConstructionBusiness',
+        '@id': `${SITE_URL}/#studio`,
+        name: 'The Spatial Edit',
+        url: SITE_URL,
+        description: metadata.description,
+        image: `${SITE_URL}/images/hero_living_room.png`,
+        logo: `${SITE_URL}/logo.png`,
+        telephone: '+91-9100094547',
+        sameAs: ['https://www.instagram.com/thespatialedit.in/'],
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Hyderabad',
+          addressRegion: 'Telangana',
+          addressCountry: 'IN',
+        },
+        areaServed: ['Hyderabad', 'Telangana', 'India'],
+        founder: [
+          { '@type': 'Person', name: 'Preksha Bhargav' },
+          { '@type': 'Person', name: 'Krishna Bhargav' },
+        ],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        name: 'The Spatial Edit',
+        url: SITE_URL,
+        inLanguage: 'en-IN',
+        publisher: { '@id': `${SITE_URL}/#studio` },
+      },
     ],
   };
 

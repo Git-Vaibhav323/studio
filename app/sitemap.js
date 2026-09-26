@@ -1,4 +1,5 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedits.com';
+import { createServerSupabaseClient } from '../lib/supabase';
+import { SITE_URL } from '../lib/siteMetadata';
 
 const routes = [
   { path: '/', priority: 1 },
@@ -10,11 +11,48 @@ const routes = [
   { path: '/contact', priority: 0.88 },
 ];
 
-export default function sitemap() {
-  return routes.map((route) => ({
-    url: `${siteUrl}${route.path}`,
-    lastModified: new Date(),
+export const revalidate = 3600;
+
+async function getContentRoutes(supabase, table, path, status) {
+  try {
+    const { data, error } = await supabase
+      .from(table)
+      .select('slug, updated_at, published_at')
+      .eq('status', status);
+
+    if (error) return [];
+
+    return (data || []).filter((item) => item.slug).map((item) => {
+      const lastModified = item.updated_at || item.published_at;
+      const timestamp = lastModified ? Date.parse(lastModified) : NaN;
+
+      return {
+        url: `${SITE_URL}${path}/${encodeURIComponent(item.slug)}`,
+        ...(Number.isFinite(timestamp) ? { lastModified: new Date(timestamp) } : {}),
+        changeFrequency: 'monthly',
+        priority: 0.72,
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap() {
+  const staticRoutes = routes.map((route) => ({
+    url: `${SITE_URL}${route.path}`,
     changeFrequency: 'monthly',
     priority: route.priority,
   }));
+  const supabase = createServerSupabaseClient();
+
+  if (!supabase) return staticRoutes;
+
+  const contentRoutes = await Promise.all([
+    getContentRoutes(supabase, 'services', '/services', 'active'),
+    getContentRoutes(supabase, 'projects', '/projects', 'published'),
+    getContentRoutes(supabase, 'blogs', '/insights', 'published'),
+  ]);
+
+  return [...staticRoutes, ...contentRoutes.flat()];
 }

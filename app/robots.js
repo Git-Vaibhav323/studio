@@ -1,13 +1,13 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thespatialedits.com';
-const host = new URL(siteUrl).host;
+import { SITE_URL } from '../lib/siteMetadata';
 
 export default function robots() {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: ['/admin/', '/api/'],
     },
-    sitemap: `${siteUrl}/sitemap.xml`,
-    host,
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: new URL(SITE_URL).host,
   };
 }

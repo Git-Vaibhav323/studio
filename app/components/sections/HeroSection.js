@@ -42,6 +42,11 @@ export default function HeroSection() {
     let lastFrame = -1;
     let lastChromeProgress = -1;
     let scrollBound = false;
+    let smoothingRaf = 0;
+    let displayedProgress = 0;
+    let targetProgress = 0;
+    let latestVelocity = 0;
+    let previousFrameTime = 0;
 
     const updateChrome = (progress) => {
       if (Math.abs(progress - lastChromeProgress) < 0.003) return;
@@ -72,7 +77,7 @@ export default function HeroSection() {
       }
     };
 
-    const paintForProgress = (progress, velocity = 0) => {
+    const renderProgress = (progress, velocity = 0) => {
       if (!renderer || frameCount <= 0) return;
       const index = snapToLoadedFrame(
         progressToFrameIndex(progress, frameCount),
@@ -82,6 +87,37 @@ export default function HeroSection() {
       lastFrame = index;
       renderer.show(index, { velocity });
       updateChrome(progress);
+    };
+
+    const paintForProgress = (progress, velocity = 0) => {
+      targetProgress = progress;
+      latestVelocity = velocity;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        displayedProgress = progress;
+        renderProgress(progress, velocity);
+        return;
+      }
+
+      if (smoothingRaf) return;
+      const settle = (time) => {
+        smoothingRaf = 0;
+        const delta = targetProgress - displayedProgress;
+        const elapsed = previousFrameTime ? Math.min(50, time - previousFrameTime) : 16;
+        previousFrameTime = time;
+        displayedProgress += delta * (1 - Math.exp(-elapsed / 48));
+
+        if (Math.abs(delta) < 0.0005) displayedProgress = targetProgress;
+        renderProgress(displayedProgress, latestVelocity);
+
+        if (displayedProgress !== targetProgress) {
+          smoothingRaf = requestAnimationFrame(settle);
+        } else {
+          previousFrameTime = 0;
+        }
+      };
+
+      smoothingRaf = requestAnimationFrame(settle);
     };
 
     const bindScrollIfNeeded = () => {
@@ -166,6 +202,7 @@ export default function HeroSection() {
       unbindScroll?.();
       resizeObserver?.disconnect();
       visibilityObserver?.disconnect();
+      if (smoothingRaf) cancelAnimationFrame(smoothingRaf);
       renderer?.destroy();
       store?.dispose();
       root.style.scrollBehavior = prevScrollBehavior;

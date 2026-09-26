@@ -5,10 +5,11 @@
 
 .section {
   position: relative;
+  z-index: 2;
   padding: 5vh 5vw 80px;
   background: var(--cream) url('/images/bg-sec-3-2.png') center center/cover no-repeat;
   display: flex; flex-direction: column;
-  overflow: hidden; min-height: 100vh;
+  overflow: visible; min-height: 100vh;
 }
 
 @media (max-width: 768px) {
@@ -238,6 +239,44 @@
   padding-top: 10px;
 }
 
+.standards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1100px;
+  margin: 12px auto 0;
+  width: 100%;
+  border-top: 1px solid rgba(180,144,79,0.32);
+  border-bottom: 1px solid rgba(180,144,79,0.32);
+}
+
+.standard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 76px;
+  padding: 12px;
+}
+
+.standard + .standard { border-left: 1px solid rgba(180,144,79,0.24); }
+
+.standardValue {
+  color: var(--gold);
+  font-family: var(--serif-display, 'DM Serif Display', var(--serif));
+  font-size: 30px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.standardLabel {
+  max-width: 122px;
+  color: var(--dark);
+  font-size: 10px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 /* Arch */
 .archFooter {
   position: absolute; bottom: 0; width: 100vw; left: 50%; transform: translateX(-50%);
@@ -261,42 +300,132 @@
   .expandedCard { width: 360px; }
 }
 @media (max-width: 900px) {
-  .timeline { flex-direction: column; align-items: center; gap: 40px; }
+  .section { padding-right: 6vw; padding-left: 6vw; }
+  .content { max-width: 640px; }
+  .titleWrap { margin-top: 0; margin-bottom: 10px; }
+  .title { font-size: clamp(36px, 9vw, 52px); }
+  .subtitle { max-width: 260px; margin: 0 auto 24px; font-size: 9px; line-height: 1.7; }
+  .timeline { flex-direction: column; align-items: stretch; gap: 12px; }
   .timelineLine { display: none; }
   .vline { display: none; }
-  .stepDesc { height: auto; min-height: unset; }
-  .step { isolation: isolate; width: 100%; max-width: 420px; cursor: pointer; }
+  .step {
+    isolation: isolate;
+    width: 100%;
+    max-width: none;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-areas:
+      'circle label'
+      '. description'
+      '. divider'
+      '. expanded';
+    align-items: start;
+    padding: 15px;
+    border: 1px solid rgba(180,144,79,0.3);
+    background: rgba(255,255,255,0.66);
+    box-shadow: 0 8px 24px rgba(28,23,16,0.045);
+    cursor: pointer;
+    text-align: left;
+  }
   .stepOpen { z-index: 20; isolation: isolate; }
+  .stepCircle {
+    grid-area: circle;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    font-size: 16px;
+    box-shadow: none;
+  }
+  .step:hover .stepCircle,
+  .stepOpen .stepCircle { transform: none; }
+  .stepLabel {
+    grid-area: label;
+    align-self: center;
+    margin: 0;
+    padding: 3px 0;
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+  .stepIcon { display: none; }
+  .stepDesc {
+    grid-area: description;
+    height: auto;
+    min-height: 0;
+    max-width: none;
+    padding: 10px 0 0;
+    margin: 0;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .stepDivider {
+    grid-area: divider;
+    width: 100%;
+    height: 1px;
+    margin-top: 14px;
+  }
+  .step:hover .stepDivider { width: 100%; }
   .expandedCard {
-    position: relative; top: 0; left: 0;
-    transform: scale(0.95) translateY(-6px);
-    width: 100%; margin-top: 0;
+    grid-area: expanded;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translateY(-6px);
+    width: 100%;
+    margin-top: 0;
     opacity: 0; pointer-events: none;
-    max-height: 0; overflow: hidden;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
     flex-direction: column;
     transition:
       opacity 0.35s var(--ease-expo),
       transform 0.35s var(--ease-expo),
       max-height 0.4s var(--ease-expo),
-      margin-top 0.35s var(--ease-expo);
+      margin-top 0.35s var(--ease-expo),
+      padding 0.35s var(--ease-expo);
   }
   .expandedVisible {
     opacity: 1; pointer-events: auto;
-    transform: scale(1) translateY(0);
-    max-height: 800px;
+    transform: translateY(0);
+    max-height: 900px;
     margin-top: 16px;
+    padding: 8px;
+    border: 1px solid rgba(180,144,79,0.35);
   }
   .expLeft {
-    width: 100%; min-height: 180px;
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 1.8;
     margin-right: 0; margin-bottom: 12px;
     border-radius: 8px 8px 0 0;
   }
   .expRight {
     padding: 12px 12px 16px;
   }
+  .standards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+  .standard {
+    justify-content: flex-start;
+    gap: 10px;
+    min-height: 70px;
+    padding: 12px 10px;
+  }
+  .standard:nth-child(odd) { border-left: 0; }
+  .standard:nth-child(n + 3) { border-top: 1px solid rgba(180,144,79,0.24); }
+  .standardValue { font-size: 25px; }
+  .standardLabel { font-size: 9px; }
 }
 @media (max-width: 600px) {
   .expandedCard { flex-direction: column; }
-  .expLeft { margin-right: 0; margin-bottom: 16px; min-height: 140px; }
+  .expLeft { margin-right: 0; margin-bottom: 10px; }
+  .expRight { padding: 8px 6px 10px; }
+  .expTitle { font-size: 14px; }
+  .expText { font-size: 12px; }
+  .expList li { font-size: 11px; }
   .vline { display: none; }
 }

@@ -4,6 +4,7 @@ import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import ContactForm from '../../components/sections/ContactForm';
 import { createServerSupabaseClient } from '@/lib/supabase';
+import { createPageMetadata } from '@/lib/siteMetadata';
 import styles from './ServiceDetail.module.css';
 
 async function getService(slug) {
@@ -29,33 +30,28 @@ async function getService(slug) {
 }
 
 export async function generateMetadata({ params }) {
-  const service = await getService(params.slug);
+  const { slug } = await params;
+  const service = await getService(slug);
   
   if (!service) {
     return {
       title: 'Service Not Found',
+      robots: { index: false, follow: false },
     };
   }
 
-  return {
-    title: service.seo_title || `${service.title} | The Spatial Edit`,
-    description: service.seo_description || service.short_description,
+  return createPageMetadata({
+    title: service.seo_title || service.title,
+    description: service.seo_description || service.short_description || `Explore ${service.title} by The Spatial Edit in Hyderabad.`,
     keywords: service.seo_keywords || [],
-    alternates: {
-      canonical: `/services/${service.slug}`,
-    },
-    openGraph: {
-      title: service.seo_title || service.title,
-      description: service.seo_description || service.short_description,
-      images: service.featured_image ? [service.featured_image] : [],
-      url: `/services/${service.slug}`,
-      type: 'article',
-    },
-  };
+    path: `/services/${service.slug}`,
+    image: service.featured_image || undefined,
+  });
 }
 
 export default async function ServiceDetailPage({ params }) {
-  const service = await getService(params.slug);
+  const { slug } = await params;
+  const service = await getService(slug);
 
   if (!service) {
     notFound();
@@ -133,7 +129,7 @@ export default async function ServiceDetailPage({ params }) {
         {service.features && service.features.length > 0 && (
           <section className={styles.features}>
             <div className={styles.container}>
-              <h2>What's Included</h2>
+              <h2>What&apos;s Included</h2>
               <div className={styles.featuresGrid}>
                 {service.features.map((feature, index) => (
                   <div key={index} className={styles.featureCard}>
@@ -205,7 +201,7 @@ export default async function ServiceDetailPage({ params }) {
           <div className={styles.container}>
             <div className={styles.ctaContent}>
               <h2>Ready to Start Your Project?</h2>
-              <p>Let's discuss how we can transform your space with our {service.title.toLowerCase()} expertise.</p>
+              <p>Let&apos;s discuss how we can transform your space with our {service.title.toLowerCase()} expertise.</p>
               <a href="#contact" className={styles.ctaButton}>
                 Get Started Today
               </a>

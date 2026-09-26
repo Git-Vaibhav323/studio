@@ -3,13 +3,14 @@ import Footer from '../components/layout/Footer';
 import ProcessTimeline from '../components/ProcessTimeline';
 import { processSteps } from '../data/siteContent';
 import styles from '../components/PageDetail.module.css';
+import { createPageMetadata } from '../../lib/siteMetadata';
 
-export const metadata = {
-  title: 'Interior Design Process in Hyderabad | The Spatial Edit',
+export const metadata = createPageMetadata({
+  title: 'Interior Design Process in Hyderabad',
   description: 'Explore The Spatial Edit process: discovery, spatial planning, design development, execution, handover, and aftercare for homes in Hyderabad.',
   keywords: ['interior design process Hyderabad', 'home renovation process', 'spatial planning process', 'turnkey interiors Hyderabad', 'luxury interior execution'],
-  alternates: { canonical: '/process' },
-};
+  path: '/process',
+});
 
 export default function ProcessPage() {
   return (

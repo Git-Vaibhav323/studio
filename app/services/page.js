@@ -4,13 +4,14 @@ import Footer from '../components/layout/Footer';
 import Services from '../components/sections/Services';
 import { serviceItems } from '../data/siteContent';
 import styles from '../components/PageDetail.module.css';
+import { createPageMetadata } from '../../lib/siteMetadata';
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: 'Interior Design Services in Hyderabad',
   description: 'Explore The Spatial Edit services: site assessment, spatial planning, design concepts, civil work, carpentry, furniture, styling, installation, and aftercare.',
   keywords: ['interior design services Hyderabad', 'turnkey interiors Hyderabad', 'spatial planning services', 'civil work interiors', 'custom carpentry Hyderabad', 'home styling Hyderabad'],
-  alternates: { canonical: '/services' },
-};
+  path: '/services',
+});
 
 export default function ServicesPage() {
   return (

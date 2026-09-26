@@ -69,7 +69,7 @@ export async function POST(request) {
               ${formData.message  ? `<tr><td style="padding:8px 0;font-weight:600;vertical-align:top;">Message</td><td style="padding:8px 0;">${formData.message.replace(/\n/g,'<br/>')}</td></tr>` : ''}
             </table>
             <p style="margin-top:24px;font-size:12px;color:#7a7060;border-top:1px solid rgba(180,144,79,0.2);padding-top:12px;">
-              Submitted via thespatialedits.com
+              Submitted via thespatialedit.in
             </p>
           </div>
         `,

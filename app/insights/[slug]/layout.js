@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from '@/lib/supabase';
+import { createPageMetadata } from '@/lib/siteMetadata';
 
 async function getBlog(slug) {
   const supabase = createServerSupabaseClient();
@@ -21,23 +22,17 @@ export async function generateMetadata({ params }) {
   if (!blog) {
     return {
       title: 'Article Not Found | The Spatial Edit',
+      robots: { index: false, follow: false },
     };
   }
 
-  return {
-    title: `${blog.title} | The Spatial Edit`,
+  return createPageMetadata({
+    title: blog.title,
     description: blog.excerpt || `Read our insights on ${blog.title}.`,
-    alternates: {
-      canonical: `/insights/${blog.slug}`,
-    },
-    openGraph: {
-      title: blog.title,
-      description: blog.excerpt,
-      images: blog.featured_image ? [blog.featured_image] : [],
-      url: `/insights/${blog.slug}`,
-      type: 'article',
-    },
-  };
+    path: `/insights/${blog.slug}`,
+    image: blog.featured_image || undefined,
+    type: 'article',
+  });
 }
 
 export default function InsightsDetailLayout({ children }) {
