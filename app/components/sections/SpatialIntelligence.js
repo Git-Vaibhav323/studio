@@ -73,23 +73,6 @@ export default function SpatialIntelligence() {
 
   return (
     <section id="spatial" className={styles.section}>
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className={styles.bgVideo}
-      >
-        <source src="/images/bg-sec2.mp4" type="video/mp4" />
-      </video>
-      <div className={styles.vline} />
-      
-      <div className={styles.diamond + ' ' + styles.diaTop} />
-      <div className={styles.diamond + ' ' + styles.diaMid} />
-      <div className={styles.diamond + ' ' + styles.diaBot} />
-      
-      <div className={styles.sideLabel}>THE SPATIAL EDIT</div>
-
       <div className={styles.inner}>
         <div className={styles.grid}>
 

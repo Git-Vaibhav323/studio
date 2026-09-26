@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
+import ContactForm from '../components/sections/ContactForm';
 import styles from '../components/PageDetail.module.css';
 import aboutStyles from './About.module.css';
 
@@ -45,7 +46,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 
 export default function AboutPage() {
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${aboutStyles.aboutPage}`}>
       <Navbar />
       <main>
         {/* Hero */}
@@ -110,7 +111,7 @@ export default function AboutPage() {
         </section>
 
         {/* Gap section */}
-        <section className={styles.sectionAlt}>
+        <section className={`${styles.sectionAlt} ${aboutStyles.gapSection}`}>
           <div className={styles.sectionInner}>
             <div className={styles.storyResolve}>
               <Reveal>
@@ -149,6 +150,8 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+
+        <ContactForm />
       </main>
       <Footer />
     </div>

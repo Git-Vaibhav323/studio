@@ -45,7 +45,7 @@ export default function Promises() {
         
         {/* Title section */}
         <div className={styles.titleBlock}>
-          <h2 className={styles.title} ref={titleRef}>
+          <h2 className={`${styles.title} homeSectionTitle`} ref={titleRef}>
             Our <span>Promise.</span>
             <br />
             Your Peace of Mind.

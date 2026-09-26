@@ -1,0 +1,71 @@
+.homePage {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+.homeBackground {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.homeMain {
+  position: relative;
+  z-index: 1;
+}
+
+.homeMain > section:not(#hero):not(#contact):not(:last-child) {
+  background-image: none !important;
+  background-color: rgba(244, 237, 224, 0.68) !important;
+}
+
+.homeMain > section:not(#hero):not(:last-child) {
+  min-height: auto !important;
+  padding-top: clamp(22px, 2.5vw, 36px) !important;
+  padding-bottom: clamp(22px, 2.5vw, 36px) !important;
+}
+
+.homeMain :global(.homeSectionTitle) {
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif) !important;
+  font-size: clamp(30px, 4vw, 52px) !important;
+  line-height: 1.05 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+}
+
+.homeMain :global(.titleBlock) {
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeMain :global(.titleLeft) {
+  align-items: center;
+  text-align: center;
+}
+
+.homeMain :global(.titleRight) {
+  max-width: 560px;
+  align-items: center;
+  text-align: center;
+  border-left: 0;
+  padding-left: 0;
+}
+
+.homeMain :global(.titleStar) {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .homeMain > section:not(#hero):not(:last-child) {
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+  }
+}

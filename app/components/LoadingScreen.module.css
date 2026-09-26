@@ -80,6 +80,7 @@
   display: block;
   /* Prevent layout shift — preserve the 300:220 aspect ratio */
   aspect-ratio: 300 / 220;
+  filter: drop-shadow(0 2px 3px rgba(180, 144, 79, 0.22));
 }
 
 /* Tiny annotation text inside SVG */

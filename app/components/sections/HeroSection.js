@@ -222,11 +222,6 @@ export default function HeroSection() {
           </div>
         </div>
 
-        <div className={styles.scrollCue} ref={cueRef} aria-hidden="true">
-          <span>Scroll to explore</span>
-          <i />
-        </div>
-
         <div
           className={styles.endCta}
           ref={endCtaRef}

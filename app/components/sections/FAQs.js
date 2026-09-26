@@ -23,7 +23,7 @@ export default function FAQs() {
 
       <div className={styles.content}>
         <div className={styles.titleBlock}>
-          <h2 className={styles.title} ref={titleRef}>FAQ<span style={{ fontFamily: 'var(--serif-italic)', fontWeight: '400', color: 'var(--gold)', marginLeft: '2px' }}>s</span></h2>
+          <h2 className={`${styles.title} homeSectionTitle`} ref={titleRef}>FAQ<span style={{ fontFamily: 'var(--serif-italic)', fontWeight: '400', color: 'var(--gold)', marginLeft: '2px' }}>s</span></h2>
         </div>
         
         <div className={styles.separatorShort}>

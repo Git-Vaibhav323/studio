@@ -16,10 +16,6 @@ export default function AboutSpatial() {
       {/* Directional warm light overlay */}
       <div className={styles.lightOverlay} aria-hidden="true" />
 
-      {/* Left edge rule + rotated label */}
-      <div className={styles.vline} />
-      <div className={styles.sideLabel}>THE THINKING BEFORE THE DESIGN</div>
-
       {/*
         Top-right kicker label ("THE SPATIAL EDIT · 03") is baked into
         rightfinal.png — the live JSX version is removed to avoid duplication.
@@ -54,7 +50,7 @@ export default function AboutSpatial() {
 
             <div className={styles.overline} ref={overlineRef}>ABOUT SPATIAL DESIGN</div>
 
-            <h2 className={styles.headline} ref={headlineRef}>
+            <h2 className={`${styles.headline} homeSectionTitle`} ref={headlineRef}>
               Space First.<br />Style Second.<br />
               <span className={styles.gold}>Always</span><span className={styles.goldDot} aria-hidden="true" />
             </h2>

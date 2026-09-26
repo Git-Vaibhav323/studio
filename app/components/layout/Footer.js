@@ -12,7 +12,6 @@ export default function Footer() {
       </div>
 
       <div className={styles.inner}>
-        {/* Brand column */}
         <div className={styles.brandCol}>
           <div className={styles.logo}>
             <Image
@@ -27,10 +26,15 @@ export default function Footer() {
               <div className={styles.logoSub}>Interior Design Studio</div>
             </div>
           </div>
+        </div>
+
+        <div className={styles.infoCol}>
           <p className={styles.brandDesc}>
             We design thoughtful, timeless spaces that are as functional as they are beautiful. From concept to completion, we shape environments that elevate everyday living.
           </p>
-          <div className={styles.social}>
+        </div>
+
+        <div className={styles.social}>
             <div className={styles.socialLabel}>FOLLOW US</div>
             <div className={styles.socialIcons}>
               {[
@@ -40,7 +44,6 @@ export default function Footer() {
                 <a href={s.href} key={s.label} className={styles.socialIcon} aria-label={s.label} target="_blank" rel="noopener noreferrer">{s.svg}</a>
               ))}
             </div>
-          </div>
         </div>
       </div>
 
@@ -53,6 +56,10 @@ export default function Footer() {
             <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
             <line x1="4.93" y1="19.07" x2="19.07" y2="4.93"/>
           </svg>
+        </div>
+        <div className={styles.credit}>
+          <span>Made By Assanj</span>
+          <Image src="/assanj-logo.png" alt="Assanj" width={80} height={36} />
         </div>
         <div className={styles.copy}>&copy; 2026 The Spatial Edit. All rights reserved.</div>
       </div>

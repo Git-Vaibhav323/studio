@@ -229,7 +229,7 @@ export default function LoadingScreen() {
             <path
               d={PLAN_PATH}
               stroke="rgba(180,144,79,0.15)"
-              strokeWidth="1"
+              strokeWidth="2.6"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -239,7 +239,7 @@ export default function LoadingScreen() {
               ref={pathRef}
               d={PLAN_PATH}
               stroke="#b4904f"
-              strokeWidth="1.4"
+              strokeWidth="3.2"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeDasharray="0"
@@ -249,7 +249,7 @@ export default function LoadingScreen() {
             {/* Travelling dot */}
             <circle
               ref={dotRef}
-              cx="20" cy="200" r="3"
+              cx="20" cy="200" r="4"
               fill="#b4904f"
               style={{
                 opacity: 0,

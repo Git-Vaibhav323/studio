@@ -163,7 +163,7 @@ export default function Process() {
           {/* header label removed per request */}
         </div>
         <div className={styles.titleWrap}>
-          <h2 className={styles.title} ref={titleRef}>Our <span>Process.</span></h2>
+          <h2 className={`${styles.title} homeSectionTitle`} ref={titleRef}>Our <span>Process.</span></h2>
         </div>
         <div className={styles.titleDivider}>
           <div className={styles.divLine} />

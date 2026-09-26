@@ -7,10 +7,11 @@
   /* Full body width — edge to edge */
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  padding: 6vh 5vw 4vh;
+  padding: 34px 5vw 24px;
   background: #111 url('/images/footerbg.png') center center/cover no-repeat;
   display: flex; flex-direction: column;
   overflow: hidden;
+  z-index: 1;
   color: var(--cream);
   border-top: 1px solid rgba(180,144,79,0.3);
 }
@@ -42,14 +43,16 @@
 
 /* Inner layout */
 .inner {
-  display: flex; flex-wrap: wrap;
-  gap: 40px; margin-top: 6vh;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  align-items: center;
+  gap: 40px; margin-top: 28px;
   width: 100%;
 }
 
 /* Brand column */
-.brandCol { flex: 0 0 300px; display: flex; flex-direction: column; }
-.logo { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.brandCol { display: flex; flex-direction: column; }
+.logo { display: flex; align-items: center; gap: 12px; }
 .logoName {
   font-family: var(--serif); font-size: 24px;
   color: var(--cream); font-weight: 500;
@@ -59,9 +62,10 @@
   font-size: 9px; letter-spacing: 0.25em;
   color: var(--gold); text-transform: uppercase; font-weight: 700; margin-top: 4px;
 }
+.infoCol { max-width: 440px; justify-self: center; }
 .brandDesc {
-  font-size: 11px; line-height: 1.7;
-  color: rgba(246,240,230,0.6); margin-bottom: 30px;
+  font-size: 11px; line-height: 1.6;
+  color: rgba(246,240,230,0.6); margin: 0; text-align: center;
 }
 .ctaBtn {
   background: transparent;
@@ -77,20 +81,20 @@
 .ctaBtn:hover { background: rgba(180,144,79,0.1); border-color: var(--gold); }
 .ctaBtn svg { width: 14px; height: 14px; }
 
-.social { display: flex; flex-direction: column; gap: 12px; }
+.social { display: flex; flex-direction: column; gap: 12px; justify-self: end; }
 .socialLabel {
   font-size: 10px; letter-spacing: 0.2em;
   color: var(--gold); text-transform: uppercase; font-weight: 100;
 }
-.socialIcons { display: flex; gap: 12px; }
+.socialIcons { display: flex; gap: 14px; }
 .socialIcon {
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 1px solid rgba(180,144,79,0.3);
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(180,144,79,0.55);
   display: flex; align-items: center; justify-content: center;
   transition: all 0.3s; cursor: pointer; text-decoration: none;
 }
 .socialIcon:hover { border-color: var(--gold); background: rgba(180,144,79,0.1); }
-.socialIcon svg { width: 14px; height: 14px; }
+.socialIcon svg { width: 23px; height: 23px; }
 
 .phoneLink {
   display: inline-flex;
@@ -172,7 +176,9 @@
 .bottom {
   position: relative;
   display: flex; align-items: center; justify-content: center;
-  padding-top: 30px; margin-top: 60px;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 18px; margin-top: 28px;
   border-top: 1px solid rgba(180,144,79,0.2);
 }
 .bottomStar {
@@ -182,6 +188,16 @@
 }
 .bottomStar svg { width: 24px; height: 24px; }
 .copy { font-size: 10px; color: rgba(246,240,230,0.5); }
+.credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cream);
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1;
+}
+.credit img { width: 76px; height: 32px; object-fit: contain; }
 .legal { display: flex; gap: 20px; }
 .legal a {
   font-size: 10px; color: rgba(246,240,230,0.5);
@@ -191,10 +207,10 @@
 
 /* Responsive */
 @media (max-width: 1100px) {
-  .inner { flex-direction: column; }
+  .inner { grid-template-columns: 1fr; gap: 24px; }
   .linksWrap { flex-wrap: wrap; justify-content: flex-start; gap: 40px; }
   .subCol { margin-top: 40px; align-self: flex-start; width: 100%; max-width: 400px; }
-  .brandCol { max-width: 100%; }
+  .brandCol, .infoCol, .social { max-width: 100%; justify-self: center; }
 }
 @media (max-width: 768px) {
   .footer { padding: 5vh 6vw 4vh; }

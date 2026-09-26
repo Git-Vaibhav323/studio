@@ -2,6 +2,45 @@
    About page — rich animations & transitions
    ============================================= */
 
+.aboutPage {
+  background: url('/images/blueprint_desk.png') center top / cover fixed;
+}
+
+@media (max-width: 768px) {
+  .aboutPage {
+    background-attachment: scroll;
+  }
+}
+
+.aboutPage :global(.section),
+.aboutPage :global(.sectionAlt) {
+  background: rgba(244, 237, 224, 0.78);
+}
+
+.aboutPage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(244, 237, 224, 0.28) 0%,
+    rgba(244, 237, 224, 0.72) 48%,
+    rgba(244, 237, 224, 0.94) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aboutPage > * {
+  position: relative;
+  z-index: 1;
+}
+
+.gapSection {
+  background: rgba(244, 237, 224, 0.78);
+  border: 0;
+}
+
 /* ── Scroll-reveal ── */
 .reveal {
   opacity: 0;

@@ -6,7 +6,7 @@
 .section {
   position: relative;
   padding: 5vh 5vw 80px;
-  background: var(--cream) url('/images/bg/bg-sec-7.webp') center center/cover no-repeat;
+  background: var(--cream) url('/images/bg-sec-3-2.png') center center/cover no-repeat;
   display: flex; flex-direction: column;
   overflow: hidden; min-height: 100vh;
 }
@@ -62,7 +62,7 @@
 .divDiamond { margin: 0 10px; display: flex; align-items: center; }
 .divDiamond svg { width: 10px; height: 10px; }
 
-.subtitle { text-align: center; font-size: 11px; letter-spacing: 0.25em; color: var(--mid); text-transform: uppercase; margin-bottom: 6vh; font-weight: 100; }
+.subtitle { text-align: center; font-size: 11px; letter-spacing: 0.25em; color: var(--mid); text-transform: uppercase; margin-bottom: 3vh; font-weight: 100; }
 
 /* =============================================
    TIMELINE — horizontal row of steps

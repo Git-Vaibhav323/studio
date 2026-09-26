@@ -84,7 +84,7 @@ export default function Comparison() {
         {/* Header */}
         <div className={styles.header}>
           {/* header label/number removed per request */}
-          <h2 className={styles.title} ref={titleRef}>
+          <h2 className={`${styles.title} homeSectionTitle`} ref={titleRef}>
             Why It Comes<br />
             <span>Before Aesthetics.</span>
           </h2>

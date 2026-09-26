@@ -1,5 +1,7 @@
 .page {
-  background: var(--cream);
+  background:
+    linear-gradient(rgba(244, 237, 224, 0.34), rgba(244, 237, 224, 0.58)),
+    url('/images/blueprint_desk.png') center center / cover fixed;
   color: var(--dark);
   min-height: 100vh;
   position: relative;
@@ -105,6 +107,17 @@
     radial-gradient(circle at 80% 80%, rgba(180, 144, 79, 0.06) 0%, transparent 60%);
 }
 
+.insightsPage .backgroundElements {
+  background:
+    linear-gradient(
+      to right,
+      rgba(244, 237, 224, 0.28) 0%,
+      rgba(244, 237, 224, 0.72) 48%,
+      rgba(244, 237, 224, 0.94) 100%
+    ),
+    url('/images/hero_interior.png') center top / cover fixed;
+}
+
 .processPage .backgroundElements::before {
   content: '';
   position: absolute;
@@ -112,9 +125,35 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: 
+  background:
+    linear-gradient(rgba(244, 237, 224, 0.42), rgba(244, 237, 224, 0.42)),
     linear-gradient(135deg, transparent 0%, rgba(180, 144, 79, 0.03) 25%, transparent 50%),
     radial-gradient(circle at 30% 70%, rgba(180, 144, 79, 0.05) 0%, transparent 40%);
+}
+
+.processPage .backgroundElements {
+  background: url('/images/proportion_room.png') center center / cover fixed;
+}
+
+.processPage .hero,
+.processPage .section {
+  background: rgba(244, 237, 224, 0.78);
+}
+
+.processPage > main {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .page {
+    background-attachment: scroll;
+    background-position: center top;
+  }
+
+  .processPage .backgroundElements {
+    background-attachment: scroll;
+  }
 }
 
 .projectsPage .backgroundElements::before {
@@ -181,9 +220,10 @@
 
 .hero {
   position: relative;
-  padding: calc(var(--nav-h) + 20px) 5vw 60px;
-  background: var(--cream) url('/images/bg/bg-sec-3.webp') center bottom/cover no-repeat;
+  padding: 40px 5vw 34px;
+  background: rgba(244, 237, 224, 0.72);
   overflow: hidden;
+  text-align: center;
 }
 
 .heroInner,
@@ -192,8 +232,17 @@
   margin: 0 auto;
 }
 
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .eyebrow {
-  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
   color: var(--gold);
   font-size: 13px;
   font-weight: 100;
@@ -201,12 +250,21 @@
   text-transform: uppercase;
 }
 
+.eyebrow::before,
+.eyebrow::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
 .title {
-  max-width: 900px;
-  font-family: var(--serif);
-  font-size: clamp(32px, 4.5vw, 62px);
+  max-width: 1000px;
+  font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif);
+  font-size: clamp(30px, 4vw, 52px);
   font-weight: 400;
-  line-height: 0.98;
+  line-height: 1.05;
   letter-spacing: 0;
 }
 
@@ -217,8 +275,11 @@
 }
 
 .intro {
-  max-width: 680px;
-  margin-top: 24px;
+  max-width: 720px;
+  margin: 14px auto 0;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(180, 144, 79, 0.3);
+  border-bottom: 1px solid rgba(180, 144, 79, 0.3);
   color: var(--mid);
   font-size: clamp(15px, 1.5vw, 18px);
   line-height: 1.8;
@@ -260,12 +321,12 @@
 
 .section {
   padding: 30px 5vw;
-  background: var(--cream);
+  background: rgba(244, 237, 224, 0.82);
 }
 
 .sectionAlt {
   padding: 30px 5vw;
-  background: var(--cream-light);
+  background: rgba(248, 244, 237, 0.82);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }

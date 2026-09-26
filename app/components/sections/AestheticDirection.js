@@ -27,18 +27,16 @@ export default function AestheticDirection() {
         </div>
 
         <div className={styles.titleBlock}>
-          <div className={styles.titleLeft}>
-            <div className={styles.titleText}>
-              <h2 ref={titleRef}>Our Aesthetic <span>Direction</span></h2>
+          <h2 className="homeSectionTitle" ref={titleRef}>Our Aesthetic <span>Direction</span></h2>
+          <div className={styles.titleDivider}>
+            <div className={styles.divLine} />
+            <div className={styles.divDiamond}>
+              <svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)" /></svg>
             </div>
+            <div className={styles.divLine} />
           </div>
-          <div className={styles.titleRight}>
-            <div className={styles.titleStar}>
-              <svg viewBox="0 0 24 24"><path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5Z" fill="var(--gold)"/></svg>
-            </div>
-            <div className={styles.trSubtitle} ref={subtitleRef}>THE AESTHETICS WE LOVE MOST.</div>
-            <div className={styles.trDesc} ref={descRef}>Every style begins with how the space works, and then we curate its soul.</div>
-          </div>
+          <div className={styles.trSubtitle} ref={subtitleRef}>THE AESTHETICS WE LOVE MOST.</div>
+          <div className={styles.trDesc} ref={descRef}>Every style begins with how the space works, and then we curate its soul.</div>
         </div>
 
         <hr className={styles.divider} />
@@ -60,11 +58,6 @@ export default function AestheticDirection() {
           </div>
         </div>
 
-        <div className={styles.footer}>
-          <div className={`${styles.footerLine} ${styles.left}`} />
-          <div className={styles.footerText}>SCROLL TO EXPLORE</div>
-          <div className={`${styles.footerLine} ${styles.right}`} />
-        </div>
       </div>
 
       {/* footer divider removed per request */}

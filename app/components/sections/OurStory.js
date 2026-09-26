@@ -19,7 +19,7 @@ export default function OurStory() {
         
         {/* LEFT COLUMN */}
         <div className={styles.leftCol}>
-          <h2 className={styles.title} ref={titleRef}>Our <span className={styles.titleGold}>Story.</span></h2>
+          <h2 className={`${styles.title} homeSectionTitle`} ref={titleRef}>Our <span className={styles.titleGold}>Story.</span></h2>
           {/* subtitle removed per request */}
           
           <div className={styles.separatorShort}>
