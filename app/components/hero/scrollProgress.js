@@ -1,7 +1,5 @@
 /**
- * Native scroll -> progress with a small frame-rate independent easing pass.
- * Scroll position remains the target; the eased value prevents decoded-frame
- * changes from feeling abrupt while the user is moving through the sequence.
+ * Map native scroll progress directly to the corresponding sequence frame.
  */
 
 export function clamp01(value) {
@@ -44,34 +42,20 @@ export function bindScrollProgress(section, onProgress) {
   let lastY = window.scrollY;
   let velocity = 0;
   let lastEmitted = -1;
-  let targetProgress = 0;
-  let easedProgress = 0;
-  let lastTime = performance.now();
 
   const emitNow = () => {
     queued = false;
     rafId = 0;
     if (!active || !enabled) return;
 
-    targetProgress = getScrollProgress(section);
+    const progress = getScrollProgress(section);
     const dy = window.scrollY - lastY;
     lastY = window.scrollY;
     velocity = velocity * 0.65 + dy * 0.35;
 
-    const now = performance.now();
-    const delta = Math.min(64, Math.max(1, now - lastTime));
-    lastTime = now;
-    const blend = 1 - Math.exp(-delta / 54);
-    easedProgress += (targetProgress - easedProgress) * blend;
-
-    if (Math.abs(easedProgress - lastEmitted) < 0.00001) {
-      if (Math.abs(targetProgress - easedProgress) > 0.00001) {
-        kick();
-      }
-      return;
-    }
-    lastEmitted = easedProgress;
-    onProgress(easedProgress, { velocity });
+    if (Math.abs(progress - lastEmitted) < 0.00001) return;
+    lastEmitted = progress;
+    onProgress(progress, { velocity });
   };
 
   const kick = () => {
@@ -85,9 +69,6 @@ export function bindScrollProgress(section, onProgress) {
   const onResize = () => {
     lastY = window.scrollY;
     lastEmitted = -1;
-    targetProgress = getScrollProgress(section);
-    easedProgress = targetProgress;
-    lastTime = performance.now();
     emitNow();
   };
 

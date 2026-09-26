@@ -59,7 +59,7 @@ export default function AboutSpatial() {
               Spatial design is the discipline of understanding how a space functions.
             </p>
             <p className={styles.desc}>
-              It considers the physical and psychological experience of being inside a room — how you enter it, how you move through it, where your eye travels, and how the space makes you feel over time.
+              It considers how you enter and move through a room, where your eye rests, and how the space shapes your experience over time.
             </p>
 
             <div className={styles.featuresBox}>

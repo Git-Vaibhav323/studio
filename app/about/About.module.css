@@ -129,6 +129,11 @@
   cursor: default;
 }
 
+.compactQuote {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
 /* Large decorative opening quote via CSS — no clipping issue */
 .quoteHover::before {
   content: '\201C';

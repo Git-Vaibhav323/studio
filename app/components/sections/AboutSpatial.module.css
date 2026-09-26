@@ -78,9 +78,13 @@
 
 /* ── Left column — unchanged ── */
 .left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding-right: 16px;
   position: relative;
   padding-top: 10px;
+  text-align: center;
 }
 
 .decorArcs {
@@ -139,6 +143,8 @@
   position: relative;
   z-index: 1;
   font-weight: 400;
+  max-width: 560px;
+  text-align: center;
 }
 
 .desc {
@@ -149,6 +155,8 @@
   margin-bottom: 24px;
   position: relative;
   z-index: 1;
+  max-width: 560px;
+  text-align: center;
 }
 
 .featuresBox {
@@ -162,6 +170,7 @@
   box-shadow: 6px 14px 26px rgba(70,50,20,0.06), inset 1px 1px 2px rgba(255,255,255,0.8);
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 .feature { text-align: center; padding: 8px 8px 10px; }
 .feature:not(:last-child) { border-right: 1px solid rgba(180,144,79,0.25); }
@@ -198,6 +207,7 @@
 .statementRow {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   gap: 10px;
 }
 
