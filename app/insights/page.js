@@ -85,8 +85,7 @@ export default function InsightsPage() {
               Thoughts on <span>Spatial</span> Design
             </h1>
             <div className={styles.intro}>
-              Explore our thoughts on spatial design, interior trends, and creating 
-              spaces that truly work for how you live.
+              &ldquo;Explore our thoughts on spatial design, interior trends, and creating spaces that truly work for how you live.&rdquo;
             </div>
           </div>
         </section>

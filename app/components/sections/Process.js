@@ -192,9 +192,6 @@ export default function Process() {
       {/* Side visuals and number removed per request */}
 
       <div className={styles.content}>
-        <div className={styles.sectionHeader}>
-          {/* header label removed per request */}
-        </div>
         <div className={styles.titleWrap}>
           <h2 className={`${styles.title} homeSectionTitle`} ref={titleRef}>Our <span>Process.</span></h2>
         </div>

@@ -55,7 +55,7 @@ export default function AboutPage() {
             <div className={`${styles.eyebrow} ${aboutStyles.heroRise} ${aboutStyles.heroEyebrow}`}>About The Spatial Edit</div>
             <h1 className={`${styles.title} ${aboutStyles.heroRise} ${aboutStyles.heroTitle}`}>It began in a home that <span>was not working.</span></h1>
             <p className={`${styles.intro} ${aboutStyles.heroRise} ${aboutStyles.heroIntro}`}>
-              The Spatial Edit was founded by Preksha Bhargav and Krishna Bhargav, partners in life and now in business, who started this studio for a very personal reason.
+              &ldquo;The Spatial Edit was founded by Preksha Bhargav and Krishna Bhargav, partners in life and now in business, who started this studio for a very personal reason.&rdquo;
             </p>
             <div className={`${styles.trustBar} ${aboutStyles.heroRise} ${aboutStyles.heroTrust}`}>
               {trust.map(([number, label], index) => (

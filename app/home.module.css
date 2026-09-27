@@ -30,6 +30,26 @@
   padding-bottom: clamp(14px, 1.4vw, 22px) !important;
 }
 
+.homeMain > :global(#comparison):not(:global(#hero)):not(:last-child) {
+  padding-bottom: 8px !important;
+}
+
+.homeMain > :global(#aesthetics):not(:global(#hero)):not(:last-child) {
+  padding-top: 8px !important;
+}
+
+.homeMain > :global(#aesthetics) :global(.header) {
+  margin-bottom: 0;
+}
+
+.homeMain > :global(#aesthetics) :global(.titleBlock) {
+  margin-top: 0;
+}
+
+.homeMain > :global(#aesthetics) :global(.animate-title) {
+  transform: translateY(20px) !important;
+}
+
 .homeMain :global(.homeSectionTitle) {
   font-family: var(--serif-display, 'DM Serif Display', 'Cormorant Garamond', serif) !important;
   font-size: clamp(30px, 4vw, 52px) !important;

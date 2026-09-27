@@ -41,7 +41,7 @@ function getCoverRect(canvasWidth, canvasHeight, srcW, srcH) {
   return coverCache;
 }
 
-export function drawCoverFrame(canvas, ctx, img, { clear = false } = {}) {
+export function drawCoverFrame(canvas, ctx, img, { clear = false, alpha = 1 } = {}) {
   const rect = canvas.getBoundingClientRect();
   const canvasWidth = rect.width;
   const canvasHeight = rect.height;
@@ -59,8 +59,11 @@ export function drawCoverFrame(canvas, ctx, img, { clear = false } = {}) {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
   }
   ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'low';
+  ctx.imageSmoothingQuality = 'high';
+  const previousAlpha = ctx.globalAlpha;
+  ctx.globalAlpha = alpha;
   ctx.drawImage(img, ox, oy, dw, dh);
+  ctx.globalAlpha = previousAlpha;
 }
 
 export function resizeCanvas(canvas, ctx, { maxDpr = 1.25 } = {}) {
@@ -92,27 +95,38 @@ export function createFrameRenderer(canvas, store) {
   let lastRequested = -1;
   let lastDrawnKey = -1;
   let lastDrawnImg = null;
+  let lastDrawnUpperImg = null;
+  let lastDrawnLowerKey = -1;
+  let lastDrawnUpperKey = -1;
+  let lastBlend = 0;
   let pendingIndex = -1;
   let sized = false;
   let paintedOnce = false;
   let prefetchTimer = 0;
   let upgradeTimer = 0;
 
-  const paintImage = (img, key) => {
+  const paintFrames = (lowerImg, upperImg, blend, lowerKey, upperKey) => {
     const rect = canvas.getBoundingClientRect();
     if (rect.width < 2 || rect.height < 2) {
       // Layout not ready yet — retry next frame (prevents black empty canvas)
       requestAnimationFrame(() => {
-        if (img) paintImage(img, key);
+        if (lowerImg) paintFrames(lowerImg, upperImg, blend, lowerKey, upperKey);
       });
       return;
     }
     const resized = !sized ? resizeCanvas(canvas, ctx) : false;
     if (!sized) sized = true;
-    drawCoverFrame(canvas, ctx, img, { clear: !paintedOnce || resized });
+    drawCoverFrame(canvas, ctx, lowerImg, { clear: !paintedOnce || resized });
+    if (blend > 0 && upperImg && upperImg !== lowerImg) {
+      drawCoverFrame(canvas, ctx, upperImg, { alpha: blend });
+    }
     paintedOnce = true;
-    lastDrawnKey = key;
-    lastDrawnImg = img;
+    lastDrawnKey = blend >= 0.5 ? upperKey : lowerKey;
+    lastDrawnImg = lowerImg;
+    lastDrawnUpperImg = upperImg;
+    lastDrawnLowerKey = lowerKey;
+    lastDrawnUpperKey = upperKey;
+    lastBlend = blend;
   };
 
   const schedulePrefetch = (frameIndex, velocity) => {
@@ -134,41 +148,45 @@ export function createFrameRenderer(canvas, store) {
       return { width: rect.width, height: rect.height };
     },
 
-    show(frameIndex, { force = false, velocity = 0 } = {}) {
-      if (!force && frameIndex === lastDrawnKey && store.getBitmap(frameIndex)) {
-        schedulePrefetch(frameIndex, velocity);
+    show(framePosition, { velocity = 0 } = {}) {
+      const position = Math.max(0, Math.min(store.frameCount - 1, framePosition));
+      const lowerKey = Math.floor(position);
+      const upperKey = Math.min(store.frameCount - 1, lowerKey + 1);
+      const blend = position - lowerKey;
+      lastRequested = position;
+      pendingIndex = position;
+
+      const lower = store.getBitmap(lowerKey);
+      const upper = upperKey === lowerKey ? lower : store.getBitmap(upperKey);
+      if (lower && (blend === 0 || upper)) {
+        paintFrames(lower, upper || lower, blend, lowerKey, upperKey);
+        schedulePrefetch(Math.round(position), velocity);
         return lastDrawnKey;
+      } else {
+        // Hold the closest ready image while either side of the blend decodes.
+        const { key, bitmap } = store.nearestBitmap(Math.round(position));
+        if (bitmap && Math.abs(key - position) <= 2 && key !== lastDrawnKey) {
+          paintFrames(bitmap, bitmap, 0, key, key);
+        }
       }
 
-      lastRequested = frameIndex;
-      pendingIndex = frameIndex;
-
-      const exact = store.getBitmap(frameIndex);
-      if (exact) {
-        paintImage(exact, frameIndex);
-        schedulePrefetch(frameIndex, velocity);
-        return lastDrawnKey;
-      }
-
-      // Prefer closest ready frame within ±2 so motion continues without jumps.
-      const { key, bitmap } = store.nearestBitmap(frameIndex);
-      if (bitmap && key >= 0 && Math.abs(key - frameIndex) <= 2) {
-        if (key !== lastDrawnKey) paintImage(bitmap, key);
-      }
-
-      store.ensure(frameIndex).then((bmp) => {
-        if (pendingIndex !== frameIndex || !bmp) return;
+      const loadLower = lower ? Promise.resolve(lower) : store.ensure(lowerKey);
+      const loadUpper = upperKey === lowerKey
+        ? loadLower
+        : upper ? Promise.resolve(upper) : store.ensure(upperKey);
+      Promise.all([loadLower, loadUpper]).then(([lowerBitmap, upperBitmap]) => {
+        if (pendingIndex !== position || (!lowerBitmap && !upperBitmap)) return;
         if (upgradeTimer) cancelAnimationFrame(upgradeTimer);
         upgradeTimer = requestAnimationFrame(() => {
           upgradeTimer = 0;
-          if (pendingIndex !== frameIndex) return;
-          if (frameIndex !== lastDrawnKey || bmp !== lastDrawnImg) {
-            paintImage(bmp, frameIndex);
-          }
+          if (pendingIndex !== position) return;
+          const first = lowerBitmap || upperBitmap;
+          const second = upperBitmap || first;
+          paintFrames(first, second, lowerBitmap && upperBitmap ? blend : 0, lowerKey, upperKey);
         });
       });
 
-      schedulePrefetch(frameIndex, velocity);
+      schedulePrefetch(Math.round(position), velocity);
       return lastDrawnKey;
     },
 
@@ -177,11 +195,15 @@ export function createFrameRenderer(canvas, store) {
       const resized = resizeCanvas(canvas, ctx);
       if (resized) paintedOnce = false;
       if (lastDrawnImg) {
-        paintImage(lastDrawnImg, lastDrawnKey);
+        paintFrames(
+          lastDrawnImg,
+          lastDrawnUpperImg || lastDrawnImg,
+          lastBlend,
+          lastDrawnLowerKey,
+          lastDrawnUpperKey,
+        );
       } else if (lastRequested >= 0) {
-        store.ensure(lastRequested).then((bmp) => {
-          if (bmp) paintImage(bmp, lastRequested);
-        });
+        this.show(lastRequested);
       }
     },
 
@@ -193,6 +215,8 @@ export function createFrameRenderer(canvas, store) {
       if (prefetchTimer) cancelAnimationFrame(prefetchTimer);
       if (upgradeTimer) cancelAnimationFrame(upgradeTimer);
       lastDrawnImg = null;
+      lastDrawnUpperImg = null;
+      pendingIndex = -1;
       lastDrawnKey = -1;
       lastRequested = -1;
     },

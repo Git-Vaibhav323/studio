@@ -113,11 +113,11 @@
   display: flex;
   gap: 24px;
   align-items: stretch;
-  flex: 1;
+  flex: 0 0 auto;
   /* Key change: push cards lower with top margin */
   margin-top: 48px;
-  padding-bottom: 5vh;
-  margin-bottom: 80px;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .card {
@@ -298,10 +298,18 @@
     max-width: 100%;
     overflow: hidden;
   }
-  .header { flex-direction: column; gap: 12px; }
+  .header {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .title { text-align: center; }
   .cardsWrap {
     flex-direction: column;
     margin-top: 24px;
+    margin-bottom: 24px;
+    padding-bottom: 0;
     gap: 16px;
     width: 100%;
   }

@@ -34,7 +34,7 @@ export default function ProcessPage() {
             <div className={styles.eyebrow}>Our Process</div>
             <h1 className={styles.title}>End to end. <span>Thoughtful at every step.</span></h1>
             <p className={styles.intro}>
-              We move from questions to plans, from plans to design, and from design to a finished home with one clear point of ownership throughout.
+              &ldquo;We move from questions to plans, from plans to design, and from design to a finished home with one clear point of ownership throughout.&rdquo;
             </p>
           </div>
         </section>

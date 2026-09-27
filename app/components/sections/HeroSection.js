@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import styles from './HeroSection.module.css';
 import { TITLE_RANGES, titleOpacity, frameUrl } from '../hero/config';
-import { loadFrameSequence, snapToLoadedFrame } from '../hero/loadFrames';
-import { bindScrollProgress, progressToFrameIndex, getScrollProgress } from '../hero/scrollProgress';
+import { loadFrameSequence } from '../hero/loadFrames';
+import { bindScrollProgress, progressToFrameFloat, getScrollProgress } from '../hero/scrollProgress';
 import { createFrameRenderer } from '../hero/frameRenderer';
 import { markBootReady, reportBootProgress } from '../boot/siteBoot';
 
@@ -38,8 +38,6 @@ export default function HeroSection() {
     let resizeObserver = null;
     let visibilityObserver = null;
     let frameCount = 0;
-    let step = 1;
-    let lastFrame = -1;
     let lastChromeProgress = -1;
     let scrollBound = false;
     let smoothingRaf = 0;
@@ -79,12 +77,7 @@ export default function HeroSection() {
 
     const renderProgress = (progress, velocity = 0) => {
       if (!renderer || frameCount <= 0) return;
-      const index = snapToLoadedFrame(
-        progressToFrameIndex(progress, frameCount),
-        frameCount,
-        step,
-      );
-      lastFrame = index;
+      const index = progressToFrameFloat(progress, frameCount);
       renderer.show(index, { velocity });
       updateChrome(progress);
     };
@@ -105,7 +98,7 @@ export default function HeroSection() {
         const delta = targetProgress - displayedProgress;
         const elapsed = previousFrameTime ? Math.min(50, time - previousFrameTime) : 16;
         previousFrameTime = time;
-        displayedProgress += delta * (1 - Math.exp(-elapsed / 48));
+        displayedProgress += delta * (1 - Math.exp(-elapsed / 90));
 
         if (Math.abs(delta) < 0.0005) displayedProgress = targetProgress;
         renderProgress(displayedProgress, latestVelocity);
@@ -154,15 +147,13 @@ export default function HeroSection() {
             const pct = 25 + Math.round((loaded / Math.max(1, total)) * 70);
             reportBootProgress(pct, 'Preparing scroll');
           },
-          onFirstFrame: ({ store: frameStore, frameCount: count, step: frameStep }) => {
+          onFirstFrame: ({ store: frameStore, frameCount: count }) => {
             if (controller.signal.aborted) return;
             store = frameStore;
             frameCount = count;
-            step = frameStep;
             renderer = createFrameRenderer(canvas, store);
 
             const painted = renderer.show(0, { force: true });
-            lastFrame = 0;
             updateChrome(0);
             if (painted >= 0 || store.getBitmap(0)) {
               setCanvasLive(true);
@@ -184,7 +175,6 @@ export default function HeroSection() {
 
         store = result.store;
         frameCount = result.frameCount;
-        step = result.step;
         setCanvasLive(true);
         bindScrollIfNeeded();
 

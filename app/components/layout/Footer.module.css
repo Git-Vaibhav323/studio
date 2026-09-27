@@ -215,11 +215,18 @@
   .brandCol, .infoCol, .social { max-width: 100%; justify-self: center; }
 }
 @media (max-width: 768px) {
-  .footer { padding: 5vh 6vw 4vh; }
-  .bottom { flex-direction: column; gap: 20px; text-align: center; }
+  .footer { padding: 28px 6vw 18px; }
+  .bottom { flex-direction: column; gap: 8px; text-align: center; margin-top: 10px; }
   .ctaBtn { width: 100%; max-width: 280px; }
-  .inner { margin-top: 4vh; gap: 32px; }
-  .brandCol { flex: none; width: 100%; }
+  .inner { margin-top: 8px; gap: 14px; }
+  .brandCol { flex: none; width: 100%; align-items: center; text-align: center; }
+  .logo { flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+  .logoText { text-align: center; }
+  .logoName { font-size: 22px; }
+  .infoCol { width: min(440px, 100%); }
+  .social { align-items: center; justify-self: center; gap: 10px; }
   .linksWrap { gap: 28px; }
   .subCol { width: 100%; }
+  .credit { flex-direction: column; gap: 0; }
+  .credit img { width: 88px; height: 64px; margin-top: -8px; }
 }
