@@ -64,7 +64,7 @@
 }
 .infoCol { max-width: 440px; justify-self: center; }
 .brandDesc {
-  font-size: 11px; line-height: 1.6;
+  font-size: 12px; line-height: 1.65;
   color: rgba(246,240,230,0.6); margin: 0; text-align: center;
 }
 .ctaBtn {
